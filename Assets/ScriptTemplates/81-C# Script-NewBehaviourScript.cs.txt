@@ -1,0 +1,40 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+    #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    #region enum
+    #endregion
+    
+    #region const
+    #endregion
+
+    #region public variable
+    #endregion
+
+    #region private variable
+    #endregion
+
+    #region public method
+    #endregion
+
+    #region private method
+    #endregion
+
+    #region event
+    void Awake()
+    {
+        
+    }
+    void FixedUpdate()
+    {
+        
+    }
+    #endregion
+    
+    #region GUI
+    #endregion
+}
+#ROOTNAMESPACEEND#
