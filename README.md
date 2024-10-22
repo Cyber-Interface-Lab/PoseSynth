@@ -19,6 +19,6 @@ PoseSynth はアバタの関節構造や動作方式の実装を効率化する�
 - XR Interaction Toolkit（開発中）
 
 ## Documents
-現在執筆中です．
+wiki をご覧ください（現在執筆中）．
 
 ご使用に際しトラブルなどございましたら連絡先 yamaama@cyber.t.u-tokyo.ac.jp までお気軽にご連絡ください．
