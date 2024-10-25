@@ -2,6 +2,9 @@
 PoseSynth はアバタの関節構造や動作方式の実装を効率化するツールキットです．<br>
 ご使用の際はReleasesより `PoseSynth.unitypackage` と VR システム別のパッケージを Unity プロジェクトにインポートしてください．<br>
 
+2024/10/25現在，ディレクトリ構造の改修のためリポジトリの作り直し作業を行っています．
+しばらくの間ご不便をおかけしますが，ご理解の程よろしくお願いいたします．
+
 ## Developpers
 - Amane Yamaguchi
 - Kenta Hashiura
