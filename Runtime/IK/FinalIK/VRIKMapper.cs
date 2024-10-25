@@ -91,5 +91,9 @@ namespace CyberInterfaceLab.PoseSynth.IK
                 m_isValid = value;
             }
         }
+        protected override void MapOnUpdate()
+        {
+            m_ik.UpdateSolverExternal();
+        }
     }
 }

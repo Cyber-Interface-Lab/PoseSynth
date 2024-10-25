@@ -19,6 +19,8 @@ namespace CyberInterfaceLab.PoseSynth.VR
         [SerializeField]
         private OVRCustomSkeleton m_handRight;
 
+        public override CameraRigType Type => CameraRigType.OVR;
+
         // set anchors because they get unassigned when entering play mode.
         private void SetAnchors()
         {
@@ -81,7 +83,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
                 { Head, m_ovrCameraRig.centerEyeAnchor },
                 { HandLeft, m_ovrCameraRig.leftHandAnchor },
                 { ControllerLeft, m_ovrCameraRig.leftControllerAnchor },
-                { HandRight, m_ovrCameraRig?.rightHandAnchor },
+                { HandRight, m_ovrCameraRig.rightHandAnchor },
                 { ControllerRight, m_ovrCameraRig.rightControllerAnchor },
             };
 

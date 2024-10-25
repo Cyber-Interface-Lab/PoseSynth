@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
     /// <summary>
     /// Class of the client in the server.
     /// </summary>
+    [Obsolete]
     public class Client : PSNetworkBehaviour
     {
         /// <summary>

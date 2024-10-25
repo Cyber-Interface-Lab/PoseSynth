@@ -39,6 +39,7 @@ namespace CyberInterfaceLab.PoseSynth
         /// </summary>
         [SerializeField, UDictionary.Split(30, 70)]
         protected TrackerDictionary m_trackerTransform;
+        public abstract CameraRigType Type { get; }
 
         /// <summary>
         /// Try to get transform of the tracker.
@@ -49,6 +50,20 @@ namespace CyberInterfaceLab.PoseSynth
         public bool TryGetTransform(TrackerType type, out Transform transform)
         {
             return m_trackerTransform.TryGetValue(type, out transform);
+        }
+        public bool TryGetType(Transform transform, out TrackerType type)
+        {
+            foreach (var pair in m_trackerTransform)
+            {
+                if (pair.Value == transform)
+                {
+                    type = pair.Key;
+                    return true;
+                }
+            }
+
+            // fail to get type
+            type = TrackerType.None; return false;
         }
 
         private void Update()

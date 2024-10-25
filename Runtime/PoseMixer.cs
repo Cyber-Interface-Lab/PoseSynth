@@ -178,6 +178,34 @@ namespace CyberInterfaceLab.PoseSynth
         /// </summary>
         [SerializeField]
         public List<MixedBoneGroup> MixedBoneGroups = new(64);
+
+        /// <summary>
+        /// Add a Pose to the list Poses.
+        /// </summary>
+        /// <param name="pose"></param>
+        public void AddPose(Pose pose)
+        {
+            if (Poses.Contains(pose))
+            {
+                Debug.LogWarning($"PoseMixer.AddPose: This PoseMixer already contains Pose {pose.name}!");
+            }
+
+            Poses.Add(pose);
+            InitializeMixedBoneGroups();
+        }
+        /// <summary>
+        /// Remove a Pose from the list Poses.
+        /// </summary>
+        /// <param name="pose"></param>
+        public void RemovePose(Pose pose)
+        {
+            if (Poses.Contains(pose))
+            {
+                Poses.Remove(pose);
+                InitializeMixedBoneGroups();
+            }
+        }
+
         /// <summary>
         /// Initialize MixedBoneGroups based on Poses.
         /// </summary>

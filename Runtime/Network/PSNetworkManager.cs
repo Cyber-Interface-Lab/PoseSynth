@@ -12,6 +12,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
     /// </summary>
     public class PSNetworkManager : Singleton<PSNetworkManager>
     {
+        private NetworkManager m_networkManager;
         [SerializeField]
         private LocalCameraRig m_localCameraRig;
         public LocalCameraRig LocalCameraRig => m_localCameraRig;
@@ -19,18 +20,59 @@ namespace CyberInterfaceLab.PoseSynth.Network
         private UnityTransport m_networkTransport;
         public UnityTransport NetworkTransport => m_networkTransport;
 
+        [SerializeField]
+        private NetworkPlayerSpawner m_networkPlayerSpawner;
+        public NetworkPlayerSpawner NetworkPlayerSpawner => m_networkPlayerSpawner;
+
+        public void StartHost()
+        {
+            m_networkManager.StartHost();
+        }
+        public void StartClient()
+        {
+            m_networkManager.StartClient();
+        }
+        public void StopHost()
+        {
+            m_networkManager.Shutdown();
+        }
+        public void StopClient()
+        {
+            m_networkManager.Shutdown();
+        }
+
+        private void Start()
+        {
+            m_networkManager = NetworkManager.Singleton;
+        }
+
         #region GUI
         private int m_windowId = Utilities.GetWindowId();
-        private Rect m_windowRect = new Rect(0, 0, 200, 100);
+        private Rect m_windowRect = new Rect(0, 0, 250, 100);
         private void OnGUI()
         {
             m_windowRect = GUI.Window(m_windowId, m_windowRect, (id) =>
             {
-                if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+                if (m_networkManager.IsHost)
                 {
                     if (GUILayout.Button("Shutdown"))
                     {
-                        NetworkManager.Singleton.Shutdown();
+                        StopHost();
+                    }
+                    if (m_networkTransport != null)
+                    {
+                        GUILayout.Label($"Server address: {m_networkTransport.ConnectionData.Address}:{m_networkTransport.ConnectionData.Port}");
+                    }
+                }
+                else if (m_networkManager.IsClient)
+                {
+                    if (GUILayout.Button("Shutdown"))
+                    {
+                        StopClient();
+                    }
+                    if (m_networkTransport != null)
+                    {
+                        GUILayout.Label($"Server address: {m_networkTransport.ConnectionData.Address}:{m_networkTransport.ConnectionData.Port}");
                     }
                 }
                 else
@@ -43,17 +85,17 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     GUILayout.BeginHorizontal();
                     if (GUILayout.Button($"Host"))
                     {
-                        NetworkManager.Singleton.StartHost();
+                        StartHost();
                     }
                     if (GUILayout.Button($"Client"))
                     {
-                        NetworkManager.Singleton.StartClient();
+                        StartClient();
                     }
                     GUILayout.EndHorizontal();
                 }
 
                 GUI.DragWindow();
-            }, "NetCode GUI");
+            }, "NetCode GUI | " + (m_networkManager.IsHost ? "Host" : m_networkManager.IsClient ? "Client" : "Offline"));
         }
         #endregion
     }

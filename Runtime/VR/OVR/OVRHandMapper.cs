@@ -34,6 +34,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
         private void SetProperties(Finger f)
         {
             if (f.Target == null) { return; }
+            if (m_cameraRig == null) { return; }
             if (m_cameraRig.TryGetTransform(f.Type, out var t))
             {
                 f.Target.localRotation = Utilities.Multiply(t.localRotation, f.Offset);
@@ -42,6 +43,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
         private void SetProperties(DoubleFinger df)
         {
             if (df.Target == null) { return; }
+            if (m_cameraRig == null) { return; }
             if (m_cameraRig.TryGetTransform(df.Type0, out var t0) && m_cameraRig.TryGetTransform(df.Type1, out var t1))
             {
                 var offset0 = Utilities.Multiply(t0.localRotation, df.Offset0);
