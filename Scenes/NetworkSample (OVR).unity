@@ -433,7 +433,7 @@ PrefabInstance:
     - target: {fileID: 7359736678056469046, guid: 223edd1950ef6c445b187e59e9d54660, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
-      objectReference: {fileID: 6816511938271316466, guid: 431d132125bd7434eae6624374a7a0ce, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 7359736678056469046, guid: 223edd1950ef6c445b187e59e9d54660, type: 3}
       propertyPath: NetworkConfig.NetworkIdRecycleDelay
       value: 5
@@ -452,12 +452,16 @@ PrefabInstance:
       objectReference: {fileID: 3278977402188184725, guid: a28884c09cad5d941bc109d4d47a93d3, type: 3}
     - target: {fileID: 7359736678056469046, guid: 223edd1950ef6c445b187e59e9d54660, type: 3}
       propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7359736678056469046, guid: 223edd1950ef6c445b187e59e9d54660, type: 3}
       propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 68a118a477a384640baa2eab26432f81, type: 2}
+    - target: {fileID: 7359736678056469046, guid: 223edd1950ef6c445b187e59e9d54660, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d22a26e1decb6db4c8cd9b96207e9576, type: 2}
     - target: {fileID: 7359736678056469047, guid: 223edd1950ef6c445b187e59e9d54660, type: 3}
       propertyPath: ConnectionData.Address
       value: 127.0.0.1
