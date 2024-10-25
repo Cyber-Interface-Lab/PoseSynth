@@ -11,7 +11,7 @@ namespace CyberInterfaceLab.PoseSynth
             set
             {
                 m_cameraRig = value;
-                if (m_cameraRig is ICameraRig)
+                if (m_cameraRig != null)
                 {
                     SetIKTargets(m_cameraRig);
                 }
@@ -21,7 +21,7 @@ namespace CyberInterfaceLab.PoseSynth
                 }
             }
         }
-        protected override void MapOnUpdate() { } // Do nothing on update.
+        protected override void MapOnUpdate() { }
         protected abstract void SetIKTargets(ICameraRig cameraRig);
         protected abstract void ResetIKTargets();
     }

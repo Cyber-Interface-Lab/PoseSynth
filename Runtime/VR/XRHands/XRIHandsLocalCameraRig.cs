@@ -14,6 +14,8 @@ namespace CyberInterfaceLab.PoseSynth.VR
     /// </summary>
     public class XRIHandsLocalCameraRig : XRILocalCameraRig
     {
+        public override CameraRigType Type => CameraRigType.XRI;
+
         #region private variable
         // Hand Tracking
         private XRHandSkeletonDriver[] m_hands;

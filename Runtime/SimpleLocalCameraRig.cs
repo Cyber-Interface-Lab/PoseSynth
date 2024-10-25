@@ -6,6 +6,6 @@ namespace CyberInterfaceLab.PoseSynth
 {
     public class SimpleLocalCameraRig : LocalCameraRig
     {
-        
+        public override CameraRigType Type => CameraRigType.Simple;
     }
 }

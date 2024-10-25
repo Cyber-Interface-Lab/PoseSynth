@@ -11,5 +11,13 @@ namespace CyberInterfaceLab.PoseSynth
         /// <param name="transform"></param>
         /// <returns></returns>
         public bool TryGetTransform(TrackerType type, out Transform transform);
+        /// <summary>
+        /// Try to get <see cref="TrackerType"/> from a transform.
+        /// </summary>
+        /// <param name="transform"></param>
+        /// <param name="type"></param>
+        /// <returns>Whether successfully get tracker or not.</returns>
+        public bool TryGetType(Transform transform, out TrackerType type);
+        public CameraRigType Type { get; }
     }
 }

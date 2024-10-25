@@ -73,7 +73,6 @@ GameObject:
   - component: {fileID: 6816511938271316468}
   - component: {fileID: 4622181791283894701}
   - component: {fileID: 504411373198549973}
-  - component: {fileID: 5817297909494657688}
   - component: {fileID: 2140707107700299337}
   m_Layer: 0
   m_Name: Server CameraRig (Simple)
@@ -150,23 +149,6 @@ MonoBehaviour:
   InLocalSpace: 1
   Interpolate: 0
   SlerpPosition: 0
---- !u!114 &5817297909494657688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6816511938271316466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e057ce5d19987d7408a1b84afe7f10a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_cameraRig: {fileID: 2140707107700299337}
-  m_poseServer: {fileID: 0}
-  m_pose: {fileID: 0}
-  PoseServerPrefab: {fileID: 6013258982294032651, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
-  PoseClientPrefab: {fileID: 4510283377390291072, guid: a28884c09cad5d941bc109d4d47a93d3, type: 3}
 --- !u!114 &2140707107700299337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +161,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f524037d364b944bb906603bfc879e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_syncPosition: 1
+  m_syncRotAngle: 1
+  m_syncScale: 0
+  m_positionThreshold: 0.001
+  m_rotAngleThreshold: 0.01
+  m_scaleThreshold: 0.01
+  m_useQuaternionSynchronization: 0
+  m_useQuaternionCompression: 0
+  m_useHalfFloatPrecision: 1
+  m_inLocalSpace: 1
+  m_interpolate: 0
+  m_slerpPosition: 0
   m_trackerTransform:
     keys: 0b0000001600000020000000
     values:

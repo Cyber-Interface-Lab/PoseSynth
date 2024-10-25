@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -40,6 +41,10 @@ namespace CyberInterfaceLab.PoseSynth.Network
             {
                 ServerAwake();
             }
+            if (IsClient)
+            {
+                ClientAwake();
+            }
         }
         private void Start()
         {
@@ -50,6 +55,10 @@ namespace CyberInterfaceLab.PoseSynth.Network
             if (IsServer)
             {
                 ServerStart();
+            }
+            if (IsClient)
+            {
+                ClientStart();
             }
         }
         private void Update()
@@ -62,6 +71,10 @@ namespace CyberInterfaceLab.PoseSynth.Network
             {
                 ServerUpdate();
             }
+            if (IsClient)
+            {
+                ClientUpdate();
+            }
         }
         private void FixedUpdate()
         {
@@ -72,6 +85,10 @@ namespace CyberInterfaceLab.PoseSynth.Network
             if (IsServer)
             {
                 ServerFixedUpdate();
+            }
+            if (IsClient)
+            {
+                ClientFixedUpdate();
             }
         }
         private void LateUpdate()
@@ -84,19 +101,34 @@ namespace CyberInterfaceLab.PoseSynth.Network
             {
                 ServerLateUpdate();
             }
+            if (IsClient)
+            {
+                ClientUpdate();
+            }
         }
         #endregion
         #region original events
+        [Obsolete("Use OnNetworkSpawn() instead.")]
         public virtual void OwnerAwake() { }
+        [Obsolete("Use OnNetworkSpawn() instead.")]
         public virtual void ServerAwake() { }
+        [Obsolete("Use OnNetworkSpawn() instead.")]
+        public virtual void ClientAwake() { }
+        [Obsolete("Use OnNetworkSpawn() instead.")]
         public virtual void OwnerStart() { }
+        [Obsolete("Use OnNetworkSpawn() instead.")]
         public virtual void ServerStart() { }
+        [Obsolete("Use OnNetworkSpawn() instead.")]
+        public virtual void ClientStart() { }
         public virtual void OwnerUpdate() { }
         public virtual void ServerUpdate() { }
+        public virtual void ClientUpdate() { }
         public virtual void OwnerFixedUpdate() { }
         public virtual void ServerFixedUpdate() { }
+        public virtual void ClientFixedUpdate() { }
         public virtual void OwnerLateUpdate() { }
         public virtual void ServerLateUpdate() { }
+        public virtual void ClientLateUpdate() { }
         #endregion
     }
 

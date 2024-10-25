@@ -11217,7 +11217,6 @@ GameObject:
   - component: {fileID: 4954049052981568150}
   - component: {fileID: 6520092932661179087}
   - component: {fileID: 2114804354461862071}
-  - component: {fileID: 5396013305758325242}
   - component: {fileID: 570864128591002923}
   m_Layer: 0
   m_Name: Server CameraRig (OVR)
@@ -11292,23 +11291,6 @@ MonoBehaviour:
   InLocalSpace: 1
   Interpolate: 0
   SlerpPosition: 0
---- !u!114 &5396013305758325242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4954049052981568144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e057ce5d19987d7408a1b84afe7f10a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_cameraRig: {fileID: 570864128591002923}
-  m_poseServer: {fileID: 0}
-  m_pose: {fileID: 0}
-  PoseServerPrefab: {fileID: 836902386480031538, guid: f5b3471d80027b2439118609f92ec701, type: 3}
-  PoseClientPrefab: {fileID: 4510283377390291072, guid: a28884c09cad5d941bc109d4d47a93d3, type: 3}
 --- !u!114 &570864128591002923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11321,6 +11303,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f524037d364b944bb906603bfc879e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_syncPosition: 1
+  m_syncRotAngle: 1
+  m_syncScale: 0
+  m_positionThreshold: 0.001
+  m_rotAngleThreshold: 0.01
+  m_scaleThreshold: 0.01
+  m_useQuaternionSynchronization: 0
+  m_useQuaternionCompression: 0
+  m_useHalfFloatPrecision: 1
+  m_inLocalSpace: 1
+  m_interpolate: 0
+  m_slerpPosition: 0
   m_trackerTransform:
     keys: 0a00000014000000150000001e0000001f000000c8000000c9000000ca000000cb000000cc000000cd000000ce000000cf000000d0000000d1000000d2000000d3000000d4000000d5000000d6000000d7000000d8000000d9000000da0000002c0100002d0100002e0100002f010000300100003101000032010000330100003401000035010000360100003701000038010000390100003a0100003b0100003c0100003d0100003e0100000b0000001600000020000000
     values:

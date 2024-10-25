@@ -12,6 +12,8 @@ namespace CyberInterfaceLab.PoseSynth.VR
     /// </summary>
     public class XRILocalCameraRig : CustomLocalCameraRig
     {
+        public override CameraRigType Type => CameraRigType.XRI;
+
         #region protected variable
         [SerializeField]
         protected XROrigin m_xrOrigin;

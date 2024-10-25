@@ -7,6 +7,6 @@ namespace CyberInterfaceLab.PoseSynth.VR
 {
     public class XRIHandsServerCameraRig : ServerCameraRig
     {
-        //public override CameraRigType Type => CameraRigType.XRIHands;
+        public override CameraRigType Type => CameraRigType.XRIHands;
     }
 }
