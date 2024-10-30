@@ -32,7 +32,7 @@ PoseSynthは基本パッケージ `PoseSynth_x_x_x.unitypackage` とVRシステ�
 wikiをご覧ください（現在執筆中）．
 
 ## For Researchers
-PoseSynthを利用した研究の成果を公開する場合は，各バージョンが指定する論文を引用してください．<br>
-When publishing the results of research using PoseSynth, please cite the papers specified by each version.<br>
+PoseSynthを利用した研究の成果を公開する場合は，ソフトウェアおよび関連論文の引用をお願いします．<br>
+If you publish the results of your research using PoseSynth, please cite the software and related papers.<br>
 
 ご使用に際しトラブルなどございましたら連絡先 yamaama@cyber.t.u-tokyo.ac.jp までお気軽にご連絡ください．
