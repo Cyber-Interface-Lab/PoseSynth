@@ -15,7 +15,7 @@ namespace CyberInterfaceLab.PoseSynth
     [InitializeOnLoad]
 #endif
 
-    public class PoseMixer : MonoBehaviour, ISynthesizer, IGUIDrawer
+    public class PoseMixer : MonoBehaviour, ISynthesizer, IGUIDrawer, IObservable<PoseMixer>
     {
         /// <summary>
         /// The result pose.
@@ -322,6 +322,19 @@ namespace CyberInterfaceLab.PoseSynth
             }
         }
 
+        #region observable
+        private HashSet<IObserver<PoseMixer>> m_observers = new(64);
+        public void AddObserver(IObserver<PoseMixer> observer) {  m_observers.Add(observer); }
+        public void RemoveObserver(IObserver<PoseMixer> observer) => m_observers.Remove(observer);
+        public void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         [SerializeField]
         private bool m_isValid = true;
         public bool IsValid
@@ -444,6 +457,7 @@ namespace CyberInterfaceLab.PoseSynth
                 }
 
                 Mix(Poses);
+                Notify();
             }
         }
 

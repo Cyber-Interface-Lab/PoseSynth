@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using Unity.Netcode;
 using System;
 
 namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
 {
-    public class NetworkGUIStateMachine : MonoBehaviour
+    public class NetworkGUIStateMachine : Singleton<NetworkGUIStateMachine>
     {
         [Serializable]
         public class State
@@ -28,6 +29,9 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
         [SerializeField] private State m_stateOffline;
         [SerializeField] private State m_stateClient;
         [SerializeField] private State m_stateServer;
+
+        // pool of buttons
+        [SerializeField] ButtonPoolManager m_buttonPool;
         #endregion
 
         #region public method
@@ -38,6 +42,22 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
             m_currentState?.OnExit.Invoke();
             m_currentState = nextState;
             m_currentState?.OnEnter.Invoke();
+        }
+
+        public PooledButton AddButton()
+        {
+            if (m_buttonPool.TryGet(out var button))
+            {
+                return button;
+            }
+            return null;
+        }
+        public void RemoveButton(Button button)
+        {
+            if (button.TryGetComponent<PooledButton>(out var pb) && pb != null)
+            {
+                pb.Deactivate();
+            }
         }
         #endregion
 
@@ -68,7 +88,7 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
             m_currentState.OnUpdate.Invoke();
         }
         #endregion
-    
+
         #region GUI
         #endregion
     }

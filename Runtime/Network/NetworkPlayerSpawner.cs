@@ -13,6 +13,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
     /// </summary>
     public class NetworkPlayerSpawner : PSNetworkBehaviour
     {
+        /*
         [Serializable]
         public class ClientEvent
         {
@@ -26,6 +27,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
             [SerializeField]
             private UnityEvent<ServerCameraRig> m_eventDespawn = new();
         }
+        */
         /// <summary>
         /// This class is used to select a prefab of <see cref="ServerCameraRig"> from the enum <see cref="CameraRigType"/>.
         /// </summary>
@@ -47,6 +49,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
         /// </summary>
         private Dictionary<ulong, CameraRigType> m_clientCameraRigType = new(64);
 
+        /*
         public List<ClientEvent> ClientEvents => m_clientEvents;
         [SerializeField]
         private List<ClientEvent> m_clientEvents = new(32);
@@ -63,8 +66,9 @@ namespace CyberInterfaceLab.PoseSynth.Network
             result = null;
             return false;
         }
+        */
 
-
+        /*
         public UnityEvent<ServerCameraRig> EventInitializeByDefault => m_eventInitializeByDefault;
         [Header("Default Events")]
         [SerializeField]
@@ -74,8 +78,9 @@ namespace CyberInterfaceLab.PoseSynth.Network
         [SerializeField]
         [Tooltip("This event is applied for client that Client Events does not contains.")]
         private UnityEvent<ServerCameraRig> m_eventDespawnByDefault;
+        */
 
-
+        /*
         /// <summary>
         /// Set event for the client.
         /// The events are called when the player object is initialized and despawned.
@@ -107,6 +112,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
                 serverCameraRig.EventDespawn = m_eventDespawnByDefault;
             }
         }
+        */
         [ServerRpc(RequireOwnership = false)]
         private void OnNetworkSpawnServerRpc(ulong clientId, CameraRigType type)
         {

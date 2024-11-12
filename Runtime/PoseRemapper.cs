@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
@@ -12,7 +13,7 @@ namespace CyberInterfaceLab.PoseSynth
     [InitializeOnLoad]
 #endif
 
-    public abstract class PoseRemapper : MonoBehaviour, ISynthesizer
+    public abstract class PoseRemapper : MonoBehaviour, ISynthesizer, IObservable<PoseRemapper>
     {
         /// <summary>
         /// The reference pose.
@@ -22,7 +23,12 @@ namespace CyberInterfaceLab.PoseSynth
         public Pose RefPose
         {
             get => m_refPose;
-            set => m_refPose = value;
+            set
+            {
+                //m_refPose = value;
+                SetRefPoseWithoutNotice(value);
+                Notify();
+            }
         }
         /// <summary>
         /// The result pose.
@@ -32,7 +38,11 @@ namespace CyberInterfaceLab.PoseSynth
         public Pose Pose
         {
             get => m_refPose;
-            set => m_refPose = value;
+            set
+            {
+                m_refPose = value;
+                //Notify();
+            }
         }
 
         [SerializeField]
@@ -57,6 +67,27 @@ namespace CyberInterfaceLab.PoseSynth
                 m_isValid = value;
             }
         }
+
+        #region observable
+        private HashSet<IObserver<PoseRemapper>> m_observers = new(64);
+        public void AddObserver(IObserver<PoseRemapper> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseRemapper> observer) => m_observers.Remove(observer);
+        /// <summary>
+        /// Call it when the inner values have changed.
+        /// </summary>
+        /// <param name="observer"></param>
+        public void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        public void SetRefPoseWithoutNotice(Pose pose)
+        {
+            m_refPose = pose;
+        }
+        #endregion
 
         protected virtual void OnValidate()
         {

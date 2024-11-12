@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace CyberInterfaceLab.PoseSynth
 {
@@ -10,15 +11,20 @@ namespace CyberInterfaceLab.PoseSynth
         {
             set
             {
-                m_cameraRig = value;
-                if (m_cameraRig != null)
-                {
-                    SetIKTargets(m_cameraRig);
-                }
-                else
-                {
-                    ResetIKTargets();
-                }
+                SetCameraRigWithoutNotice(value);
+                Notify();
+            }
+        }
+        public override void SetCameraRigWithoutNotice(ICameraRig value)
+        {
+            m_cameraRig = value;
+            if (m_cameraRig != null)
+            {
+                SetIKTargets(m_cameraRig);
+            }
+            else
+            {
+                ResetIKTargets();
             }
         }
         protected override void MapOnUpdate() { }
