@@ -25,7 +25,10 @@ namespace CyberInterfaceLab.PoseSynth
         public void Deactivate()
         {
             // clear button functions
-            m_button?.onClick.RemoveAllListeners();
+            if (m_button != null)
+            {
+                m_button.onClick.RemoveAllListeners();
+            }
             m_pool.Release(this);
         }
         #endregion

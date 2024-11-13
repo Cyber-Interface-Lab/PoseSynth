@@ -6,11 +6,6 @@ namespace CyberInterfaceLab.PoseSynth
 {
     public class ButtonPoolManager : PoolManager<PooledButton>
     {
-        #region event
-        void Awake()
-        {
-            Initialize();
-        }
-        #endregion
+
     }
 }

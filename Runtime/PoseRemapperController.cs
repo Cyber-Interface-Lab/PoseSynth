@@ -100,7 +100,10 @@ namespace CyberInterfaceLab.PoseSynth
         {
             for (int i=0; i< m_posesToRefer.Count; i++)
             {
-                m_buttons[i]?.Deactivate();
+                if (m_buttons[i] != null)
+                {
+                    m_buttons[i]?.Deactivate();
+                }
             }
         }
         #endregion

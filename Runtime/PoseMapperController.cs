@@ -95,7 +95,8 @@ namespace CyberInterfaceLab.PoseSynth
         }
         private void OnDestroy()
         {
-            m_button?.Deactivate();
+            if (m_button == null) { return; }
+            m_button.Deactivate();
         }
         #endregion
     }

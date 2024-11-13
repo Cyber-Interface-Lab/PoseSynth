@@ -14,6 +14,7 @@ namespace CyberInterfaceLab.PoseSynth
     {
         [SerializeField] private T pooledPrefab;
         protected IObjectPool<T> _objectPool;
+        bool m_isInitialized = false;
 
         [SerializeField] private bool _collectionCheck = true;
 
@@ -24,6 +25,7 @@ namespace CyberInterfaceLab.PoseSynth
         {
             _objectPool = new ObjectPool<T>(Create, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject,
                 _collectionCheck, _defaultCapacity, _maxSize);
+            m_isInitialized = true;
         }
         /// <summary>
         /// Try get new pooled object.
@@ -32,6 +34,11 @@ namespace CyberInterfaceLab.PoseSynth
         /// <returns></returns>
         public bool TryGet(out T pooledObject)
         {
+            if (!m_isInitialized)
+            {
+                Initialize();
+            }
+
             if (_objectPool == null)
             {
                 pooledObject = null;
