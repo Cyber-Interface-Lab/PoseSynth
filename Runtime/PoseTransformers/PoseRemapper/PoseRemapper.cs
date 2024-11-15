@@ -13,7 +13,7 @@ namespace CyberInterfaceLab.PoseSynth
     [InitializeOnLoad]
 #endif
 
-    public abstract class PoseRemapper : MonoBehaviour, ISynthesizer, IObservable<PoseRemapper>
+    public abstract class PoseRemapper : MonoBehaviour, IPoseTransformer, IObservable<PoseRemapper>
     {
         /// <summary>
         /// The reference pose.

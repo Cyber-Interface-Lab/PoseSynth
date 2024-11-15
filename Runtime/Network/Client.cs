@@ -9,7 +9,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
     /// <summary>
     /// Class of the client in the server.
     /// </summary>
-    [Obsolete]
+    [Obsolete("Network architectures using this class are not recommended from v1.1.0.")]
     public class Client : PSNetworkBehaviour
     {
         /// <summary>

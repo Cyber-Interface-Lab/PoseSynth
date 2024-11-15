@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEditor;
 
 namespace CyberInterfaceLab.PoseSynth
 {

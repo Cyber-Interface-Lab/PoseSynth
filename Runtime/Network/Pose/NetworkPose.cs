@@ -8,6 +8,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
     /// Wrapper of Pose for network.
     /// </summary>
     [RequireComponent(typeof(Pose))]
+    [System.Obsolete("Network architectures using this class are not recommended from v1.1.0.")]
     public class NetworkPose : PSNetworkBehaviour
     {
         [SerializeField]
@@ -18,7 +19,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
         /// They attach this m_pose as Pose.
         /// They should be invalid in client environment.
         /// </summary>
-        private HashSet<ISynthesizer> m_poseEditors;
+        private HashSet<IPoseTransformer> m_poseEditors;
         /// <summary>
         /// Implicit operator for Pose.
         /// </summary>
@@ -30,7 +31,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
 
         public override void OnNetworkSpawn()
         {
-            m_poseEditors = GetComponents<ISynthesizer>().ToHashSet();
+            m_poseEditors = GetComponents<IPoseTransformer>().ToHashSet();
             foreach (var editor in m_poseEditors)
             {
                 editor.IsValid = IsHost || IsServer;

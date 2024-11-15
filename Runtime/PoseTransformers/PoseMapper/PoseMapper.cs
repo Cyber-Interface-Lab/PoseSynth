@@ -7,7 +7,7 @@ namespace CyberInterfaceLab.PoseSynth
     /// Mapper that maps Pose from ICameraRig.
     /// </summary>
     [RequireComponent(typeof(Pose))]
-    public abstract class PoseMapper : MonoBehaviour, ISynthesizer, IObservable<PoseMapper>
+    public abstract class PoseMapper : MonoBehaviour, IPoseTransformer, IObservable<PoseMapper>
     {
         [SerializeField]
         private Component _cameraRig;

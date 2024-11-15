@@ -15,7 +15,7 @@ namespace CyberInterfaceLab.PoseSynth
     [InitializeOnLoad]
 #endif
 
-    public class PoseMixer : MonoBehaviour, ISynthesizer, IGUIDrawer, IObservable<PoseMixer>
+    public class PoseMixer : MonoBehaviour, IPoseTransformer, IGUIDrawer, IObservable<PoseMixer>
     {
         /// <summary>
         /// The result pose.
