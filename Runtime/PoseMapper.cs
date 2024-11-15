@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
@@ -6,7 +7,7 @@ namespace CyberInterfaceLab.PoseSynth
     /// Mapper that maps Pose from ICameraRig.
     /// </summary>
     [RequireComponent(typeof(Pose))]
-    public abstract class PoseMapper : MonoBehaviour, ISynthesizer
+    public abstract class PoseMapper : MonoBehaviour, ISynthesizer, IObservable<PoseMapper>
     {
         [SerializeField]
         private Component _cameraRig;
@@ -14,7 +15,11 @@ namespace CyberInterfaceLab.PoseSynth
         public virtual ICameraRig CameraRig
         {
             get => m_cameraRig;
-            set => m_cameraRig = value;
+            set
+            {
+                SetCameraRigWithoutNotice(value);
+                Notify();
+            }
         }
         [SerializeField]
         protected Pose m_pose;
@@ -46,11 +51,28 @@ namespace CyberInterfaceLab.PoseSynth
             }
         }
 
+        #region observable
+        private HashSet<IObserver<PoseMapper>> m_observers = new(64);
+        public void AddObserver(IObserver<PoseMapper> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseMapper> observer) => m_observers.Remove(observer);
+        public void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         /// <summary>
         /// Map transforms of ICameraRig to Pose in every fixed frame.
         /// </summary>
         /// <param name="cameraRig"></param>
         protected abstract void MapOnUpdate();
+        public virtual void SetCameraRigWithoutNotice(ICameraRig value)
+        {
+            m_cameraRig = value;
+        }
 
         protected virtual void Awake()
         {
