@@ -4,8 +4,5 @@ using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
 {
-    public class ButtonPoolManager : PoolManager<PooledButton>
-    {
-
-    }
+    public class ButtonPoolManager : PoolManager<PooledButton> { }
 }

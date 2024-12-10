@@ -89,7 +89,7 @@ namespace CyberInterfaceLab.PoseSynth
         {
             m_pose = GetComponent<Pose>();
 
-            // get m_cameraRig
+            // get m_cameraRig from Component _cameraRig
             if (_cameraRig == null)
             {
                 m_cameraRig = null;

@@ -20,13 +20,6 @@ namespace CyberInterfaceLab.PoseSynth
         #region private variable
         //[SerializeField]
         private PoseMapper[] m_mappers;
-        /// <summary>
-        /// <see cref="PooledButton"/> that is pooled by <see cref="ButtonPoolManager"/>.
-        /// At Start(), it adds a button to <see cref="NetworkGUIStateMachine"/>'s GUI.
-        /// </summary>
-        private PooledButton m_button;
-
-        [SerializeField] private bool m_addButtonToGUI = true;
         #endregion
 
         #region public method
@@ -42,62 +35,24 @@ namespace CyberInterfaceLab.PoseSynth
                 mapper.CameraRig = cameraRig;
             }
         }
-        public void ResetMapperCameraRig() => SetMapperCameraRig(null);
+        public void ResetMapperCameraRig()
+        {
+            // set deactive
+            gameObject.SetActive(false);
+
+            // reset cameraRigs
+            m_mappers = GetComponents<PoseMapper>();
+            foreach (var mapper in m_mappers)
+            {
+                mapper.CameraRig = null;
+            }
+        }
         #endregion
 
         #region private method
-        /// <summary>
-        /// One of two functions on button clicked.
-        /// aaply all the <see cref="PoseMapper"/> to <see cref="ICameraRig"/> of the client who clicked it.
-        /// </summary>
-        private void ApplyPoseMapper()
-        {
-            // search server camera rig of this local player
-            ICameraRig cameraRig = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().GetComponent<ServerCameraRig>();
-            // embody to the pose via PoseMapper
-            SetMapperCameraRig(cameraRig);
-
-            // remove this listener
-            m_button.Button.onClick.RemoveAllListeners();
-            // add another function
-            m_button.Button.onClick.AddListener(QuitPoseMapper);
-            m_button.Text.text = $"Quit {name}";
-        }
-        /// <summary>
-        /// One of two functions on button clicked.
-        /// </summary>
-        private void QuitPoseMapper()
-        {
-            ResetMapperCameraRig();
-
-            // remove this listener
-            m_button.Button.onClick.RemoveAllListeners();
-            // add another function
-            m_button.Button.onClick.AddListener(ApplyPoseMapper);
-            m_button.Text.text = $"Embody {name}";
-        }
         #endregion
 
         #region event
-        private void Start()
-        {
-            if (m_addButtonToGUI)
-            {
-                var networkGUI = NetworkGUIStateMachine.Instance;
-                if (networkGUI != null)
-                {
-                    // add button
-                    m_button = NetworkGUIStateMachine.Instance.AddButton();
-                    m_button.Button.onClick.AddListener(ApplyPoseMapper);
-                    m_button.Text.text = $"Embody {name}";
-                }
-            }
-        }
-        private void OnDestroy()
-        {
-            if (m_button == null) { return; }
-            m_button.Deactivate();
-        }
         #endregion
     }
 }

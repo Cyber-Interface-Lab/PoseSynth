@@ -24,6 +24,7 @@ namespace CyberInterfaceLab.PoseSynth
         #region public method
         public void SetCameraRig(ICameraRig cameraRig)
         {
+            //Debug.Log("SetCameraRig");
             if (cameraRig == null)
             {
                 SetCameraRigToNullServerRpc();
@@ -50,23 +51,36 @@ namespace CyberInterfaceLab.PoseSynth
         [ServerRpc(RequireOwnership = false)]
         private void SetCameraRigServerRpc(ulong networkObjectId)
         {
+            //Debug.Log("SetCameraRigServerRpc: " + networkObjectId);
+            var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
+            if (obj.TryGetComponent<ICameraRig>(out var cr))
+            {
+                foreach (var mapper in m_mappers)
+                {
+                    mapper.SetCameraRigWithoutNotice(cr);
+                }
+            }
             SetCameraRigClientRpc(networkObjectId);
         }
         [ServerRpc(RequireOwnership = false)]
         private void SetCameraRigToNullServerRpc()
         {
+            foreach (var mapper in m_mappers)
+            {
+                mapper.SetCameraRigWithoutNotice(null);
+            }
             SetCameraRigToNullClientRpc();
         }
         [ClientRpc]
         private void SetCameraRigClientRpc(ulong networkObjectId)
         {
+            //Debug.Log("SetCameraRigClientRpc: " + networkObjectId);
             // search the network object whose id is equal to the argument.
             var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
             if (obj.TryGetComponent<ICameraRig>(out var cr))
             {
                 foreach (var mapper in m_mappers)
                 {
-                    //mapper.CameraRig = cr;
                     mapper.SetCameraRigWithoutNotice(cr);
                 }
                 return;
@@ -79,7 +93,6 @@ namespace CyberInterfaceLab.PoseSynth
         {
             foreach (var mapper in m_mappers)
             {
-                //mapper.CameraRig = null;
                 mapper.SetCameraRigWithoutNotice(null);
             }
         }
@@ -91,7 +104,19 @@ namespace CyberInterfaceLab.PoseSynth
             base.OnNetworkSpawn();
             m_mappers = GetComponents<PoseMapper>();
 
-            
+            for (int i = 0; i < m_mappers.Length; i++)
+            {
+                m_mappers[i].AddObserver(this);
+            }
+        }
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+            if (m_mappers == null) { return; }
+            for (int i = 0; i < m_mappers.Length; i++)
+            {
+                m_mappers[i]?.RemoveObserver(this);
+            }
         }
         #endregion
     }

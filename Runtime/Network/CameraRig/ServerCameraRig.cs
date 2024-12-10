@@ -96,15 +96,6 @@ namespace CyberInterfaceLab.PoseSynth.Network
 
             m_serverCameraRigs.Add(this.NetworkObject.OwnerClientId, this);
 
-            // search NetworkPlayerSpawner and call initializing event.
-            /*
-            var spawner = PSNetworkManager.Instance.NetworkPlayerSpawner;
-            if (spawner != null)
-            {
-                spawner.SetServerCameraRigEvent(this);
-            }
-            */
-
             EventInitialize.Invoke(this);
         }
         public override void OnNetworkDespawn()

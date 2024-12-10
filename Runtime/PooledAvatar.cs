@@ -1,5 +1,6 @@
 using CyberInterfaceLab.PoseSynth.Network;
 using CyberInterfaceLab.PoseSynth.Network.UserInterfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -12,6 +13,7 @@ namespace CyberInterfaceLab.PoseSynth
     /// <summary>
     /// Pooled avatar.
     /// </summary>
+    [Obsolete]
     public class PooledAvatar : MonoBehaviour, IPooledObject<PooledAvatar>
     {
         #region public variable
@@ -31,8 +33,8 @@ namespace CyberInterfaceLab.PoseSynth
         #region public method
         public void Initialize()
         {
-            var networkGUI = NetworkGUIStateMachine.Instance;
-            if (networkGUI == null) { return; }
+            //var networkGUI = NetworkGUIStateMachine.Instance;
+            //if (networkGUI == null) { return; }
 
             // add button
             //m_button = NetworkGUIStateMachine.Instance.AddButton();

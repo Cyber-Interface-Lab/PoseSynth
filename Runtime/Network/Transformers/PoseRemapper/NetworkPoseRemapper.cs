@@ -17,7 +17,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
         #endregion
 
         #region private variable
-        private T m_remapper;
+        protected T m_remapper;
         #endregion
 
         #region public method
@@ -25,12 +25,28 @@ namespace CyberInterfaceLab.PoseSynth.Network
         {
             if (refPose == null)
             {
-                SetRefPoseToNullServerRpc(); // -> SetRefPoseToNullClientRpc()
+                if (IsClient)
+                    SetRefPoseToNullServerRpc(); // -> SetRefPoseToNullClientRpc()
+                else if (IsServer)
+                {
+                    m_remapper.SetRefPoseWithoutNotice(null);
+                    // notify to clients
+                    SetRefPoseToNullClientRpc();
+                }
+
                 return;
             }
             if (refPose.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
             {
-                SetRefPoseServerRpc(no.NetworkObjectId); // -> SetRefPoseClientRpc(no.NetworkObjectId)
+                Debug.Log($"NetworkObjectID = {no.NetworkObjectId}");
+                if (IsClient)
+                    SetRefPoseServerRpc(no.NetworkObjectId); // -> SetRefPoseClientRpc(no.NetworkObjectId)
+                else if (IsServer)
+                {
+                    m_remapper.SetRefPoseWithoutNotice(refPose);
+                    // notify to clients
+                    SetRefPoseClientRpc(no.NetworkObjectId);
+                }
                 return;
             }
             else
@@ -47,32 +63,36 @@ namespace CyberInterfaceLab.PoseSynth.Network
 
         #region private method
         [ServerRpc(RequireOwnership = false)]
-        private void SetRefPoseServerRpc(ulong networkObjectId)
+        protected virtual void SetRefPoseServerRpc(ulong networkObjectId)
         {
+            Debug.Log("SetRefPoseServerRpc: " + networkObjectId);
+
             SetRefPoseClientRpc(networkObjectId);
         }
         [ServerRpc(RequireOwnership = false)]
-        private void SetRefPoseToNullServerRpc()
+        protected virtual void SetRefPoseToNullServerRpc()
         {
             SetRefPoseToNullClientRpc();
         }
         [ClientRpc]
-        private void SetRefPoseClientRpc(ulong networkObjectId)
+        protected virtual void SetRefPoseClientRpc(ulong networkObjectId)
         {
+            Debug.Log("SetRefPoseClientRpc: " + networkObjectId);
             // search the network object whose id is equal to the argument.
             var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
             if (obj.TryGetComponent<Pose>(out var pose))
             {
-                m_remapper.RefPose = pose;
+                //m_remapper.RefPose = pose;
+                m_remapper.SetRefPoseWithoutNotice(pose);
                 return;
             }
 
             Debug.LogError($"The network object (id: {networkObjectId}) does not have a Pose!");
         }
         [ClientRpc]
-        private void SetRefPoseToNullClientRpc()
+        protected virtual void SetRefPoseToNullClientRpc()
         {
-            m_remapper.RefPose = null;
+            m_remapper.SetRefPoseWithoutNotice(null);
         }
         #endregion
 

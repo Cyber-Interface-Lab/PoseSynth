@@ -21,90 +21,61 @@ namespace CyberInterfaceLab.PoseSynth
         /// Candidate poses for its <see cref="PoseRemapper"/>s to refer.
         /// </summary>
         [SerializeField] private List<Pose> m_posesToRefer;
-        /// <summary>
-        /// Set/reset the ref pose of <see cref="m_remappers"/> to <see cref="m_posesToRefer"/>[index].
-        /// </summary>
-        private List<PooledButton> m_buttons = new(64);
-
-        [SerializeField] private bool m_addButtonToGUI = true;
         #endregion
 
         #region public method
         public void SetRemapperRefPoses(Pose refPose)
         {
-            // set active
-            gameObject.SetActive(refPose is object);
-
             // set ref pose
             foreach (var remapper in m_remappers)
             {
                 remapper.RefPose = refPose;
             }
         }
-        public void ResetRemapperRefPoses() => SetRemapperRefPoses(null);
+        public void ResetRemapperRefPoses()
+        {
+            // reset ref pose
+            foreach (var remapper in m_remappers)
+            {
+                remapper.RefPose = null;
+            }
+        }
         #endregion
 
         #region private method
-        private void SetRefPose(int index)
-        {
-            if (m_posesToRefer.Count <= index || index < 0) { return; }
-            SetRemapperRefPoses(m_posesToRefer[index]);
-
-            // remove this listener
-            m_buttons[index].Button.onClick.RemoveAllListeners();
-            // add another function
-            m_buttons[index].Button.onClick.AddListener(() => ResetRefPose(index));
-            m_buttons[index].Text.text = $"Reset Remappers";
-        }
-        private void ResetRefPose(int index)
-        {
-            ResetRemapperRefPoses();
-
-            // remove this listener
-            m_buttons[index].Button.onClick.RemoveAllListeners();
-            // add another function
-            m_buttons[index].Button.onClick.AddListener(() => SetRefPose(index));
-            m_buttons[index].Text.text = $"Set Remappers => {m_posesToRefer[index].name}";
-        }
         #endregion
 
         #region event
-        void Start()
+        private int m_windowId = Utilities.GetWindowId();
+        private Rect m_windowRect = new Rect(10, 10, 200, 150);
+        Vector2 m_scrollPos;
+        [SerializeField] bool m_showGUI = true;
+        private void OnGUI()
         {
-            if (m_addButtonToGUI)
+            if (!m_showGUI) return;
+
+            m_windowRect = GUI.Window(m_windowId, m_windowRect, (id) =>
             {
-                var networkGUI = NetworkGUIStateMachine.Instance;
-                if (networkGUI != null)
+                // add buttons to select reference pose
+                // in a scroll view
+                m_scrollPos = GUILayout.BeginScrollView(m_scrollPos);
+                foreach (var pose in m_posesToRefer)
                 {
-                    for (int i=0; i<m_posesToRefer.Count; i++)
+                    if (GUILayout.Button(pose.name))
                     {
-                        // add button
-                        //m_buttons[i] = networkGUI.AddButton();
-                        var button = networkGUI.AddButton();
-                        button.Button.onClick.AddListener(() => SetRefPose(i));
-                        button.Text.text = $"Set Remappers => {m_posesToRefer[i].name}";
-                        m_buttons.Add(button);
+                        SetRemapperRefPoses(pose);
                     }
                 }
-            }
-        }
-        private void Update()
-        {
-            // enable/disable the button if the ref pose is active/deactive
-            for (int i=0; i< m_posesToRefer.Count; ++i)
-            {
-                m_buttons[i].gameObject.SetActive(m_posesToRefer[i].gameObject.activeSelf);
-            }
-        }
-        private void OnDestroy()
-        {
-            for (int i=0; i< m_posesToRefer.Count; i++)
-            {
-                if (m_buttons[i] != null)
+                GUILayout.EndScrollView();
+
+                // add a button to reset reference pose
+                if (GUILayout.Button("Reset"))
                 {
-                    m_buttons[i]?.Deactivate();
+                    ResetRemapperRefPoses();
                 }
-            }
+
+                GUI.DragWindow();
+            }, $"PoseRemappers ({name})");
         }
         #endregion
     }

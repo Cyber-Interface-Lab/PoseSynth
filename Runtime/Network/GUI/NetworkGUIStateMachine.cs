@@ -8,7 +8,8 @@ using System;
 
 namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
 {
-    public class NetworkGUIStateMachine : Singleton<NetworkGUIStateMachine>
+    //public class NetworkGUIStateMachine : Singleton<NetworkGUIStateMachine>
+    public class NetworkGUIStateMachine : MonoBehaviour
     {
         [Serializable]
         public class State
@@ -30,8 +31,12 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
         [SerializeField] private State m_stateClient;
         [SerializeField] private State m_stateServer;
 
-        // pool of buttons
-        [SerializeField] ButtonPoolManager m_buttonPool;
+        // pool of toggles
+        //[SerializeField] ButtonPoolManager m_buttonPool;
+        [SerializeField] private TogglePoolManager m_pool;
+
+        [Header("Poses controlled by users")]
+        [SerializeField] private PoseMapperController[] m_poseMapperControllers;
         #endregion
 
         #region public method
@@ -43,6 +48,7 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
             m_currentState = nextState;
             m_currentState?.OnEnter.Invoke();
         }
+        /*
 
         public PooledButton AddButton()
         {
@@ -59,15 +65,51 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
                 pb.Deactivate();
             }
         }
+        */
         #endregion
 
         #region private method
+        private void SpawnToggle(PoseMapperController poseMapperController)
+        {
+            if (m_pool.TryGet(out var toggle))
+            {
+                toggle.Initialize();
+                toggle.Toggle.onValueChanged.AddListener((isOn) =>
+                {
+                    if (isOn)
+                    {
+                        // search server camera rig of this local player
+                        // then embody to the pose via PoseMapper
+                        var serverCameraRig = m_networkManager.SpawnManager.GetLocalPlayerObject().GetComponent<ServerCameraRig>();
+                        poseMapperController.SetMapperCameraRig(serverCameraRig);
+                    }
+                    else
+                    {
+                        poseMapperController.ResetMapperCameraRig();
+                    }
+                });
+
+                // set labels (on/off)
+                toggle.TextOn.text = $"{poseMapperController.name}";
+                toggle.TextOff.text = $"{poseMapperController.name}";
+            }
+        }
+        private void SpawnToggles(params PoseMapperController[] poseMapperControllers)
+        {
+            foreach (var poseMapperController in poseMapperControllers)
+            {
+                SpawnToggle(poseMapperController);
+            }
+        }
         #endregion
 
         #region event
         void Start()
         {
             m_networkManager = NetworkManager.Singleton;
+
+            // add toggles for each pose mapper controller
+            SpawnToggles(m_poseMapperControllers);
         }
         void Update()
         {
