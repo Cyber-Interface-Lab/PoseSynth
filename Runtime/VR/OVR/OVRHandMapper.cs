@@ -35,7 +35,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
         {
             if (f.Target == null) { return; }
             if (m_cameraRig == null) { return; }
-            if (m_cameraRig.TryGetTransform(f.Type, out var t))
+            if (m_cameraRig.TryGetTransform(f.Type, out var t) && t != null)
             {
                 f.Target.localRotation = Utilities.Multiply(t.localRotation, f.Offset);
             }
@@ -44,7 +44,8 @@ namespace CyberInterfaceLab.PoseSynth.VR
         {
             if (df.Target == null) { return; }
             if (m_cameraRig == null) { return; }
-            if (m_cameraRig.TryGetTransform(df.Type0, out var t0) && m_cameraRig.TryGetTransform(df.Type1, out var t1))
+            if (m_cameraRig.TryGetTransform(df.Type0, out var t0) && t0 != null
+                && m_cameraRig.TryGetTransform(df.Type1, out var t1) && t1 != null)
             {
                 var offset0 = Utilities.Multiply(t0.localRotation, df.Offset0);
                 var offset1 = Utilities.Multiply(t1.localRotation, df.Offset1);

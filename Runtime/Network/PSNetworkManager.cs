@@ -24,19 +24,27 @@ namespace CyberInterfaceLab.PoseSynth.Network
         private NetworkPlayerSpawner m_networkPlayerSpawner;
         public NetworkPlayerSpawner NetworkPlayerSpawner => m_networkPlayerSpawner;
 
-        public void StartHost()
+        public void StartServer()
         {
-            m_networkManager.StartHost();
+            m_networkManager.StartServer();
         }
         public void StartClient()
         {
             m_networkManager.StartClient();
         }
-        public void StopHost()
+        public void StartHost()
+        {
+            m_networkManager.StartHost();
+        }
+        public void StopServer()
         {
             m_networkManager.Shutdown();
         }
         public void StopClient()
+        {
+            m_networkManager.Shutdown();
+        }
+        public void StopHost()
         {
             m_networkManager.Shutdown();
         }
@@ -64,6 +72,17 @@ namespace CyberInterfaceLab.PoseSynth.Network
                         GUILayout.Label($"Server address: {m_networkTransport.ConnectionData.Address}:{m_networkTransport.ConnectionData.Port}");
                     }
                 }
+                else if (m_networkManager.IsServer)
+                {
+                    if (GUILayout.Button("Shutdown"))
+                    {
+                        StopServer();
+                    }
+                    if (m_networkTransport != null)
+                    {
+                        GUILayout.Label($"Server address: {m_networkTransport.ConnectionData.Address}:{m_networkTransport.ConnectionData.Port}");
+                    }
+                }
                 else if (m_networkManager.IsClient)
                 {
                     if (GUILayout.Button("Shutdown"))
@@ -83,6 +102,10 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
+                    if (GUILayout.Button($"Server"))
+                    {
+                        StartServer();
+                    }
                     if (GUILayout.Button($"Host"))
                     {
                         StartHost();
@@ -95,7 +118,12 @@ namespace CyberInterfaceLab.PoseSynth.Network
                 }
 
                 GUI.DragWindow();
-            }, "NetCode GUI | " + (m_networkManager.IsHost ? "Host" : m_networkManager.IsClient ? "Client" : "Offline"));
+            }, "NetCode GUI (" + (
+                m_networkManager.IsHost ? "Host" : 
+                m_networkManager.IsServer ? "Server" : 
+                m_networkManager.IsClient ? "Client" : 
+                "Offline"
+            ) + ")");
         }
         #endregion
     }
