@@ -7,7 +7,7 @@ namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
     /// Controller of <see cref="PoseRemapper"/>.
-    /// Add a button to set <see cref="PoseRemapper.RefPose"/>.
+    /// Add buttons of <see cref="Pose"/> to set <see cref="PoseRemapper.RefPose"/>.
     /// </summary>
     /// <seealso cref="PoseMapperController"/>
     public class PoseRemapperController : MonoBehaviour

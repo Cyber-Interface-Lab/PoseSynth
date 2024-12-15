@@ -731,15 +731,14 @@ PrefabInstance:
       value: 'PoseSynth supports multiuser with Netcode.
 
         Enter the server''s
-        IP address to Network Manager''s Override Bind IP (e.g. "192.168.1.1").
-
-        Then
+        IP address to Network Manager''s Override Bind IP (e.g. "192.168.1.1"). Then
         press button in Game view (Host, Server, Client).
 
+
         When the client
-        join the server, its Server CameraRig spawns to all clients. Server CameraRig
-        inherits ICameraRig so that any PoseMapper can refer to it in the same way
-        as Local CameraRig.'
+        join the server, its Server CameraRig spawns to all clients and copies the
+        client''s Local CameraRig. Server CameraRig inherits ICameraRig so that any
+        PoseMapper can refer to it in the same way as Local CameraRig.'
       objectReference: {fileID: 0}
     - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
       propertyPath: m_fontSize

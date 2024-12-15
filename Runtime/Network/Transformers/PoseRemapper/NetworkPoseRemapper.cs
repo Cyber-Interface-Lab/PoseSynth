@@ -38,7 +38,6 @@ namespace CyberInterfaceLab.PoseSynth.Network
             }
             if (refPose.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
             {
-                Debug.Log($"NetworkObjectID = {no.NetworkObjectId}");
                 if (IsClient)
                     SetRefPoseServerRpc(no.NetworkObjectId); // -> SetRefPoseClientRpc(no.NetworkObjectId)
                 else if (IsServer)
@@ -65,8 +64,6 @@ namespace CyberInterfaceLab.PoseSynth.Network
         [ServerRpc(RequireOwnership = false)]
         protected virtual void SetRefPoseServerRpc(ulong networkObjectId)
         {
-            Debug.Log("SetRefPoseServerRpc: " + networkObjectId);
-
             SetRefPoseClientRpc(networkObjectId);
         }
         [ServerRpc(RequireOwnership = false)]
@@ -77,7 +74,6 @@ namespace CyberInterfaceLab.PoseSynth.Network
         [ClientRpc]
         protected virtual void SetRefPoseClientRpc(ulong networkObjectId)
         {
-            Debug.Log("SetRefPoseClientRpc: " + networkObjectId);
             // search the network object whose id is equal to the argument.
             var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
             if (obj.TryGetComponent<Pose>(out var pose))

@@ -585,9 +585,9 @@ PrefabInstance:
         Humanoid
         Pose Mixed contains many components such as PoseMixer, PoseRemapper, and
         their wrappers for Network. "NetworkPoseMixer" and "NetworkPoseRemapper"
-        (and inherited classes) synchronize the parameter of corresponding classes.
-        The parameters can be changed only from server. Let''s adjust value of slider
-        of PoseMixer with clients.'
+        (and inherited classes) synchronize the parameter of corresponding classes
+        among clients. The parameters can be changed only from server. Let''s adjust
+        value of slider of PoseMixer with clients.'
       objectReference: {fileID: 0}
     - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
       propertyPath: m_fontSize
