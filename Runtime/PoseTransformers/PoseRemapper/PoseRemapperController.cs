@@ -7,7 +7,7 @@ namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
     /// Controller of <see cref="PoseRemapper"/>.
-    /// Add a button to set <see cref="PoseRemapper.RefPose"/>.
+    /// Add buttons of <see cref="Pose"/> to set <see cref="PoseRemapper.RefPose"/>.
     /// </summary>
     /// <seealso cref="PoseMapperController"/>
     public class PoseRemapperController : MonoBehaviour
@@ -49,10 +49,10 @@ namespace CyberInterfaceLab.PoseSynth
         private int m_windowId = Utilities.GetWindowId();
         private Rect m_windowRect = new Rect(10, 10, 200, 150);
         Vector2 m_scrollPos;
-        [SerializeField] bool m_showGUI = true;
+        [SerializeField] bool m_isDrawingGUI = true;
         private void OnGUI()
         {
-            if (!m_showGUI) return;
+            if (!m_isDrawingGUI) return;
 
             m_windowRect = GUI.Window(m_windowId, m_windowRect, (id) =>
             {

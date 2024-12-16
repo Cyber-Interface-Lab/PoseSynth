@@ -209,17 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &196962168 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 836902386480031538, guid: f5b3471d80027b2439118609f92ec701, type: 3}
-  m_PrefabInstance: {fileID: 196962164}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 196962166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b847416a2945f6479a1b001bff4b682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &208482667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -304,17 +293,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &208482671 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 836902386480031538, guid: f5b3471d80027b2439118609f92ec701, type: 3}
-  m_PrefabInstance: {fileID: 208482667}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208482669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b847416a2945f6479a1b001bff4b682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &240184385 stripped
@@ -549,11 +527,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalRotation.x
@@ -561,7 +539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalRotation.z
@@ -573,7 +551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6183782642324973306, guid: 2b7fbd3d3d0dd2248a729bcaba55d75b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -748,17 +726,229 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &853381828 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 836902386480031538, guid: f5b3471d80027b2439118609f92ec701, type: 3}
-  m_PrefabInstance: {fileID: 853381824}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 853381826}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b847416a2945f6479a1b001bff4b682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+--- !u!1001 &884987215
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437924, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371182437925, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_Name
+      value: Label Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371454138575, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202716, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_text
+      value: '"PoseMapper" and inherited class refer to 1 ICameraRig to map a Pose.
+
+        In
+        this scene, "VRIKMapper" refer to Local CameraRig (Simple) to map whole body
+        of a Pose.
+
+
+        The stream of avatar''s pose is represented here:
+
+        Your
+        motion >> Local CameraRig (ICameraRig) >> Pose >> MixedPose'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_fontSize
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8388388371477202719, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6deb22727a667b64ba141f81c7bc1b90, type: 3}
 --- !u!1001 &1710790720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -947,17 +1137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1753946081 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 836902386480031538, guid: f5b3471d80027b2439118609f92ec701, type: 3}
-  m_PrefabInstance: {fileID: 1753946077}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753946079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b847416a2945f6479a1b001bff4b682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1787565584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1044,17 +1223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1787565588 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 836902386480031538, guid: f5b3471d80027b2439118609f92ec701, type: 3}
-  m_PrefabInstance: {fileID: 1787565584}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1787565586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b847416a2945f6479a1b001bff4b682, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1881128341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1125,298 +1293,6 @@ MonoBehaviour:
     m_prefab: {fileID: 2140707107700299337, guid: 431d132125bd7434eae6624374a7a0ce, type: 3}
   - m_type: 1
     m_prefab: {fileID: 570864128591002923, guid: b8868044fbc14584ca8fd76344951868, type: 3}
-  m_clientEvents:
-  - m_clientId: 0
-    m_eventInitialize:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 196962167}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: SetMapperCameraRig
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: AddPose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 196962168}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    m_eventDespawn:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 196962167}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: ResetMapperCameraRig
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: RemovePose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 196962168}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - m_clientId: 1
-    m_eventInitialize:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1787565587}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: SetMapperCameraRig
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: AddPose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 1787565588}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    m_eventDespawn:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1787565587}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: ResetMapperCameraRig
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: RemovePose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 1787565588}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - m_clientId: 2
-    m_eventInitialize:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 208482670}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: SetMapperCameraRig
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: AddPose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 208482671}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    m_eventDespawn:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 208482670}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: ResetMapperCameraRig
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: RemovePose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 208482671}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - m_clientId: 3
-    m_eventInitialize:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1753946080}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: SetMapperCameraRig
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: AddPose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 1753946081}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    m_eventDespawn:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1753946080}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: ResetMapperCameraRig
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: RemovePose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 1753946081}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - m_clientId: 4
-    m_eventInitialize:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 853381827}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: SetMapperCameraRig
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: AddPose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 853381828}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    m_eventDespawn:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 853381827}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMapperController,
-            Assembly-CSharp
-          m_MethodName: ResetMapperCameraRig
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 576902089}
-          m_TargetAssemblyTypeName: CyberInterfaceLab.PoseSynth.PoseMixer, Assembly-CSharp
-          m_MethodName: RemovePose
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 853381828}
-            m_ObjectArgumentAssemblyTypeName: CyberInterfaceLab.PoseSynth.Pose, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  m_eventInitializeByDefault:
-    m_PersistentCalls:
-      m_Calls: []
-  m_eventDespawnByDefault:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &2007776156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,3 +1339,4 @@ SceneRoots:
   - {fileID: 1710790720}
   - {fileID: 2007776157}
   - {fileID: 576902085}
+  - {fileID: 884987215}

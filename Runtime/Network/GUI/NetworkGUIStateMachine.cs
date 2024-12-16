@@ -34,6 +34,7 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
         // pool of toggles
         //[SerializeField] ButtonPoolManager m_buttonPool;
         [SerializeField] private TogglePoolManager m_pool;
+        private List<PooledToggle> m_toggles = new(64);
 
         [Header("Poses controlled by users")]
         [SerializeField] private PoseMapperController[] m_poseMapperControllers;
@@ -92,6 +93,8 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
                 // set labels (on/off)
                 toggle.TextOn.text = $"{poseMapperController.name}";
                 toggle.TextOff.text = $"{poseMapperController.name}";
+
+                m_toggles.Add(toggle);
             }
         }
         private void SpawnToggles(params PoseMapperController[] poseMapperControllers)
@@ -128,6 +131,15 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
             }
 
             m_currentState.OnUpdate.Invoke();
+
+            // turn off all toggles when the client is disconnected
+            if (m_networkManager.IsClient && !m_networkManager.IsConnectedClient)
+            {
+                foreach (var toggle in m_toggles)
+                {
+                    toggle.Toggle.isOn = false;
+                }
+            }
         }
         #endregion
 
