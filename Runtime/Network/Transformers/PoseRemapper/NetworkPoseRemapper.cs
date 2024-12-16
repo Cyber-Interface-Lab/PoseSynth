@@ -33,10 +33,8 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     // notify to clients
                     SetRefPoseToNullClientRpc();
                 }
-
-                return;
             }
-            if (refPose.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
+            else if (refPose.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
             {
                 if (IsClient)
                     SetRefPoseServerRpc(no.NetworkObjectId); // -> SetRefPoseClientRpc(no.NetworkObjectId)
@@ -46,12 +44,10 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     // notify to clients
                     SetRefPoseClientRpc(no.NetworkObjectId);
                 }
-                return;
             }
             else
             {
                 Debug.LogError($"The Pose ({refPose.name}) is not a network object!");
-                return;
             }
         }
         public void OnNotified(PoseRemapper remapper)

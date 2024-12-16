@@ -25,9 +25,6 @@ namespace CyberInterfaceLab.PoseSynth
         #region public method
         public void SetMapperCameraRig(ICameraRig cameraRig)
         {
-            // set active
-            gameObject.SetActive(cameraRig is object);
-
             // set cameraRigs
             m_mappers = GetComponents<PoseMapper>();
             foreach (var mapper in m_mappers)
@@ -37,9 +34,6 @@ namespace CyberInterfaceLab.PoseSynth
         }
         public void ResetMapperCameraRig()
         {
-            // set deactive
-            gameObject.SetActive(false);
-
             // reset cameraRigs
             m_mappers = GetComponents<PoseMapper>();
             foreach (var mapper in m_mappers)

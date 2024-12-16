@@ -41,7 +41,7 @@ namespace CyberInterfaceLab.PoseSynth
                     SetCameraRigToNullClientRpc();
                 }
             }
-            if (cameraRig is MonoBehaviour mb && mb.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
+            else if (cameraRig is MonoBehaviour mb && mb.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
             {
                 //SetCameraRigServerRpc(no.NetworkObjectId);
                 //return;
@@ -56,12 +56,10 @@ namespace CyberInterfaceLab.PoseSynth
                     // notify to clients
                     SetCameraRigClientRpc(no.NetworkObjectId);
                 }
-                return;
             }
             else
             {
                 Debug.LogError($"The CameraRig is not a network object!");
-                return;
             }
         }
         public void OnNotified(PoseMapper mapper)
