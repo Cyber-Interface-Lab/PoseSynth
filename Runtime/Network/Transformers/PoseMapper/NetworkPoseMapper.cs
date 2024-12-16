@@ -27,12 +27,35 @@ namespace CyberInterfaceLab.PoseSynth
             //Debug.Log("SetCameraRig");
             if (cameraRig == null)
             {
-                SetCameraRigToNullServerRpc();
-                return;
+                //SetCameraRigToNullServerRpc();
+                //return;
+                if (IsClient)
+                    SetCameraRigToNullServerRpc(); // -> SetCameraRigToNullClientRpc()
+                else if (IsServer)
+                {
+                    foreach (var mapper in m_mappers)
+                    {
+                        mapper.SetCameraRigWithoutNotice(null);
+                    }
+                    // notify to clients
+                    SetCameraRigToNullClientRpc();
+                }
             }
             if (cameraRig is MonoBehaviour mb && mb.TryGetComponent<NetworkObject>(out var no) && no.IsSpawned)
             {
-                SetCameraRigServerRpc(no.NetworkObjectId);
+                //SetCameraRigServerRpc(no.NetworkObjectId);
+                //return;
+                if (IsClient)
+                    SetCameraRigServerRpc(no.NetworkObjectId); // -> SetCameraRigClientRpc(no.NetworkObjectId)
+                else if (IsServer)
+                {
+                    foreach (var mapper in m_mappers)
+                    {
+                        mapper.SetCameraRigWithoutNotice(cameraRig);
+                    }
+                    // notify to clients
+                    SetCameraRigClientRpc(no.NetworkObjectId);
+                }
                 return;
             }
             else
