@@ -25,5 +25,9 @@ namespace CyberInterfaceLab.PoseSynth
         /// XR Interaction Toolkit CameraRig with hand tracking
         /// </summary>
         XRIHands = 3,
+        /// <summary>
+        /// SteamVR CameraRig
+        /// </summary>
+        SteamVR = 4,
     }
 }
