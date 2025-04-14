@@ -12,7 +12,8 @@ namespace CyberInterfaceLab.PoseSynth
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
-    public abstract class CameraRigRemapper : MonoBehaviour, ICameraRigTransformer, IObservable<CameraRigRemapper>
+    public abstract class CameraRigRemapper<T> : MonoBehaviour, ICameraRigTransformer, IObservable<T>
+        where T: CameraRigRemapper<T>
     {
         #region public variable
         public bool IsValid
@@ -61,22 +62,23 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region IObservable
-        private HashSet<IObserver<CameraRigRemapper>> m_observers = new(64);
-        public void AddObserver(IObserver<CameraRigRemapper> observer) => m_observers.Add(observer);
-        public void RemoveObserver(IObserver<CameraRigRemapper> observer) => m_observers.Remove(observer);
+        private HashSet<IObserver<T>> m_observers = new(64);
+        public void AddObserver(IObserver<T> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<T> observer) => m_observers.Remove(observer);
         public void Notify()
         {
             foreach (var observer in m_observers)
             {
-                observer.OnNotified(this);
+                observer.OnNotified(this as T);
             }
         }
+        protected bool m_hasModified = false;
         #endregion
 
         #region public method
         public void SetReferenceWithoutNotice(ICameraRig cameraRig)
         {
-            m_target = cameraRig;
+            m_reference = cameraRig;
         }
         #endregion
 
@@ -89,11 +91,22 @@ namespace CyberInterfaceLab.PoseSynth
         {
             m_target = GetComponent<ICameraRig>();
         }
+        protected virtual void Awake()
+        {
+            m_target = GetComponent<ICameraRig>();
+        }
         void FixedUpdate()
         {
             if (IsValid && m_reference != null)
             {
                 RemapOnUpdate();
+            }
+        }
+        void LateUpdate()
+        {
+            if (m_hasModified)
+            {
+                Notify();
             }
         }
         #endregion

@@ -12,7 +12,8 @@ namespace CyberInterfaceLab.PoseSynth
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
-    public abstract class CameraRigRemapperMultipleReferences : MonoBehaviour, ICameraRigTransformer, IObservable<CameraRigRemapperMultipleReferences>
+    public abstract class CameraRigRemapperMultipleReferences<T> : MonoBehaviour, ICameraRigTransformer, IObservable<T>
+        where T: CameraRigRemapperMultipleReferences<T>
     {
         #region public variable
         public bool IsValid
@@ -66,20 +67,21 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region IObservable
-        private HashSet<IObserver<CameraRigRemapperMultipleReferences>> m_observers = new(64);
-        public void AddObserver(IObserver<CameraRigRemapperMultipleReferences> observer) => m_observers.Add(observer);
-        public void RemoveObserver(IObserver<CameraRigRemapperMultipleReferences> observer) => m_observers.Remove(observer);
+        private HashSet<IObserver<T>> m_observers = new(64);
+        public void AddObserver(IObserver<T> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<T> observer) => m_observers.Remove(observer);
         public void Notify()
         {
             foreach (var observer in m_observers)
             {
-                observer.OnNotified(this);
+                observer.OnNotified(this as T);
             }
         }
+        protected bool m_hasModified = false;
         #endregion
 
         #region public method
-        public virtual void AddReference(ICameraRig reference, bool withNotice=true)
+        public virtual void AddReference(ICameraRig reference)
         {
             // return if the list already has the input
             if (m_references.Contains(reference as MonoBehaviour))
@@ -89,12 +91,8 @@ namespace CyberInterfaceLab.PoseSynth
 
             m_references.Add((MonoBehaviour)reference);
             m_references.RemoveAll(x => x == null);
-            if (withNotice)
-            {
-                Notify();
-            }
         }
-        public virtual void RemoveReference(ICameraRig reference, bool withNotice=true)
+        public virtual void RemoveReference(ICameraRig reference)
         {
             if (!m_references.Contains(reference as MonoBehaviour))
             {
@@ -102,10 +100,6 @@ namespace CyberInterfaceLab.PoseSynth
             }
             m_references.Remove((MonoBehaviour)reference);
             m_references.RemoveAll(x => x == null);
-            if (withNotice)
-            {
-                Notify();
-            }
         }
         #endregion
 
@@ -117,15 +111,28 @@ namespace CyberInterfaceLab.PoseSynth
         protected virtual void OnValidate()
         {
             m_target = GetComponent<ICameraRig>();
-
             // remove contents of references who does not inherit ICameraRig
-            m_references.RemoveAll(x => x is not ICameraRig && x is not null);
+            //m_references.RemoveAll(x => x is not ICameraRig && x is not null);
+        }
+        protected virtual void Awake()
+        {
+            m_target = GetComponent<ICameraRig>();
+            // remove contents of references who does not inherit ICameraRig
+            //m_references.RemoveAll(x => x is not ICameraRig && x is not null);
         }
         void FixedUpdate()
         {
+            m_hasModified = false;
             if (m_isValid && m_references.Count > 0)
             {
                 RemapOnUpdate();
+            }
+        }
+        void LateUpdate()
+        {
+            if (m_hasModified)
+            {
+                Notify();
             }
         }
         #endregion

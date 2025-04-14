@@ -36,6 +36,8 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
         [SerializeField] private TogglePoolManager m_pool;
         private List<PooledToggle> m_toggles = new(64);
 
+        [Header("CameraRig slot")]
+        [SerializeField] private CameraRigIdentity[] m_cameraRigIdentities;
         [Header("Poses controlled by users")]
         [SerializeField] private PoseMapperController[] m_poseMapperControllers;
         #endregion
@@ -70,6 +72,33 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
         #endregion
 
         #region private method
+        private void SpawnToggle(CameraRigIdentity slot)
+        {
+            if (m_pool.TryGet(out var toggle))
+            {
+                toggle.Initialize();
+                toggle.Toggle.onValueChanged.AddListener((isOn) =>
+                {
+                    if (isOn)
+                    {
+                        // search server camera rig of this local player
+                        // then copy the transform
+                        var serverCameraRig = m_networkManager.SpawnManager.GetLocalPlayerObject().GetComponent<ServerCameraRig>();
+                        slot.Reference = serverCameraRig;
+                    }
+                    else
+                    {
+                        slot.Reference = null;
+                    }
+                });
+
+                // set labels (on/off)
+                toggle.TextOn.text = $"{slot.name}";
+                toggle.TextOff.text = $"{slot.name}";
+
+                m_toggles.Add(toggle);
+            }
+        }
         private void SpawnToggle(PoseMapperController poseMapperController)
         {
             if (m_pool.TryGet(out var toggle))
@@ -97,13 +126,6 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
                 m_toggles.Add(toggle);
             }
         }
-        private void SpawnToggles(params PoseMapperController[] poseMapperControllers)
-        {
-            foreach (var poseMapperController in poseMapperControllers)
-            {
-                SpawnToggle(poseMapperController);
-            }
-        }
         #endregion
 
         #region event
@@ -111,8 +133,15 @@ namespace CyberInterfaceLab.PoseSynth.Network.UserInterfaces
         {
             m_networkManager = NetworkManager.Singleton;
 
-            // add toggles for each pose mapper controller
-            SpawnToggles(m_poseMapperControllers);
+            // add toggles
+            foreach (var cameraRigIdentity in m_cameraRigIdentities)
+            {
+                SpawnToggle(cameraRigIdentity);
+            }
+            foreach (var poseMapperController in m_poseMapperControllers)
+            {
+                SpawnToggle(poseMapperController);
+            }
         }
         void Update()
         {
