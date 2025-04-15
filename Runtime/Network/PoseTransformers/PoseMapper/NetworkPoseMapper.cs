@@ -11,19 +11,39 @@ namespace CyberInterfaceLab.PoseSynth
     /// <see cref="PoseMapper"/> for network.
     /// Attach it to the gameObject with PoseMapper.
     /// </summary>
-    public class NetworkPoseMapper : PSNetworkBehaviour, IObserver<PoseMapper>
+    public abstract class NetworkPoseMapper<T> : PSNetworkBehaviour, IObserver<T> where T: PoseMapper
     {
         #region public variable
-        public PoseMapper[] Mappers => m_mappers;
+        //public PoseMapper[] Mappers => m_mappers;
+        public T Mapper => m_mapper;
         #endregion
 
         #region private variable
-        private PoseMapper[] m_mappers;
+        //private PoseMapper[] m_mappers;
+        protected T m_mapper;
         #endregion
 
         #region public method
-        public void SetCameraRig(ICameraRig cameraRig)
+        public void SetReference(ICameraRig cameraRig)
         {
+            /*
+            処理順
+            Clientの場合
+                -> ServerにRPCを送信 -> ServerがReferenceを変更
+                -> Serverが全ClientにRPCを送信 -> ClientがReferenceを変更
+            Serverの場合
+                -> Referenceを変更
+                -> 全ClientにRPCを送信 -> ClientがReferenceを変更
+
+            Order of processing
+            Client
+                -> Send RPC to Server -> Set Reference on Server
+                -> Send RPC to all Clients -> Set Reference on Client
+            Server
+                -> Set Reference
+                -> Send RPC to all Clients -> Set Reference on Client
+             */
+
             //Debug.Log("SetCameraRig");
             if (cameraRig == null)
             {
@@ -33,10 +53,13 @@ namespace CyberInterfaceLab.PoseSynth
                     SetCameraRigToNullServerRpc(); // -> SetCameraRigToNullClientRpc()
                 else if (IsServer)
                 {
+                    /*
                     foreach (var mapper in m_mappers)
                     {
                         mapper.SetCameraRigWithoutNotice(null);
                     }
+                    */
+                    m_mapper.SetCameraRigWithoutNotice(null);
                     // notify to clients
                     SetCameraRigToNullClientRpc();
                 }
@@ -49,10 +72,13 @@ namespace CyberInterfaceLab.PoseSynth
                     SetCameraRigServerRpc(no.NetworkObjectId); // -> SetCameraRigClientRpc(no.NetworkObjectId)
                 else if (IsServer)
                 {
+                    /*
                     foreach (var mapper in m_mappers)
                     {
                         mapper.SetCameraRigWithoutNotice(cameraRig);
                     }
+                    */
+                    m_mapper.SetCameraRigWithoutNotice(cameraRig);
                     // notify to clients
                     SetCameraRigClientRpc(no.NetworkObjectId);
                 }
@@ -62,10 +88,12 @@ namespace CyberInterfaceLab.PoseSynth
                 Debug.LogError($"The CameraRig is not a network object!");
             }
         }
-        public void OnNotified(PoseMapper mapper)
+        public void OnNotified(T mapper)
         {
-            SetCameraRig(mapper.CameraRig);
+            SetReference(mapper.Reference);
         }
+        protected abstract void Observe(T observable);
+        protected abstract void Unobserve(T observable);
         #endregion
 
         #region private method
@@ -76,20 +104,26 @@ namespace CyberInterfaceLab.PoseSynth
             var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
             if (obj.TryGetComponent<ICameraRig>(out var cr))
             {
+                /*
                 foreach (var mapper in m_mappers)
                 {
                     mapper.SetCameraRigWithoutNotice(cr);
                 }
+                */
+                m_mapper.SetCameraRigWithoutNotice(cr);
             }
             SetCameraRigClientRpc(networkObjectId);
         }
         [ServerRpc(RequireOwnership = false)]
         private void SetCameraRigToNullServerRpc()
         {
+            /*
             foreach (var mapper in m_mappers)
             {
                 mapper.SetCameraRigWithoutNotice(null);
             }
+            */
+            m_mapper.SetCameraRigWithoutNotice(null);
             SetCameraRigToNullClientRpc();
         }
         [ClientRpc]
@@ -100,10 +134,13 @@ namespace CyberInterfaceLab.PoseSynth
             var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
             if (obj.TryGetComponent<ICameraRig>(out var cr))
             {
+                /*
                 foreach (var mapper in m_mappers)
                 {
                     mapper.SetCameraRigWithoutNotice(cr);
                 }
+                */
+                m_mapper.SetCameraRigWithoutNotice(cr);
                 return;
             }
 
@@ -112,32 +149,45 @@ namespace CyberInterfaceLab.PoseSynth
         [ClientRpc]
         private void SetCameraRigToNullClientRpc()
         {
+            /*
             foreach (var mapper in m_mappers)
             {
                 mapper.SetCameraRigWithoutNotice(null);
             }
+            */
+            m_mapper.SetCameraRigWithoutNotice(null);
         }
+
+
+        
         #endregion
 
         #region event
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            m_mappers = GetComponents<PoseMapper>();
+            //m_mappers = GetComponents<PoseMapper>();
+            m_mapper = GetComponent<T>();
 
+            /*
             for (int i = 0; i < m_mappers.Length; i++)
             {
                 m_mappers[i].AddObserver(this);
             }
+            */
+            Observe(m_mapper);
         }
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
+            /*
             if (m_mappers == null) { return; }
             for (int i = 0; i < m_mappers.Length; i++)
             {
                 m_mappers[i]?.RemoveObserver(this);
             }
+            */
+            Unobserve(m_mapper);
         }
         #endregion
     }

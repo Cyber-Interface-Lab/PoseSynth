@@ -9,7 +9,7 @@ namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
     /// Controller of <see cref="PoseMapper"/>.
-    /// Add a button to embody the avatar (<see cref="PoseMapper.Pose"/>).
+    /// Add a button to embody the avatar (<see cref="PoseMapper.Target"/>).
     /// </summary>
     [RequireComponent(typeof(PoseMapper))]
     public class PoseMapperController : MonoBehaviour
@@ -29,7 +29,7 @@ namespace CyberInterfaceLab.PoseSynth
             m_mappers = GetComponents<PoseMapper>();
             foreach (var mapper in m_mappers)
             {
-                mapper.CameraRig = cameraRig;
+                mapper.Reference = cameraRig;
             }
         }
         public void ResetMapperCameraRig()
@@ -38,7 +38,7 @@ namespace CyberInterfaceLab.PoseSynth
             m_mappers = GetComponents<PoseMapper>();
             foreach (var mapper in m_mappers)
             {
-                mapper.CameraRig = null;
+                mapper.Reference = null;
             }
         }
         #endregion

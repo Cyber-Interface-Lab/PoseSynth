@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
 {
-    public class CameraRigIdentity : CameraRigRemapper<CameraRigIdentity>
+    /// <summary>
+    /// <see cref="CameraRigRemapper{T}"/> that copies the reference to the target <see cref="ICameraRig"/> completely.
+    /// </summary>
+    public class CameraRigIdentity : CameraRigRemapper, IObservable<CameraRigIdentity>
     {
         public enum TransformType
         {
@@ -24,9 +27,21 @@ namespace CyberInterfaceLab.PoseSynth
         private List<TrackerType> m_trackers = new(64);
         [SerializeField] TransformType m_position;
         [SerializeField] TransformType m_rotation;
+
+
+        HashSet<IObserver<CameraRigIdentity>> m_observers = new(64);
         #endregion
 
         #region public method
+        public void AddObserver(IObserver<CameraRigIdentity> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<CameraRigIdentity> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
         #endregion
 
         #region private method

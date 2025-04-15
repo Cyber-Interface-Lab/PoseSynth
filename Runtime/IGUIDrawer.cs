@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// Interface who can draw IMGUI for configuration or somethins.
+    /// Interface who can draw IMGUI for configuration.
     /// </summary>
     public interface IGUIDrawer
     {

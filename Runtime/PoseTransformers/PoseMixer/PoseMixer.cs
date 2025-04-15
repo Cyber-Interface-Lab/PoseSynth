@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEditor;
+using Unity.VisualScripting;
 
 namespace CyberInterfaceLab.PoseSynth
 {
@@ -15,27 +16,13 @@ namespace CyberInterfaceLab.PoseSynth
     [InitializeOnLoad]
 #endif
 
-    public class PoseMixer : MonoBehaviour, IPoseTransformer, IGUIDrawer, IObservable<PoseMixer>
+    public class PoseMixer : PoseRemapperMultipleReferences, IGUIDrawer, IObservable<PoseMixer>
     {
-        /// <summary>
-        /// The result pose.
-        /// </summary>
-        [SerializeField]
-        private Pose m_poseMixed;
-        public Pose Pose
-        {
-            get => m_poseMixed;
-            set => m_poseMixed = value;
-        }
-        /// <summary>
-        /// The poses that are mixed.
-        /// </summary>
-        public List<Pose> Poses = new(64);
         /// <summary>
         /// The poses one frame ago.
         /// This is used to update MixedBoneGroups in inspector.
         /// </summary>
-        private List<Pose> m_previousPoses = new List<Pose>();
+        private List<Pose> m_lastReferences = new List<Pose>();
 
         /// <summary>
         /// The collection of weight for each pose by label.
@@ -77,7 +64,7 @@ namespace CyberInterfaceLab.PoseSynth
         /// Bone groups in Poses that have the same label.
         /// </summary>
         [System.Serializable]
-        public struct MixedBoneGroup
+        public struct MixedJointGroup
         {
             /// <summary>
             /// The label of this group.
@@ -90,11 +77,11 @@ namespace CyberInterfaceLab.PoseSynth
             public List<PoseNameAndWeights> WeightsForPoses;
 
             /// <summary>
-            /// Constructor
+            /// ctr.
             /// </summary>
             /// <param name="label"></param>
             /// <param name="poses"></param>
-            public MixedBoneGroup(string label, List<Pose> poses, bool normalize = true)
+            public MixedJointGroup(string label, List<Pose> poses, bool normalize = true)
             {
                 Label = label;
                 WeightsForPoses = new List<PoseNameAndWeights>();
@@ -103,13 +90,13 @@ namespace CyberInterfaceLab.PoseSynth
                     if (poses[i] is null) { continue; }
 
                     // 各Poseに同じラベルのGroupがあれば，それに対応するPoseNameAndWeightsを作る
-                    if (Pose.BoneGroup.SearchFromLabel(poses[i].BoneGroups, label, out var result))
+                    if (Pose.JointGroup.TrySearchFromLabel(poses[i].JointGroups, label, out var result))
                     {
                         WeightsForPoses.Add(new PoseNameAndWeights(poses[i]));
                     }
                 }
             }
-            public bool HasSamePose(MixedBoneGroup other)
+            public bool HasSamePose(MixedJointGroup other)
             {
                 for (int i = 0; i < WeightsForPoses.Count; i++)
                 {
@@ -124,15 +111,17 @@ namespace CyberInterfaceLab.PoseSynth
                 return false;
             }
             /// <summary>
-            /// Create a new MixedBoneGroup that merges two MixedBoneGroups.
-            /// - If two MixedBoneGroups has the same Pose, the older one is adopted.
-            /// - Poses held only by old MixedBoneGroup are ignored.
-            /// - Poses held only by new MixedBoneGroup are adopted. In this case, the weights of adopted Poses are 1.
+            /// Create a new <see cref="MixedJointGroup"/>s that merges two <see cref="MixedJointGroup"/>s.
             /// </summary>
+            /// <remarks>
+            /// (1) If two <see cref="MixedJointGroup"/>s has the same Pose, the older one is adopted.
+            /// (2) Poses held only by old <see cref="MixedJointGroup"/> are ignored.
+            /// (3) Poses held only by new <see cref="MixedJointGroup"/> are newly added. In this case, the weights of the added Poses are 1.
+            /// </remarks>
             /// <returns></returns>
-            public static MixedBoneGroup Merge(MixedBoneGroup oldGroup, MixedBoneGroup newGroup)
+            public static MixedJointGroup Merge(MixedJointGroup oldGroup, MixedJointGroup newGroup)
             {
-                var result = new MixedBoneGroup(oldGroup.Label, new List<Pose>());
+                var result = new MixedJointGroup(oldGroup.Label, new List<Pose>());
 
                 for (int i = 0; i < newGroup.WeightsForPoses.Count; i++)
                 {
@@ -154,101 +143,134 @@ namespace CyberInterfaceLab.PoseSynth
 
                 return result;
             }
-            public MixedBoneGroup Merge(MixedBoneGroup newGroup) => Merge(this, newGroup);
+            public MixedJointGroup Merge(MixedJointGroup newGroup) => Merge(this, newGroup);
             /// <summary>
             /// Set the weight of input Pose.
             /// </summary>
             /// <param name="pose"></param>
             /// <param name="weight">The new weight.</param>
-            public void SetWeightOf(Pose pose, float weight)
+            public void SetWeight(Pose pose, float weight, out bool hasModified)
             {
+                hasModified = false;
                 for (int i = 0; i < WeightsForPoses.Count; i++)
                 {
                     if (WeightsForPoses[i].Pose == pose)
                     {
                         var w = WeightsForPoses[i];
+                        if (w.Weight != weight) hasModified = true;
                         w.Weight = weight;
                         WeightsForPoses[i] = w;
                     }
                 }
             }
+            public bool TryGetWeight(Pose pose, out float weight)
+            {
+                for (int i = 0; i < WeightsForPoses.Count; i++)
+                {
+                    if (WeightsForPoses[i].Pose == pose)
+                    {
+                        weight = WeightsForPoses[i].Weight;
+                        return true;
+                    }
+                }
+                weight = 0f;
+                return false;
+            }
         }
+
+        #region public variable
         /// <summary>
-        /// All MixedBoneGroups based on Poses.
+        /// All <see cref="MixedJointGroup"/>s based on Poses.
         /// </summary>
         [SerializeField]
-        public List<MixedBoneGroup> MixedBoneGroups = new(64);
+        public List<MixedJointGroup> MixedJointGroups = new(64);
+        #endregion
 
+        #region protected variable
+        HashSet<IObserver<PoseMixer>> m_observers = new(64);
+        #endregion
+
+        #region observable
+        public void AddObserver(IObserver<PoseMixer> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseMixer> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
+        #region public method
         /// <summary>
         /// Add a Pose to the list Poses.
         /// </summary>
         /// <param name="pose"></param>
-        public void AddPose(Pose pose)
+        public override void AddPose(Pose pose)
         {
-            if (Poses.Contains(pose))
+            if (m_references.Contains(pose))
             {
                 Debug.LogWarning($"PoseMixer.AddPose: This PoseMixer already contains Pose {pose.name}!");
             }
 
-            Poses.Add(pose);
-            InitializeMixedBoneGroups();
+            m_references.Add(pose);
+            InitializeMixedJointGroups();
         }
         /// <summary>
         /// Remove a Pose from the list Poses.
         /// </summary>
         /// <param name="pose"></param>
-        public void RemovePose(Pose pose)
+        public override void RemovePose(Pose pose)
         {
-            if (Poses.Contains(pose))
+            if (m_references.Contains(pose))
             {
-                Poses.Remove(pose);
-                InitializeMixedBoneGroups();
+                m_references.Remove(pose);
+                InitializeMixedJointGroups();
             }
         }
 
         /// <summary>
-        /// Initialize MixedBoneGroups based on Poses.
+        /// Initialize <see cref="MixedJointGroup"/>s based on Poses.
         /// </summary>
-        public void InitializeMixedBoneGroups(bool mergeCurrentValue = true)
+        public void InitializeMixedJointGroups(bool mergeCurrentValue = true)
         {
-            var result = new List<MixedBoneGroup>();
-            var oldGroup = new List<MixedBoneGroup>(MixedBoneGroups);
+            var result = new List<MixedJointGroup>();
+            var oldGroup = new List<MixedJointGroup>(MixedJointGroups);
 
-            // ラベルごとにMixedBoneGroupを作る
-            for (int i = 0; i < m_poseMixed.BoneGroups.Count; i++)
+            // ラベルごとにMixedJointGroupを作る
+            // Create a new MixedJointGroup for each label
+            for (int i = 0; i < m_target.JointGroups.Count; i++)
             {
-                var group = new MixedBoneGroup(m_poseMixed.BoneGroups[i].Label, Poses);
+                var group = new MixedJointGroup(m_target.JointGroups[i].Label, m_references);
 
-                // 古いMixedBoneGroupに同じラベルのものがあれば，
-                // マージする
-                for (int j = 0; j < MixedBoneGroups.Count; j++)
+                // 古いMixedJointGroupに同じラベルのものがあれば，マージする
+                // If there is an old MixedJointGroup with the same label, merge it
+                for (int j = 0; j < MixedJointGroups.Count; j++)
                 {
-                    if (group.Label == MixedBoneGroups[j].Label && mergeCurrentValue)
+                    if (group.Label == MixedJointGroups[j].Label && mergeCurrentValue)
                     {
-                        //group = oldGroup[j].GetMergedGroup(group);
-                        group = MixedBoneGroup.Merge(oldGroup[j], group);
+                        group = MixedJointGroup.Merge(oldGroup[j], group);
                     }
                 }
 
                 result.Add(group);
             }
 
-            MixedBoneGroups = new List<MixedBoneGroup>(result);
-
-            //Debug.Log($"{typeof(PoseMixer)}: InitializeMixedBoneGroups");
+            MixedJointGroups = new List<MixedJointGroup>(result);
         }
         /// <summary>
         /// Get the weight corresponding to the input label from the input Pose.
         /// </summary>
         /// <param name="pose"></param>
         /// <param name="label"></param>
-        /// <param name="weight"></param>
+        /// <param name="weight">the weight value as a result.</param>
         /// <returns>The weight that matches the condition exists.</returns>
-        public bool SearchWeightOf(Pose pose, string label, out float weight)
+        public bool TryGetWeight(Pose pose, string label, out float weight)
         {
             try
             {
-                weight = MixedBoneGroups.Where(x => x.Label == label).First()
+                weight = MixedJointGroups.Where(x => x.Label == label).First()
                         .WeightsForPoses.Where(x => x.Pose == pose).First()
                         .Weight;
                 return true;
@@ -265,14 +287,15 @@ namespace CyberInterfaceLab.PoseSynth
         /// <param name="pose"></param>
         /// <param name="label"></param>
         /// <param name="weight"></param>
-        public void SetWeightOf(Pose pose, string label, float weight, float minWeight = 0f, float maxWeight = 1f)
+        public void SetWeight(Pose pose, string label, float weight, float minWeight = 0f, float maxWeight = 1f)
         {
-            for (int i = 0; i < MixedBoneGroups.Count; i++)
+            for (int i = 0; i < MixedJointGroups.Count; i++)
             {
-                if (MixedBoneGroups[i].Label == label)
+                if (MixedJointGroups[i].Label == label)
                 {
                     weight = Mathf.Clamp(weight, minWeight, maxWeight);
-                    MixedBoneGroups[i].SetWeightOf(pose, weight);
+                    MixedJointGroups[i].SetWeight(pose, weight, out bool hasModified);
+                    m_hasModified |= hasModified;
                 }
             }
         }
@@ -285,10 +308,11 @@ namespace CyberInterfaceLab.PoseSynth
         /// <param name="weight"></param>
         /// <param name="second">The execution time (sec).</param>
         /// <returns></returns>
-        public IEnumerable SetGraduallyWeightOf(Pose pose, string label, float weight, float time = 0f, float minWeight = 0f, float maxWeight = 1f)
+        [System.Obsolete]
+        public IEnumerable SetGraduallyWeight(Pose pose, string label, float weight, float time = 0f, float minWeight = 0f, float maxWeight = 1f)
         {
             int frame = 0;
-            if (SearchWeightOf(pose, label, out float initialWeight))
+            if (TryGetWeight(pose, label, out float initialWeight))
             {
                 while (frame * Time.deltaTime < time)
                 {
@@ -296,7 +320,7 @@ namespace CyberInterfaceLab.PoseSynth
                     float t = (frame * Time.deltaTime) / time;
                     float currentWeight = (1 - t) * initialWeight + t * weight;
 
-                    SetWeightOf(pose, label, currentWeight, minWeight, maxWeight);
+                    SetWeight(pose, label, currentWeight, minWeight, maxWeight);
 
                     frame++;
 
@@ -313,110 +337,53 @@ namespace CyberInterfaceLab.PoseSynth
         /// <param name="pose"></param>
         /// <param name="label"></param>
         /// <param name="delta"></param>
-        public void AddWeightOf(Pose pose, string label, float delta, float minWeight = 0f, float maxWeight = 1f)
+        public void AddWeight(Pose pose, string label, float delta, float minWeight = 0f, float maxWeight = 1f)
         {
-            if (SearchWeightOf(pose, label, out float weight))
+            if (TryGetWeight(pose, label, out float weight))
             {
                 float newWeight = Mathf.Clamp(weight + delta, 0f, 1f);
-                SetWeightOf(pose, label, newWeight, minWeight, maxWeight);
-            }
-        }
-
-        #region observable
-        private HashSet<IObserver<PoseMixer>> m_observers = new(64);
-        public void AddObserver(IObserver<PoseMixer> observer) {  m_observers.Add(observer); }
-        public void RemoveObserver(IObserver<PoseMixer> observer) => m_observers.Remove(observer);
-        public void Notify()
-        {
-            foreach (var observer in m_observers)
-            {
-                observer.OnNotified(this);
+                SetWeight(pose, label, newWeight, minWeight, maxWeight);
             }
         }
         #endregion
 
-        [SerializeField]
-        private bool m_isValid = true;
-        public bool IsValid
-        {
-            get
-            {
-                if (!m_poseMixed)
-                {
-                    m_isValid = false;
-                }
-                return m_isValid;
-            }
-            set
-            {
-                if (!m_poseMixed)
-                {
-                    m_isValid = false;
-                    return;
-                }
-                m_isValid = value;
-            }
-        }
-        private void OnValidate()
-        {
-            m_poseMixed = GetComponent<Pose>();
-
-            // Check if the previous poses are the same as the current one.
-            // If not the same, initialize MixedBoneGroups.
-            bool posesHasChanged = false;
-            if (Poses.Count == m_previousPoses.Count)
-            {
-                for (int i = 0; i < Poses.Count; i++)
-                {
-                    if (Poses[i] != m_previousPoses[i])
-                    {
-                        posesHasChanged = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                posesHasChanged = true;
-            }
-
-            if (posesHasChanged)
-            {
-                InitializeMixedBoneGroups();
-            }
-            m_previousPoses = new List<Pose>(Poses);
-        }
-
+        #region protected method
         /// <summary>
         /// Take weighted average of several Poses and apply to m_poseMixed.
         /// </summary>
         /// <param name="poses"></param>
         /// <returns></returns>
-        public void Mix(params Pose[] poses)
+        protected override void RemapOnUpdate()
         {
             // 重みを正規化して足し合わせる
-            int groupCount = m_poseMixed.BoneGroups.Count;
+            // Normalize the weights and sum them up
+            int groupCount = m_target.JointGroups.Count;
             for (int i = 0; i < groupCount; i++)
             {
-                var group = m_poseMixed.BoneGroups[i];
+                var group = m_target.JointGroups[i];
                 // mixされるポーズのi番目のグループのラベル
+                // The label of the i-th group of the pose to be mixed
                 string label = group.Label;
                 // 同じラベルを持つグループのキャッシュ
-                List<Pose.BoneGroup> groupCache = new List<Pose.BoneGroup>();
+                // Cache of groups with the same label
+                List<Pose.JointGroup> groupCache = new List<Pose.JointGroup>();
 
                 // 各Poseに対して，labelと同じラベルを持つグループがあるならば，
                 // そのグループをキャッシュに登録する
-                for (int j = 0; j < poses.Length; j++)
+                // If there is a group with the same label in each Pose,
+                // register that group in the cache
+                for (int j = 0; j < m_references.Count; j++)
                 {
-                    if (Pose.BoneGroup.SearchFromLabel(poses[j].BoneGroups, label, out Pose.BoneGroup g))
+                    if (Pose.JointGroup.TrySearchFromLabel(m_references[j].JointGroups, label, out Pose.JointGroup g))
                     {
                         // 重みを変更する
-                        var modifiedG = new Pose.BoneGroup();
-                        modifiedG.Bones = new List<Pose.Bone>(g.Bones);
+                        // Modify the weight
+                        var modifiedG = new Pose.JointGroup();
+                        modifiedG.Contents = new List<Pose.Joint>(g.Contents);
                         modifiedG.Label = g.Label;
 
                         // 
-                        if (SearchWeightOf(poses[j], g.Label, out var weight))
+                        if (TryGetWeight(m_references[j], g.Label, out var weight))
                         {
                             modifiedG.MasterWeight = g.MasterWeight * weight;
                         }
@@ -431,43 +398,76 @@ namespace CyberInterfaceLab.PoseSynth
                 }
 
                 // ここまでで同じラベルを持つグループを抽出できたので，
-                // i番目のグループ内のボーンに対して
+                // i番目のグループ内のjointに対して
                 // それらのlocalRotationの重み付き平均を取る
-                if (Pose.BoneGroup.Add(ref group, groupCache.ToArray()))
+                // Now that we have extracted the groups with the same label,
+                // we take the weighted average of the localRotation of the joints in the i-th group.
+                if (Pose.JointGroup.TryAdd(ref group, groupCache.ToArray()))
                 {
-                    m_poseMixed.BoneGroups[i] = group;
+                    m_target.JointGroups[i] = group;
                 }
                 else
                 {
-                    Debug.LogWarning($"PoseEditor.PoseMixer: Failed to mix!");
+                    Debug.LogWarning($"{typeof(This).FullName}.Mix: Failed to mix!");
                 }
             }
         }
-        public void Mix(List<Pose> poses) => Mix(poses.ToArray());
+        #endregion
 
-        protected virtual void FixedUpdate()
+        #region event
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            // Check if the previous poses are the same as the current one.
+            // If not the same, initialize MixedJointGroups.
+            bool posesHasChanged = false;
+            if (m_references.Count == m_lastReferences.Count)
+            {
+                for (int i = 0; i < m_references.Count; i++)
+                {
+                    if (m_references[i] != m_lastReferences[i])
+                    {
+                        posesHasChanged = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                posesHasChanged = true;
+            }
+
+            if (posesHasChanged)
+            {
+                InitializeMixedJointGroups();
+            }
+            m_lastReferences = new List<Pose>(m_references);
+        }
+
+
+        protected override void Update()
         {
             if (IsValid)
             {
                 // check if there is a null content in Poses.
-                if (Poses.RemoveAll(p => p == null) > 0)
+                if (m_references.RemoveAll(p => p == null) > 0)
                 {
                     // then re-initialize MixedBoneGroups.
-                    InitializeMixedBoneGroups();
+                    InitializeMixedJointGroups();
                 }
-
-                Mix(Poses);
-                Notify();
             }
+            base.Update();
         }
+        #endregion
 
         #region GUI
-        private int _windowId = Utilities.GetWindowId();
-        private Rect _windowRect = new Rect(0, 0, 1, 1);
-        private readonly int _windowLabelWidth = 80;
-        private readonly int _windowSlideBarWidth = 100;
-        private readonly int _windowSpaceWidth = 10;
-        private readonly int _windowSpaceHeight = 20;
+        private int m_windowId = Utilities.GetWindowId();
+        private Rect m_windowRect = new Rect(0, 0, 1, 1);
+        private readonly int m_windowLabelWidth = 80;
+        private readonly int m_windowSlideBarWidth = 100;
+        private readonly int m_windowSpaceWidth = 10;
+        private readonly int m_windowSpaceHeight = 20;
         [SerializeField]
         private bool m_isDrawingGUI = true;
         public bool IsDrawingGUI
@@ -481,25 +481,25 @@ namespace CyberInterfaceLab.PoseSynth
             if (!IsDrawingGUI) { return; }
 
             // 大きさ変更
-            _windowRect.width = _windowLabelWidth + Poses.Count * (_windowSlideBarWidth + _windowSpaceWidth) + 20;
-            _windowRect.height = _windowSpaceHeight * (4 + m_poseMixed.BoneGroups.Count);
-            _windowRect = GUI.Window(_windowId, _windowRect, (id) =>
+            m_windowRect.width = m_windowLabelWidth + m_references.Count * (m_windowSlideBarWidth + m_windowSpaceWidth) + 20;
+            m_windowRect.height = m_windowSpaceHeight * (4 + m_target.JointGroups.Count);
+            m_windowRect = GUI.Window(m_windowId, m_windowRect, (id) =>
             {
                 DrawGUI(id);
 
-            }, $"{gameObject.name} PoseMixer");
+            }, $"[PoseMixer] {gameObject.name}");
         }
         public void DrawGUI(int windowId) => ShowWeights(windowId);
         protected void ShowMasterWeights(int windowId)
         {
-            for (int i = 0; i < Poses.Count; i++)
+            for (int i = 0; i < m_references.Count; i++)
             {
-                Poses[i].ShowWeightHandlerForMixer(windowId, iter: i);
+                m_references[i].ShowWeightHandlerForMixer(windowId, iter: i);
             }
 
-            for (int i = 0; i < m_poseMixed.BoneGroups.Count; i++)
+            for (int i = 0; i < m_target.JointGroups.Count; i++)
             {
-                var group = m_poseMixed.BoneGroups[i];
+                var group = m_target.JointGroups[i];
                 GUI.Label(new Rect(10, 40 + 20 * i, 80, 20), group.Label);
             }
 
@@ -510,69 +510,67 @@ namespace CyberInterfaceLab.PoseSynth
         protected void ShowWeights(int windowId)
         {
             // Posesの名前表示
-            for (int i = 0; i < Poses.Count; i++)
+            for (int i = 0; i < m_references.Count; i++)
             {
                 GUI.Label(new Rect(
-                    x: _windowLabelWidth + _windowSpaceWidth + (_windowSlideBarWidth + _windowSpaceWidth) * i,
-                    y: _windowSpaceHeight,
-                    width: _windowSlideBarWidth,
-                    height: _windowSpaceHeight
-                    ), Poses[i].name);
+                    x: m_windowLabelWidth + m_windowSpaceWidth + (m_windowSlideBarWidth + m_windowSpaceWidth) * i,
+                    y: m_windowSpaceHeight,
+                    width: m_windowSlideBarWidth,
+                    height: m_windowSpaceHeight
+                    ), m_references[i].name);
             }
 
             // スライドバー表示
-            for (int j = 0; j < MixedBoneGroups.Count; j++)
+            for (int j = 0; j < MixedJointGroups.Count; j++)
             {
-                //MixedBoneGroups[i].ShowWeights(windowId, new Vector2(0, _windowSpaceHeight * (2 + i)));
-
                 // グループのラベル表示
                 GUI.Label(new Rect(
                     x: 10,
-                    y: _windowSpaceHeight * (2 + j),
-                    width: _windowLabelWidth,
-                    height: _windowSpaceHeight
-                    ), MixedBoneGroups[j].Label);
+                    y: m_windowSpaceHeight * (2 + j),
+                    width: m_windowLabelWidth,
+                    height: m_windowSpaceHeight
+                    ), MixedJointGroups[j].Label);
 
                 // スライドバー表示
-                for (int i = 0; i < Poses.Count; i++)
+                for (int i = 0; i < m_references.Count; i++)
                 {
-                    if (SearchWeightOf(Poses[i], MixedBoneGroups[j].Label, out float weight))
+                    if (TryGetWeight(m_references[i], MixedJointGroups[j].Label, out float weight))
                     {
                         weight = GUI.HorizontalSlider(new Rect(
-                            x: _windowLabelWidth + _windowSpaceWidth + (_windowSlideBarWidth + _windowSpaceWidth) * i,
-                            y: _windowSpaceHeight * (2 + j) + 5, // 5は気持ち程度
-                            width: _windowSlideBarWidth,
-                            height: _windowSpaceHeight
+                            x: m_windowLabelWidth + m_windowSpaceWidth + (m_windowSlideBarWidth + m_windowSpaceWidth) * i,
+                            y: m_windowSpaceHeight * (2 + j) + 5, // 5は気持ち程度
+                            width: m_windowSlideBarWidth,
+                            height: m_windowSpaceHeight
                             ), weight, 0f, 1f);
-                        SetWeightOf(Poses[i], MixedBoneGroups[j].Label, weight);
+                        SetWeight(m_references[i], MixedJointGroups[j].Label, weight);
                     }
                 }
             }
 
             // 乗っ取るためのボタンをつける
-            for (int i = 0; i < Poses.Count; i++)
+            for (int i = 0; i < m_references.Count; i++)
             {
                 // 全部乗っ取るためのボタンをつける
                 if (GUI.Button(new Rect(
-                    x: _windowLabelWidth + _windowSpaceWidth + (_windowSlideBarWidth + _windowSpaceWidth) * i,
-                    y: _windowSpaceHeight * (2 + MixedBoneGroups.Count),
-                    width: _windowSlideBarWidth,
-                    height: _windowSpaceHeight
+                    x: m_windowLabelWidth + m_windowSpaceWidth + (m_windowSlideBarWidth + m_windowSpaceWidth) * i,
+                    y: m_windowSpaceHeight * (2 + MixedJointGroups.Count),
+                    width: m_windowSlideBarWidth,
+                    height: m_windowSpaceHeight
                     ), "Override"))
                 {
 
                     // 乗っ取る
-                    for (int i2 = 0; i2 < MixedBoneGroups.Count; i2++)
+                    for (int i2 = 0; i2 < MixedJointGroups.Count; i2++)
                     {
 
-                        var mainPose = Poses[i];
-                        var label = MixedBoneGroups[i2].Label;
+                        var mainPose = m_references[i];
+                        var label = MixedJointGroups[i2].Label;
 
-                        for (int i3 = 0; i3 < Poses.Count; i3++)
+                        for (int i3 = 0; i3 < m_references.Count; i3++)
                         {
-                            if (SearchWeightOf(Poses[i3], label, out float weight))
+                            if (TryGetWeight(m_references[i3], label, out float weight))
                             {
-                                SetWeightOf(Poses[i3], label, Poses[i3] == mainPose ? 1f : 0f);
+                                SetWeight(m_references[i3], label, m_references[i3] == mainPose ? 1f : 0f);
                             }
                         }
                     }

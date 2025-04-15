@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
     /// Attach it to the gameObject with <T> component.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class NetworkPoseRemapper<T> : PSNetworkBehaviour, IObserver<PoseRemapper> where T : PoseRemapper
+    public abstract class NetworkPoseRemapper<T> : PSNetworkBehaviour, IObserver<T> where T : PoseRemapper
     {
         #region public variable
         public T Remapper => m_remapper;
@@ -21,8 +21,30 @@ namespace CyberInterfaceLab.PoseSynth.Network
         #endregion
 
         #region public method
-        public void SetRefPose(Pose refPose)
+        /// <summary>
+        /// Set the reference <see cref="Pose"/> to the <see cref="PoseRemapper"/>.
+        /// </summary>
+        /// <param name="refPose"></param>
+        public void SetReference(Pose refPose)
         {
+            /*
+            処理順
+            Clientの場合
+                -> ServerにRPCを送信 -> ServerがReferenceを変更
+                -> Serverが全ClientにRPCを送信 -> ClientがReferenceを変更
+            Serverの場合
+                -> Referenceを変更
+                -> 全ClientにRPCを送信 -> ClientがReferenceを変更
+
+            Order of processing
+            Client
+                -> Send RPC to Server -> Set Reference on Server
+                -> Send RPC to all Clients -> Set Reference on Client
+            Server
+                -> Set Reference
+                -> Send RPC to all Clients -> Set Reference on Client
+             */
+
             if (refPose == null)
             {
                 if (IsClient)
@@ -50,16 +72,24 @@ namespace CyberInterfaceLab.PoseSynth.Network
                 Debug.LogError($"The Pose ({refPose.name}) is not a network object!");
             }
         }
-        public void OnNotified(PoseRemapper remapper)
+        public virtual void OnNotified(T observable)
         {
-            SetRefPose(remapper.RefPose);
+            SetReference(observable.Reference);
         }
+        protected abstract void Observe(T observable);
+        protected abstract void Unobserve(T observable);
         #endregion
 
         #region private method
         [ServerRpc(RequireOwnership = false)]
         protected virtual void SetRefPoseServerRpc(ulong networkObjectId)
         {
+            var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
+            if (obj.TryGetComponent<Pose>(out var pose))
+            {
+                //m_remapper.RefPose = pose;
+                m_remapper.SetRefPoseWithoutNotice(pose);
+            }
             SetRefPoseClientRpc(networkObjectId);
         }
         [ServerRpc(RequireOwnership = false)]
@@ -92,7 +122,8 @@ namespace CyberInterfaceLab.PoseSynth.Network
         {
             base.OnNetworkSpawn();
             m_remapper = GetComponent<T>();
-            m_remapper.AddObserver(this);
+            //m_remapper.AddObserver(this as T);
+            Observe(m_remapper);
 
             if (m_remapper == null)
             {
@@ -104,7 +135,8 @@ namespace CyberInterfaceLab.PoseSynth.Network
         public override void OnNetworkDespawn()
         {
             base.OnNetworkDespawn();
-            m_remapper?.RemoveObserver(this);
+            //m_remapper?.RemoveObserver(this);
+            Unobserve(m_remapper);
         }
     }
 }

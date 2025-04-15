@@ -8,6 +8,10 @@ namespace CyberInterfaceLab.PoseSynth
     /// <summary>
     /// Remap the target <see cref="ICameraRig"/> from other multiple <see cref="ICameraRig"/>s.
     /// </summary>
+    /// <remarks>
+    /// When you want to use this in the multiplayer scene, please use <see cref="CameraRigIdentity"/> as the input references,
+    /// Because PoseSynth does not synchronize the reference among clients. 
+    /// </remarks>
     [RequireComponent(typeof(ICameraRig))]
 #if UNITY_EDITOR
     [InitializeOnLoad]
@@ -77,6 +81,10 @@ namespace CyberInterfaceLab.PoseSynth
                 observer.OnNotified(this as T);
             }
         }
+        /// <summary>
+        /// Flag to check whether any parameter has been modified.
+        /// If true, <see cref="Notify"/> will be called in <see cref="LateUpdate"/> to synchronize all the parameters to clients.
+        /// </summary>
         protected bool m_hasModified = false;
         #endregion
 
@@ -120,7 +128,7 @@ namespace CyberInterfaceLab.PoseSynth
             // remove contents of references who does not inherit ICameraRig
             //m_references.RemoveAll(x => x is not ICameraRig && x is not null);
         }
-        void FixedUpdate()
+        protected virtual void Update()
         {
             m_hasModified = false;
             if (m_isValid && m_references.Count > 0)

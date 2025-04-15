@@ -69,7 +69,7 @@ namespace CyberInterfaceLab.PoseSynth
                 return result;
             }
             public MixedTrackerGroup Merge(MixedTrackerGroup newGroup) => Merge(this, newGroup);
-            public void SetWeightOf(ICameraRig cameraRig, float weight, out bool hasModified)
+            public void SetWeight(ICameraRig cameraRig, float weight, out bool hasModified)
             {
                 hasModified = false;
                 for (int i=0; i<WeightsForCameraRigs.Count; i++)
@@ -242,7 +242,7 @@ namespace CyberInterfaceLab.PoseSynth
                 if (MixedTrackerGroups[i].TrackerType == type)
                 {
                     weight = Mathf.Clamp(weight, minWeight, maxWeight);
-                    MixedTrackerGroups[i].SetWeightOf(cameraRig, weight, out bool hasModified);
+                    MixedTrackerGroups[i].SetWeight(cameraRig, weight, out bool hasModified);
                     m_hasModified |= hasModified;
                 }
             }
@@ -403,7 +403,7 @@ namespace CyberInterfaceLab.PoseSynth
             m_windowRect = GUI.Window(m_windowId, m_windowRect, (id) =>
             {
                 DrawGUI(id);
-            }, $"{name} CameraRigMixer");
+            }, $"[CameraRigMixer] {name}");
         }
         #endregion
     }

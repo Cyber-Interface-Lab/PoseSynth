@@ -1,17 +1,17 @@
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// Interface who can transform a <see cref="Pose"/>.
+    /// Interface that can transform a <see cref="Target"/>.
     /// See <see cref="PoseMapper"/>, <see cref="PoseRemapper"/>, and <see cref="PoseMixer"/>.
     public interface IPoseTransformer
     {
         /// <summary>
-        /// Can update <see cref="Pose"/> if true.
+        /// Can update <see cref="Target"/> if true.
         /// </summary>
         bool IsValid { get; set; }
         /// <summary>
         /// Target Pose to be transformed.
         /// </summary>
-        Pose Pose { get; set; }
+        Pose Target { get; set; }
     }
 }

@@ -1,9 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 using RootMotion.FinalIK;
 
 namespace CyberInterfaceLab.PoseSynth.IK
 {
-    public class VRIKMapper : IKMapper
+    public class VRIKMapper : IKMapper, IObservable<VRIKMapper>
     {
         [SerializeField]
         private VRIK m_ik;
@@ -72,7 +73,7 @@ namespace CyberInterfaceLab.PoseSynth.IK
         {
             get
             {
-                if (!m_pose)
+                if (!m_target)
                 {
                     m_isValid = false;
                     return false;
@@ -81,7 +82,7 @@ namespace CyberInterfaceLab.PoseSynth.IK
             }
             set
             {
-                if (!m_pose)
+                if (!m_target)
                 {
                     m_ik.enabled = false;
                     m_isValid = false;
@@ -95,5 +96,18 @@ namespace CyberInterfaceLab.PoseSynth.IK
         {
             m_ik.UpdateSolverExternal();
         }
+
+        #region observable
+        private HashSet<IObserver<VRIKMapper>> m_observers = new(8);
+        public void AddObserver(IObserver<VRIKMapper> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<VRIKMapper> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
     }
 }

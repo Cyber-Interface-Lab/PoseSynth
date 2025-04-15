@@ -21,7 +21,7 @@ namespace CyberInterfaceLab.PoseSynth
 
             if (GUILayout.Button($"Initialize Mixed Bone Groups"))
             {
-                mixer.InitializeMixedBoneGroups(mergeCurrentValue: true);
+                mixer.InitializeMixedJointGroups(mergeCurrentValue: true);
             }
 
         }

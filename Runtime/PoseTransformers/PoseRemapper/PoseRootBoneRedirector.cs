@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace CyberInterfaceLab.PoseSynth
 {
 
-    public class PoseRootBoneRedirector : PoseRemapper, IDelayableSynthesizer
+    public class PoseRootBoneRedirector : PoseRemapper
     {
         internal class ApplyCommand : ICommand
         {
@@ -87,15 +87,29 @@ namespace CyberInterfaceLab.PoseSynth
         }
         protected Queue<ICommand> m_commands;
 
-        protected Transform RootBone => m_pose.RootBone.transform;
-        protected Transform RefRootBone => m_refPose.RootBone.transform;
+        HashSet<IObserver<PoseRootBoneRedirector>> m_observers = new(64);
+
+        #region observable
+        public void AddObserver(IObserver<PoseRootBoneRedirector> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseRootBoneRedirector> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
+        protected Transform RootBone => m_reference.Root.transform;
+        protected Transform RefRootBone => m_reference.Root.transform;
         public virtual void Initialize()
         {
             m_commands = new Queue<ICommand>(m_delayFixedFrame);
         }
         protected Vector3 GetRefPosition()
         {
-            if (m_refPose == null) { return Vector3.zero; }
+            if (m_reference == null) { return Vector3.zero; }
             var type = PositionType;
             switch (type)
             {
@@ -110,7 +124,7 @@ namespace CyberInterfaceLab.PoseSynth
         }
         protected Quaternion GetRefRotation()
         {
-            if (m_refPose == null) { return Quaternion.identity; }
+            if (m_reference == null) { return Quaternion.identity; }
             var type = RotationType;
             switch (type)
             {
@@ -141,8 +155,9 @@ namespace CyberInterfaceLab.PoseSynth
 
             Initialize();
         }
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Initialize();
         }
     }

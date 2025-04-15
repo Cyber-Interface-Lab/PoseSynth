@@ -8,7 +8,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
     /// <summary>
     /// Map Hand Tracking to Hand Pose.
     /// </summary>
-    public class OVRHandMapper : HandMapper
+    public class OVRHandMapper : HandMapper, IObservable<OVRHandMapper>
     {
         [SerializeField] private Finger WristRoot;
         [SerializeField] private Finger ForearmStub;
@@ -31,11 +31,25 @@ namespace CyberInterfaceLab.PoseSynth.VR
         private HashSet<Finger> m_fingers;
         private HashSet<DoubleFinger> m_doubleFingers;
 
+        HashSet<IObserver<OVRHandMapper>> m_observers;
+
+        #region observable
+        public void AddObserver(IObserver<OVRHandMapper> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<OVRHandMapper> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         private void SetProperties(Finger f)
         {
             if (f.Target == null) { return; }
-            if (m_cameraRig == null) { return; }
-            if (m_cameraRig.TryGetTransform(f.Type, out var t) && t != null)
+            if (m_reference == null) { return; }
+            if (m_reference.TryGetTransform(f.Type, out var t) && t != null)
             {
                 f.Target.localRotation = Utilities.Multiply(t.localRotation, f.Offset);
             }
@@ -43,9 +57,9 @@ namespace CyberInterfaceLab.PoseSynth.VR
         private void SetProperties(DoubleFinger df)
         {
             if (df.Target == null) { return; }
-            if (m_cameraRig == null) { return; }
-            if (m_cameraRig.TryGetTransform(df.Type0, out var t0) && t0 != null
-                && m_cameraRig.TryGetTransform(df.Type1, out var t1) && t1 != null)
+            if (m_reference == null) { return; }
+            if (m_reference.TryGetTransform(df.Type0, out var t0) && t0 != null
+                && m_reference.TryGetTransform(df.Type1, out var t1) && t1 != null)
             {
                 var offset0 = Utilities.Multiply(t0.localRotation, df.Offset0);
                 var offset1 = Utilities.Multiply(t1.localRotation, df.Offset1);
