@@ -51,7 +51,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     SetRefPoseToNullServerRpc(); // -> SetRefPoseToNullClientRpc()
                 else if (IsServer)
                 {
-                    m_remapper.SetRefPoseWithoutNotice(null);
+                    m_remapper.SetReferenceWithoutNotice(null);
                     // notify to clients
                     SetRefPoseToNullClientRpc();
                 }
@@ -62,7 +62,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     SetRefPoseServerRpc(no.NetworkObjectId); // -> SetRefPoseClientRpc(no.NetworkObjectId)
                 else if (IsServer)
                 {
-                    m_remapper.SetRefPoseWithoutNotice(refPose);
+                    m_remapper.SetReferenceWithoutNotice(refPose);
                     // notify to clients
                     SetRefPoseClientRpc(no.NetworkObjectId);
                 }
@@ -88,7 +88,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
             if (obj.TryGetComponent<Pose>(out var pose))
             {
                 //m_remapper.RefPose = pose;
-                m_remapper.SetRefPoseWithoutNotice(pose);
+                m_remapper.SetReferenceWithoutNotice(pose);
             }
             SetRefPoseClientRpc(networkObjectId);
         }
@@ -105,7 +105,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
             if (obj.TryGetComponent<Pose>(out var pose))
             {
                 //m_remapper.RefPose = pose;
-                m_remapper.SetRefPoseWithoutNotice(pose);
+                m_remapper.SetReferenceWithoutNotice(pose);
                 return;
             }
 
@@ -114,7 +114,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
         [ClientRpc]
         protected virtual void SetRefPoseToNullClientRpc()
         {
-            m_remapper.SetRefPoseWithoutNotice(null);
+            m_remapper.SetReferenceWithoutNotice(null);
         }
         #endregion
 

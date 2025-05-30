@@ -87,7 +87,7 @@ namespace CyberInterfaceLab.PoseSynth
                 Initialize();
             }
         }
-        protected Queue<ICommand> m_commands;
+        protected Queue<ICommand> m_commands = new(64);
 
         protected Pose.JointGroup Group
         {
@@ -115,14 +115,14 @@ namespace CyberInterfaceLab.PoseSynth
                 return new();
             }
         }
-        protected Pose.Joint Bone => Group.Contents[Index];
-        protected Pose.Joint RefBone => RefGroup.Contents[Index];
-        protected Transform BoneTransform => Bone.transform;
-        protected Transform RefBoneTransform => RefBone.transform;
+        protected Pose.Joint Joint => Group.Contents[Index];
+        protected Pose.Joint RefJoint => RefGroup.Contents[Index];
+        protected Transform JointTransform => Joint.transform;
+        protected Transform RefJointTransform => RefJoint.transform;
 
-        HashSet<IObserver<PoseBoneRedirector>> m_observers;
 
         #region observable
+        HashSet<IObserver<PoseBoneRedirector>> m_observers = new(8);
         public void AddObserver(IObserver<PoseBoneRedirector> observer) => m_observers.Add(observer);
         public void RemoveObserver(IObserver<PoseBoneRedirector> observer) => m_observers.Remove(observer);
         public override void Notify()
@@ -136,7 +136,7 @@ namespace CyberInterfaceLab.PoseSynth
 
         public virtual void Initialize()
         {
-            m_commands = new Queue<ICommand>(m_delayFixedFrame);
+            m_commands = new Queue<ICommand>(m_delayFixedFrame + 1);
         }
         protected Vector3 GetRefPosition()
         {
@@ -148,9 +148,9 @@ namespace CyberInterfaceLab.PoseSynth
                 default:
                     return Vector3.zero;
                 case TransformType.Local:
-                    return RefBoneTransform.localPosition;
+                    return RefJointTransform.localPosition;
                 case TransformType.Global:
-                    return RefBoneTransform.position;
+                    return RefJointTransform.position;
             }
         }
         protected Quaternion GetRefRotation()
@@ -163,15 +163,15 @@ namespace CyberInterfaceLab.PoseSynth
                 default:
                     return Quaternion.identity;
                 case TransformType.Local:
-                    return RefBoneTransform.localRotation;
+                    return RefJointTransform.localRotation;
                 case TransformType.Global:
-                    return RefBoneTransform.rotation;
+                    return RefJointTransform.rotation;
             }
         }
         protected override void RemapOnUpdate()
         {
             // Enqueue a new command.
-            m_commands.Enqueue(new ApplyCommand(BoneTransform, GetRefPosition(), GetRefRotation(), PositionType, RotationType));
+            m_commands.Enqueue(new ApplyCommand(JointTransform, GetRefPosition(), GetRefRotation(), PositionType, RotationType));
 
             // if # of commands is not enough, do nothing.
             if (m_commands.Count <= m_delayFixedFrame) { return; }

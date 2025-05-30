@@ -1,11 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// CameraRig type.
+    /// VRプラグインごとに異なる<see cref="ServerCameraRig"/>のPrefabを選択するためのenumです。
+    /// Enum to select the prefab of <see cref="ServerCameraRig"/> for each VR plugin.
     /// </summary>
     public enum CameraRigType
     {

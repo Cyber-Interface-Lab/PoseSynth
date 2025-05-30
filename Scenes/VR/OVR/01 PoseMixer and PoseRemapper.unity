@@ -217,60 +217,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64df2c45fdfd44340b0c7115dddbdd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_poseMixed: {fileID: 236642841}
-  Poses:
+  m_target: {fileID: 236642841}
+  m_references:
   - {fileID: 1013830067}
   - {fileID: 436702847}
-  MixedBoneGroups:
+  m_isValid: 1
+  MixedJointGroups:
   - Label: Spine
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
-      Pose: {fileID: 1013830067}
-      Weight: 1
-    - PoseName: Humanoid Pose (Walking)
-      Pose: {fileID: 436702847}
-      Weight: 1
-  - Label: Left Leg
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
-      Pose: {fileID: 1013830067}
-      Weight: 1
-    - PoseName: Humanoid Pose (Walking)
-      Pose: {fileID: 436702847}
-      Weight: 1
-  - Label: Right Leg
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
-      Pose: {fileID: 1013830067}
-      Weight: 1
-    - PoseName: Humanoid Pose (Walking)
-      Pose: {fileID: 436702847}
-      Weight: 1
-  - Label: Left Arm
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
-      Pose: {fileID: 1013830067}
-      Weight: 1
-    - PoseName: Humanoid Pose (Walking)
-      Pose: {fileID: 436702847}
-      Weight: 1
-  - Label: Left Finger
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
-      Pose: {fileID: 1013830067}
-      Weight: 1
-    - PoseName: Humanoid Pose (Walking)
-      Pose: {fileID: 436702847}
-      Weight: 1
-  - Label: Right Arm
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
-      Pose: {fileID: 1013830067}
-      Weight: 1
-    - PoseName: Humanoid Pose (Walking)
-      Pose: {fileID: 436702847}
-      Weight: 1
-  - Label: Right Finger
     WeightsForPoses:
     - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
       Pose: {fileID: 1013830067}
@@ -286,7 +239,54 @@ MonoBehaviour:
     - PoseName: Humanoid Pose (Walking)
       Pose: {fileID: 436702847}
       Weight: 1
-  m_isValid: 1
+  - Label: Arm Left
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
+      Pose: {fileID: 1013830067}
+      Weight: 1
+    - PoseName: Humanoid Pose (Walking)
+      Pose: {fileID: 436702847}
+      Weight: 1
+  - Label: Arm Right
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
+      Pose: {fileID: 1013830067}
+      Weight: 1
+    - PoseName: Humanoid Pose (Walking)
+      Pose: {fileID: 436702847}
+      Weight: 1
+  - Label: Finger Left
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
+      Pose: {fileID: 1013830067}
+      Weight: 1
+    - PoseName: Humanoid Pose (Walking)
+      Pose: {fileID: 436702847}
+      Weight: 1
+  - Label: Finger Right
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
+      Pose: {fileID: 1013830067}
+      Weight: 1
+    - PoseName: Humanoid Pose (Walking)
+      Pose: {fileID: 436702847}
+      Weight: 1
+  - Label: Leg Left
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
+      Pose: {fileID: 1013830067}
+      Weight: 1
+    - PoseName: Humanoid Pose (Walking)
+      Pose: {fileID: 436702847}
+      Weight: 1
+  - Label: Leg Right
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK, OVR)
+      Pose: {fileID: 1013830067}
+      Weight: 1
+    - PoseName: Humanoid Pose (Walking)
+      Pose: {fileID: 436702847}
+      Weight: 1
   m_isDrawingGUI: 1
 --- !u!114 &236642844
 MonoBehaviour:
@@ -300,9 +300,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7254211191453bf49a8f0c25b67c6652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_refPose: {fileID: 1013830067}
-  m_pose: {fileID: 236642841}
   m_isValid: 1
+  m_target: {fileID: 236642841}
+  m_reference: {fileID: 1013830067}
   PositionType: 2
   RotationType: 2
   Label: Spine
@@ -320,9 +320,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8644f3a5ee2027c4fbb39aaddb3ac2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_refPose: {fileID: 1013830067}
-  m_pose: {fileID: 236642841}
   m_isValid: 1
+  m_target: {fileID: 236642841}
+  m_reference: {fileID: 1013830067}
   PositionType: 2
   RotationType: 2
   m_delayFixedFrame: 0
@@ -625,6 +625,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6408100441890970154, guid: f5b3471d80027b2439118609f92ec701, type: 3}
       propertyPath: _cameraRig
+      value: 
+      objectReference: {fileID: 1165255721}
+    - target: {fileID: 6408100441890970154, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      propertyPath: m_referenceObject
       value: 
       objectReference: {fileID: 1165255721}
     - target: {fileID: 6682565150779169322, guid: f5b3471d80027b2439118609f92ec701, type: 3}

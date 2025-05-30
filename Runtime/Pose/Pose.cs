@@ -4,14 +4,16 @@ using UnityEngine;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// A pose of a character.
-    /// This component contains all joints of a character with labels.
+    /// アバタの全ての関節の情報を保持するクラスです。
+    /// 関節はラベルでいくつかのグループに分割されています。
+    /// This class contains all joints of an avatar.
+    /// The joints are divided into several groups by label.
     /// </summary>
     public class Pose : MonoBehaviour
     {
         #region struct
         /// <summary>
-        /// A joint of a character.
+        /// A joint of an avatar.
         /// </summary>
         [System.Serializable]
         public struct Joint
@@ -54,7 +56,7 @@ namespace CyberInterfaceLab.PoseSynth
             public List<Joint> Contents;
 
             /// <summary>
-            /// グループのリストから，ラベルを元にグループを検索する。
+            /// グループのリストから，ラベルを元にグループを検索します。
             /// Search a group by input label from a list of groups.
             /// </summary>
             /// <param name="groups"></param>
@@ -254,7 +256,7 @@ namespace CyberInterfaceLab.PoseSynth
 
         #region GUI
         /// <summary>
-        /// This function is called in PoseMixer that contains this.
+        /// This function is called in <see cref="PoseMixer"/> that contains this.
         /// </summary>
         /// <param name="windowId"></param>
         /// <param name="iter"></param>

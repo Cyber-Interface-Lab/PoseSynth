@@ -69,8 +69,8 @@ namespace CyberInterfaceLab.PoseSynth
         [SerializeField]
         private string m_rightLabel = "Right";
 
-        HashSet<IObserver<PoseMirror>> observers = new(16);
         #region observable
+        HashSet<IObserver<PoseMirror>> observers = new(16);
         public void AddObserver(IObserver<PoseMirror> observer) => observers.Add(observer);
         public void RemoveObserver(IObserver<PoseMirror> observer) => observers.Remove(observer);
         public override void Notify()

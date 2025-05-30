@@ -5,11 +5,14 @@ using UnityEngine;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// Interface who can transform a <see cref="ICameraRig"/>.
+    /// <see cref="ICameraRig"/>の変換を行うインターフェースです。
+    /// Interface to transform a <see cref="ICameraRig"/>.
     /// </summary>
     public interface ICameraRigTransformer
     {
         /// <summary>
+        /// この変換器が有効かどうか。
+        /// Whether this transformer is valid or not.
         /// Can update <see cref="Target"/> if true.
         /// </summary>
         /// <remarks>
@@ -18,6 +21,7 @@ namespace CyberInterfaceLab.PoseSynth
         /// </remarks>
         bool IsValid { get; set; }
         /// <summary>
+        /// 変換先の<see cref="ICameraRig"/>です。
         /// Target <see cref="ICameraRig"/> to be transformed.
         /// </summary>
         ICameraRig Target { get; set; }

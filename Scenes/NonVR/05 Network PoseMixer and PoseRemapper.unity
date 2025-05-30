@@ -405,7 +405,7 @@ PrefabInstance:
       addedObject: {fileID: 146327349}
     - targetCorrespondingSourceObject: {fileID: 3542810473668066901, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 146327350}
+      addedObject: {fileID: 146327352}
   m_SourcePrefab: {fileID: 100100000, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
 --- !u!4 &146327344 stripped
 Transform:
@@ -460,7 +460,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &146327350
+--- !u!114 &146327352
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -469,7 +469,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 146327345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &169588039
@@ -548,7 +548,7 @@ PrefabInstance:
       addedObject: {fileID: 169588045}
     - targetCorrespondingSourceObject: {fileID: 3542810473668066901, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 169588046}
+      addedObject: {fileID: 169588048}
   m_SourcePrefab: {fileID: 100100000, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
 --- !u!4 &169588040 stripped
 Transform:
@@ -603,7 +603,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &169588046
+--- !u!114 &169588048
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -612,7 +612,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 169588041}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &280313476
@@ -1243,7 +1243,7 @@ PrefabInstance:
       addedObject: {fileID: 1146391194}
     - targetCorrespondingSourceObject: {fileID: 3542810473668066901, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1146391195}
+      addedObject: {fileID: 1146391197}
   m_SourcePrefab: {fileID: 100100000, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
 --- !u!4 &1146391189 stripped
 Transform:
@@ -1298,7 +1298,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1146391195
+--- !u!114 &1146391197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1307,7 +1307,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1146391190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1405063783
@@ -1439,117 +1439,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64df2c45fdfd44340b0c7115dddbdd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_poseMixed: {fileID: 1405063785}
-  Poses:
+  m_target: {fileID: 1405063785}
+  m_references:
   - {fileID: 1146391192}
   - {fileID: 169588043}
   - {fileID: 1902740226}
   - {fileID: 2070357004}
   - {fileID: 146327347}
-  MixedBoneGroups:
+  m_isValid: 1
+  MixedJointGroups:
   - Label: Spine
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK)
-      Pose: {fileID: 1146391192}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
-      Pose: {fileID: 169588043}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
-      Pose: {fileID: 1902740226}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
-      Pose: {fileID: 2070357004}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
-      Pose: {fileID: 146327347}
-      Weight: 1
-  - Label: Left Leg
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK)
-      Pose: {fileID: 1146391192}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
-      Pose: {fileID: 169588043}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
-      Pose: {fileID: 1902740226}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
-      Pose: {fileID: 2070357004}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
-      Pose: {fileID: 146327347}
-      Weight: 1
-  - Label: Right Leg
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK)
-      Pose: {fileID: 1146391192}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
-      Pose: {fileID: 169588043}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
-      Pose: {fileID: 1902740226}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
-      Pose: {fileID: 2070357004}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
-      Pose: {fileID: 146327347}
-      Weight: 1
-  - Label: Left Arm
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK)
-      Pose: {fileID: 1146391192}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
-      Pose: {fileID: 169588043}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
-      Pose: {fileID: 1902740226}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
-      Pose: {fileID: 2070357004}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
-      Pose: {fileID: 146327347}
-      Weight: 1
-  - Label: Left Finger
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK)
-      Pose: {fileID: 1146391192}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
-      Pose: {fileID: 169588043}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
-      Pose: {fileID: 1902740226}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
-      Pose: {fileID: 2070357004}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
-      Pose: {fileID: 146327347}
-      Weight: 1
-  - Label: Right Arm
-    WeightsForPoses:
-    - PoseName: Humanoid Mapped Pose (FinalIK)
-      Pose: {fileID: 1146391192}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
-      Pose: {fileID: 169588043}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
-      Pose: {fileID: 1902740226}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
-      Pose: {fileID: 2070357004}
-      Weight: 1
-    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
-      Pose: {fileID: 146327347}
-      Weight: 1
-  - Label: Right Finger
     WeightsForPoses:
     - PoseName: Humanoid Mapped Pose (FinalIK)
       Pose: {fileID: 1146391192}
@@ -1583,7 +1482,108 @@ MonoBehaviour:
     - PoseName: Humanoid Mapped Pose (FinalIK) (4)
       Pose: {fileID: 146327347}
       Weight: 1
-  m_isValid: 1
+  - Label: Arm Left
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK)
+      Pose: {fileID: 1146391192}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
+      Pose: {fileID: 169588043}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
+      Pose: {fileID: 1902740226}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
+      Pose: {fileID: 2070357004}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
+      Pose: {fileID: 146327347}
+      Weight: 1
+  - Label: Arm Right
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK)
+      Pose: {fileID: 1146391192}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
+      Pose: {fileID: 169588043}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
+      Pose: {fileID: 1902740226}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
+      Pose: {fileID: 2070357004}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
+      Pose: {fileID: 146327347}
+      Weight: 1
+  - Label: Finger Left
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK)
+      Pose: {fileID: 1146391192}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
+      Pose: {fileID: 169588043}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
+      Pose: {fileID: 1902740226}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
+      Pose: {fileID: 2070357004}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
+      Pose: {fileID: 146327347}
+      Weight: 1
+  - Label: Finger Right
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK)
+      Pose: {fileID: 1146391192}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
+      Pose: {fileID: 169588043}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
+      Pose: {fileID: 1902740226}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
+      Pose: {fileID: 2070357004}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
+      Pose: {fileID: 146327347}
+      Weight: 1
+  - Label: Leg Left
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK)
+      Pose: {fileID: 1146391192}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
+      Pose: {fileID: 169588043}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
+      Pose: {fileID: 1902740226}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
+      Pose: {fileID: 2070357004}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
+      Pose: {fileID: 146327347}
+      Weight: 1
+  - Label: Leg Right
+    WeightsForPoses:
+    - PoseName: Humanoid Mapped Pose (FinalIK)
+      Pose: {fileID: 1146391192}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (1)
+      Pose: {fileID: 169588043}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (2)
+      Pose: {fileID: 1902740226}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (3)
+      Pose: {fileID: 2070357004}
+      Weight: 1
+    - PoseName: Humanoid Mapped Pose (FinalIK) (4)
+      Pose: {fileID: 146327347}
+      Weight: 1
   m_isDrawingGUI: 1
 --- !u!114 &1405063788
 MonoBehaviour:
@@ -1609,9 +1609,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7254211191453bf49a8f0c25b67c6652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_refPose: {fileID: 0}
-  m_pose: {fileID: 1405063785}
   m_isValid: 1
+  m_target: {fileID: 1405063785}
+  m_reference: {fileID: 0}
   PositionType: 2
   RotationType: 2
   Label: Spine
@@ -1653,9 +1653,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8644f3a5ee2027c4fbb39aaddb3ac2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_refPose: {fileID: 0}
-  m_pose: {fileID: 1405063785}
   m_isValid: 1
+  m_target: {fileID: 1405063785}
+  m_reference: {fileID: 0}
   PositionType: 2
   RotationType: 2
   m_delayFixedFrame: 0
@@ -1680,7 +1680,7 @@ MonoBehaviour:
   - {fileID: 1902740226}
   - {fileID: 2070357004}
   - {fileID: 146327347}
-  m_showGUI: 1
+  m_isDrawingGUI: 1
 --- !u!1001 &1537400484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2642,7 +2642,7 @@ PrefabInstance:
       addedObject: {fileID: 1902740228}
     - targetCorrespondingSourceObject: {fileID: 3542810473668066901, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1902740229}
+      addedObject: {fileID: 1902740231}
   m_SourcePrefab: {fileID: 100100000, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
 --- !u!4 &1902740223 stripped
 Transform:
@@ -2697,7 +2697,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1902740229
+--- !u!114 &1902740231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2706,7 +2706,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1902740224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2070357000
@@ -2785,7 +2785,7 @@ PrefabInstance:
       addedObject: {fileID: 2070357006}
     - targetCorrespondingSourceObject: {fileID: 3542810473668066901, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2070357007}
+      addedObject: {fileID: 2070357009}
   m_SourcePrefab: {fileID: 100100000, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
 --- !u!4 &2070357001 stripped
 Transform:
@@ -2840,7 +2840,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &2070357007
+--- !u!114 &2070357009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2849,7 +2849,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2070357002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

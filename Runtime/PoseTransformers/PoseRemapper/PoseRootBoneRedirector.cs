@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace CyberInterfaceLab.PoseSynth
 {
 
-    public class PoseRootBoneRedirector : PoseRemapper
+    public class PoseRootBoneRedirector : PoseRemapper, IObservable<PoseRootBoneRedirector>
     {
         internal class ApplyCommand : ICommand
         {
@@ -85,11 +85,11 @@ namespace CyberInterfaceLab.PoseSynth
                 Initialize();
             }
         }
-        protected Queue<ICommand> m_commands;
+        protected Queue<ICommand> m_commands = new(64);
 
-        HashSet<IObserver<PoseRootBoneRedirector>> m_observers = new(64);
 
         #region observable
+        HashSet<IObserver<PoseRootBoneRedirector>> m_observers = new(64);
         public void AddObserver(IObserver<PoseRootBoneRedirector> observer) => m_observers.Add(observer);
         public void RemoveObserver(IObserver<PoseRootBoneRedirector> observer) => m_observers.Remove(observer);
         public override void Notify()
@@ -101,11 +101,11 @@ namespace CyberInterfaceLab.PoseSynth
         }
         #endregion
 
-        protected Transform RootBone => m_reference.Root.transform;
+        protected Transform RootBone => m_target.Root.transform;
         protected Transform RefRootBone => m_reference.Root.transform;
         public virtual void Initialize()
         {
-            m_commands = new Queue<ICommand>(m_delayFixedFrame);
+            m_commands = new Queue<ICommand>(m_delayFixedFrame + 1);
         }
         protected Vector3 GetRefPosition()
         {
@@ -139,6 +139,12 @@ namespace CyberInterfaceLab.PoseSynth
         }
         protected override void RemapOnUpdate()
         {
+            // if no reference, do nothing.
+            if (m_reference == null)
+            {
+                return;
+            }
+
             // Enqueue a new command.
             m_commands.Enqueue(new ApplyCommand(RootBone, GetRefPosition(), GetRefRotation(), PositionType, RotationType));
 

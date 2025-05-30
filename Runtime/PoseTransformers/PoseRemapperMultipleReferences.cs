@@ -1,12 +1,17 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
 {
+    /// <summary>
+    /// 複数の<see cref="Pose"/>を参照して、1つの<see cref="Pose"/>を変換する<see cref="IPoseTransformer"/>です。
+    /// This class is used to transform a <see cref="Pose"/> based on the information of multiple <see cref="Pose"/>s.
+    /// </summary>
     public abstract class PoseRemapperMultipleReferences : MonoBehaviour, IPoseTransformer
     {
         #region public variable
+        /// <inheritdoc/>
         public bool IsValid
         {
             get
@@ -27,11 +32,16 @@ namespace CyberInterfaceLab.PoseSynth
                 m_isValid = value;
             }
         }
+        /// <inheritdoc/>
         public Pose Target
         {
             get => m_target;
             set => m_target = value;
         }
+        /// <summary>
+        /// <see cref="Target"/>の変換のために入力として使用する<see cref="Pose"/>のリストです。
+        /// List of <see cref="Pose"/>s used as input for the transformation of <see cref="Target"/>.
+        /// </summary>
         public List<Pose> References
         {
             get => m_references;
@@ -46,6 +56,13 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region IObservable
+        /// <summary>
+        /// Call it when the inner values have changed.
+        /// </summary>
+        /// <remarks>
+        /// This method is implemented in derived classes with <see cref="IObservable{T}"/> where T is the derived class.
+        /// To call this, turn on <see cref="m_hasModified"/> in <see cref="RemapOnUpdate"/>.
+        /// </remarks>
         public abstract void Notify();
         /// <summary>
         /// Flag to check whether the object has been modified.
@@ -55,6 +72,11 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region public method
+        /// <summary>
+        /// 参照する<see cref="Pose"/>を追加します。
+        /// Add a <see cref="Pose"/> to be referenced.
+        /// </summary>
+        /// <param name="pose"></param>
         public virtual void AddPose(Pose pose)
         {
             if (pose == null)
@@ -65,6 +87,11 @@ namespace CyberInterfaceLab.PoseSynth
             if (!m_references.Contains(pose))
                 m_references.Add(pose);
         }
+        /// <summary>
+        /// 参照する<see cref="Pose"/>を削除します。
+        /// Remove a <see cref="Pose"/> from the references.
+        /// </summary>
+        /// <param name="pose"></param>
         public virtual void RemovePose(Pose pose)
         {
             if (pose == null)
@@ -78,6 +105,10 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region private method
+        /// <summary>
+        /// <see cref="IsValid"/>がtrueの場合に、毎ループ呼び出される変換用の関数です。
+        /// Called every loop when <see cref="IsValid"/> is true.
+        /// </summary>
         protected abstract void RemapOnUpdate();
         #endregion
 
@@ -85,10 +116,21 @@ namespace CyberInterfaceLab.PoseSynth
         protected virtual void OnValidate()
         {
             m_target = GetComponent<Pose>();
+            if (m_target == null)
+            {
+                m_target = GetComponentInParent<Pose>(includeInactive: true);
+            }
         }
         protected virtual void Awake()
         {
-            m_target = GetComponent<Pose>();
+            if (m_target == null)
+            {
+                m_target = GetComponent<Pose>();
+                if (m_target == null)
+                {
+                    m_target = GetComponentInParent<Pose>(includeInactive: true);
+                }
+            }
         }
         protected virtual void Update()
         {

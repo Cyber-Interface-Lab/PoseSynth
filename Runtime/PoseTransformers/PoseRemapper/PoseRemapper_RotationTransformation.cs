@@ -7,7 +7,7 @@ namespace CyberInterfaceLab.PoseSynth
 {
 
     /// <summary>
-    /// Rotate the target bone based on the rotation of the reference bone.
+    /// Rotate the target joint based on the rotation of the reference joint.
     /// </summary>
     public class PoseRemapper_RotationTransformation : PoseRemapper, IObservable<PoseRemapper_RotationTransformation>
     {

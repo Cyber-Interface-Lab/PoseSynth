@@ -458,7 +458,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 146327345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &169588039
@@ -590,7 +590,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 169588041}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &280313476
@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1146391190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1537400484
@@ -2094,7 +2094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8464258974112909532, guid: 2ceed251c8834494da2035c70a305d18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.016
       objectReference: {fileID: 0}
     - target: {fileID: 8464258974112909532, guid: 2ceed251c8834494da2035c70a305d18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2118,7 +2118,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8464258974112909532, guid: 2ceed251c8834494da2035c70a305d18, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.682
+      value: 1.949
       objectReference: {fileID: 0}
     - target: {fileID: 8464258974112909532, guid: 2ceed251c8834494da2035c70a305d18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2286,7 +2286,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1902740224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2070357000
@@ -2418,7 +2418,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2070357002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

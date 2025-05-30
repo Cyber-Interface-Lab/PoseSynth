@@ -8,7 +8,8 @@ using Unity.VisualScripting;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// Mixer that mixes several Poses into one Pose.
+    /// 複数の<see cref="Pose"/>を重ね合わせて1つの<see cref="Pose"/>に変換する<see cref="IPoseTransformer"/>です。
+    /// <see cref="IPoseTransformer"/> to transform multiple <see cref="Pose"/>s into one <see cref="Pose"/> by mixing them.
     /// </summary>
     [RequireComponent(typeof(Pose))]
 
@@ -25,6 +26,7 @@ namespace CyberInterfaceLab.PoseSynth
         private List<Pose> m_lastReferences = new List<Pose>();
 
         /// <summary>
+        /// <see cref="Pose"/>の名前と、対応する重みを持つ構造体です。
         /// The collection of weight for each pose by label.
         /// </summary>
         [System.Serializable]
@@ -61,7 +63,8 @@ namespace CyberInterfaceLab.PoseSynth
             }
         }
         /// <summary>
-        /// Bone groups in Poses that have the same label.
+        /// 複数の<see cref="Pose"/>間で同じラベルを持つ<see cref="Pose.JointGroup"/>をまとめた構造体です。
+        /// Joint groups in Poses that have the same label.
         /// </summary>
         [System.Serializable]
         public struct MixedJointGroup
@@ -180,19 +183,23 @@ namespace CyberInterfaceLab.PoseSynth
 
         #region public variable
         /// <summary>
-        /// All <see cref="MixedJointGroup"/>s based on Poses.
+        /// 全ての<see cref="Pose"/>の<see cref="Pose.JointGroup"/>をまとめたものです。
+        /// <see cref="Pose.JointGroup"/>s of all <see cref="Pose"/>s.
         /// </summary>
         [SerializeField]
         public List<MixedJointGroup> MixedJointGroups = new(64);
         #endregion
 
         #region protected variable
-        HashSet<IObserver<PoseMixer>> m_observers = new(64);
         #endregion
 
         #region observable
+        HashSet<IObserver<PoseMixer>> m_observers = new(64);
+        /// <inheritdoc/>
         public void AddObserver(IObserver<PoseMixer> observer) => m_observers.Add(observer);
+        /// <inheritdoc/>
         public void RemoveObserver(IObserver<PoseMixer> observer) => m_observers.Remove(observer);
+        /// <inheritdoc/>
         public override void Notify()
         {
             foreach (var observer in m_observers)
@@ -204,7 +211,7 @@ namespace CyberInterfaceLab.PoseSynth
 
         #region public method
         /// <summary>
-        /// Add a Pose to the list Poses.
+        /// Add a <see cref="Pose"/> as a reference to be mixed.
         /// </summary>
         /// <param name="pose"></param>
         public override void AddPose(Pose pose)
@@ -218,7 +225,7 @@ namespace CyberInterfaceLab.PoseSynth
             InitializeMixedJointGroups();
         }
         /// <summary>
-        /// Remove a Pose from the list Poses.
+        /// Remove a reference <see cref="Pose"/>.
         /// </summary>
         /// <param name="pose"></param>
         public override void RemovePose(Pose pose)
@@ -231,6 +238,7 @@ namespace CyberInterfaceLab.PoseSynth
         }
 
         /// <summary>
+        /// <see cref="MixedJointGroup"/>を初期化します。
         /// Initialize <see cref="MixedJointGroup"/>s based on Poses.
         /// </summary>
         public void InitializeMixedJointGroups(bool mergeCurrentValue = true)
@@ -260,7 +268,8 @@ namespace CyberInterfaceLab.PoseSynth
             MixedJointGroups = new List<MixedJointGroup>(result);
         }
         /// <summary>
-        /// Get the weight corresponding to the input label from the input Pose.
+        /// 引数の<see cref="Pose"/>とラベルから、対応する重みを取得します。
+        /// Get the weight corresponding to the input label from the input <see cref="Pose"/>.
         /// </summary>
         /// <param name="pose"></param>
         /// <param name="label"></param>
@@ -282,7 +291,8 @@ namespace CyberInterfaceLab.PoseSynth
             }
         }
         /// <summary>
-        /// Set the weight corresponding to the input label from the input Pose.
+        /// 引数の<see cref="Pose"/>とラベルから、対応する重みの値を設定します。
+        /// Set the weight corresponding to the input label from the input <see cref="Pose"/>.
         /// </summary>
         /// <param name="pose"></param>
         /// <param name="label"></param>
@@ -332,7 +342,8 @@ namespace CyberInterfaceLab.PoseSynth
             yield break;
         }
         /// <summary>
-        /// Add a value to the weight corresponding to the input label from the input Pose.
+        /// 引数の<see cref="Pose"/>とラベルから、対応する重みを加算します。
+        /// Add a value to the weight corresponding to the input label from the input <see cref="Pose"/>.
         /// </summary>
         /// <param name="pose"></param>
         /// <param name="label"></param>
@@ -349,7 +360,7 @@ namespace CyberInterfaceLab.PoseSynth
 
         #region protected method
         /// <summary>
-        /// Take weighted average of several Poses and apply to m_poseMixed.
+        /// Take weighted average of reference <see cref="Pose"/>s and apply to the target.
         /// </summary>
         /// <param name="poses"></param>
         /// <returns></returns>
@@ -489,6 +500,7 @@ namespace CyberInterfaceLab.PoseSynth
 
             }, $"[PoseMixer] {gameObject.name}");
         }
+        /// <inheritdoc/>
         public void DrawGUI(int windowId) => ShowWeights(windowId);
         protected void ShowMasterWeights(int windowId)
         {

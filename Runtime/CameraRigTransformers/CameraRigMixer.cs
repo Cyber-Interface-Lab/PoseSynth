@@ -6,6 +6,14 @@ using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
 {
+    /// <summary>
+    /// 複数の<see cref="ICameraRig"/>に含まれるトラッカの位置・姿勢を融合し、1つの<see cref="ICameraRig"/>に変換します。
+    /// This class mixes the position and rotation of trackers contained in multiple <see cref="ICameraRig"/>s and transforms them into a single <see cref="ICameraRig"/>.
+    /// </summary>
+    /// <remarks>
+    /// 処理の方法は<see cref="PoseMixer"/>も参照してください。
+    /// The processing method is similar to <see cref="PoseMixer"/>.
+    /// </remarks>
     public class CameraRigMixer : CameraRigRemapperMultipleReferences<CameraRigMixer>, IGUIDrawer
     {
         public enum TransformType
@@ -258,6 +266,7 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region protected method
+        /// <inheritdoc/>
         protected override void RemapOnUpdate()
         {
             // normalize the weights and mix them.

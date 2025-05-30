@@ -1,15 +1,17 @@
-using CyberInterfaceLab.PoseSynth.Network;
+﻿using CyberInterfaceLab.PoseSynth.Network;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace CyberInterfaceLab.PoseSynth
+namespace CyberInterfaceLab.PoseSynth.Network
 {
     /// <summary>
-    /// <see cref="PoseMapper"/> for network.
-    /// Attach it to the gameObject with PoseMapper.
+    /// <see cref="PoseMapper"/>用の<see cref="NetworkBehaviour"/>です。
+    /// <see cref="PoseMapper.Reference"/>をネットワークで同期します。
+    /// <see cref="NetworkBehaviour"/> for <see cref="PoseMapper"/>.
+    /// This class is used to synchronize <see cref="PoseMapper.Reference"/> across the network.
     /// </summary>
     public abstract class NetworkPoseMapper<T> : PSNetworkBehaviour, IObserver<T> where T: PoseMapper
     {
@@ -24,16 +26,25 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region public method
+        /// <summary>
+        /// <see cref="PoseMapper.Reference"/>を設定します。
+        /// Set <see cref="PoseMapper.Reference"/>.
+        /// </summary>
+        /// <remarks>
+        /// この関数は<see cref="OnNotified(T)"/>内で呼び出されます。
+        /// This method is called in <see cref="OnNotified(T)"/>.
+        /// </remarks>
+        /// <param name="cameraRig"></param>
         public void SetReference(ICameraRig cameraRig)
         {
             /*
-            ������
-            Client�̏ꍇ
-                -> Server��RPC�𑗐M -> Server��Reference��ύX
-                -> Server���SClient��RPC�𑗐M -> Client��Reference��ύX
-            Server�̏ꍇ
-                -> Reference��ύX
-                -> �SClient��RPC�𑗐M -> Client��Reference��ύX
+            処理順
+            Clientの場合
+                -> ServerにRPCを送信 -> ServerがReferenceを変更
+                -> Serverが全ClientにRPCを送信 -> ClientがReferenceを変更
+            Serverの場合
+                -> Referenceを変更
+                -> 全ClientにRPCを送信 -> ClientがReferenceを変更
 
             Order of processing
             Client
@@ -88,17 +99,32 @@ namespace CyberInterfaceLab.PoseSynth
                 Debug.LogError($"The CameraRig is not a network object!");
             }
         }
+        /// <inheritdoc/>
         public void OnNotified(T mapper)
         {
             SetReference(mapper.Reference);
         }
+        /// <summary>
+        /// 特定の<see cref="T"/>を観測します。
+        /// 内部で<see cref="IObservable{T}.AddObserver(IObserver{T})"/>を呼び出します。
+        /// Observe a specific <see cref="T"/>.
+        /// This method calls <see cref="IObservable{T}.AddObserver(IObserver{T})"/> internally.
+        /// </summary>
+        /// <param name="observable"></param>
         protected abstract void Observe(T observable);
+        /// <summary>
+        /// 特定の<see cref="T"/>の観測を解除します。
+        /// 内部で<see cref="IObservable{T}.RemoveObserver(IObserver{T})"/>を呼び出します。
+        /// Unobserve a specific <see cref="T"/>.
+        /// This method calls <see cref="IObservable{T}.RemoveObserver(IObserver{T})"/> internally.
+        /// </summary>
+        /// <param name="observable"></param>
         protected abstract void Unobserve(T observable);
         #endregion
 
         #region private method
         [ServerRpc(RequireOwnership = false)]
-        private void SetCameraRigServerRpc(ulong networkObjectId)
+        protected virtual void SetCameraRigServerRpc(ulong networkObjectId)
         {
             //Debug.Log("SetCameraRigServerRpc: " + networkObjectId);
             var obj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[networkObjectId];
@@ -115,7 +141,7 @@ namespace CyberInterfaceLab.PoseSynth
             SetCameraRigClientRpc(networkObjectId);
         }
         [ServerRpc(RequireOwnership = false)]
-        private void SetCameraRigToNullServerRpc()
+        protected virtual  void SetCameraRigToNullServerRpc()
         {
             /*
             foreach (var mapper in m_mappers)
@@ -127,7 +153,7 @@ namespace CyberInterfaceLab.PoseSynth
             SetCameraRigToNullClientRpc();
         }
         [ClientRpc]
-        private void SetCameraRigClientRpc(ulong networkObjectId)
+        protected virtual void SetCameraRigClientRpc(ulong networkObjectId)
         {
             //Debug.Log("SetCameraRigClientRpc: " + networkObjectId);
             // search the network object whose id is equal to the argument.
@@ -147,7 +173,7 @@ namespace CyberInterfaceLab.PoseSynth
             Debug.LogError($"The network object (id: {networkObjectId}) does not have an ICameraRig!");
         }
         [ClientRpc]
-        private void SetCameraRigToNullClientRpc()
+        protected virtual void SetCameraRigToNullClientRpc()
         {
             /*
             foreach (var mapper in m_mappers)
@@ -157,9 +183,6 @@ namespace CyberInterfaceLab.PoseSynth
             */
             m_mapper.SetCameraRigWithoutNotice(null);
         }
-
-
-        
         #endregion
 
         #region event
