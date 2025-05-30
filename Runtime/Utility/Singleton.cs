@@ -5,13 +5,18 @@ namespace CyberInterfaceLab.PoseSynth
 {
 
     /// <summary>
-    /// Singleton pattern
+    /// Singletonパターンを実装するための基底クラスです。
+    /// Singleton pattern base class.
     /// </summary>
-    /// <typeparam name="SingletonType"></typeparam>
+    /// <typeparam name="T"></typeparam>
     public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
 
         private static T instance;
+        /// <summary>
+        /// このクラスのインスタンスを取得します。
+        /// Get the instance of this class.
+        /// </summary>
         public static T Instance
         {
             get

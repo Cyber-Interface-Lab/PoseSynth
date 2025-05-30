@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -6,15 +6,22 @@ using UnityEngine;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// Remap the target <see cref="ICameraRig"/> from other multiple <see cref="ICameraRig"/>s.
+    /// 複数の<see cref="ICameraRig"/>の情報を元に、別の<see cref="ICameraRig"/>を変換するクラスです。
+    /// This class remapds the target <see cref="ICameraRig"/> from other multiple <see cref="ICameraRig"/>s.
     /// </summary>
+    /// <remarks>
+    /// When you want to use this in the multiplayer scene, please use <see cref="CameraRigIdentity"/> as the input references,
+    /// Because PoseSynth does not synchronize the reference among clients. 
+    /// </remarks>
     [RequireComponent(typeof(ICameraRig))]
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
-    public abstract class CameraRigRemapperMultipleReferences : MonoBehaviour, ICameraRigTransformer, IObservable<CameraRigRemapperMultipleReferences>
+    public abstract class CameraRigRemapperMultipleReferences<T> : MonoBehaviour, ICameraRigTransformer, IObservable<T>
+        where T: CameraRigRemapperMultipleReferences<T>
     {
         #region public variable
+        /// <inheritdoc/>
         public bool IsValid
         {
             get
@@ -35,11 +42,16 @@ namespace CyberInterfaceLab.PoseSynth
                 m_isValid = value;
             }
         }
+        /// <inheritdoc/>
         public ICameraRig Target
         {
             get => m_target;
             set => m_target = value;
         }
+        /// <summary>
+        /// <see cref="Target"/>の変換のために入力として使用する<see cref="ICameraRig"/>です。
+        /// <see cref="ICameraRig"/> used as input for the transformation of <see cref="Target"/>.
+        /// </summary>
         public List<ICameraRig> References
         {
             get
@@ -66,20 +78,33 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region IObservable
-        private HashSet<IObserver<CameraRigRemapperMultipleReferences>> m_observers = new(64);
-        public void AddObserver(IObserver<CameraRigRemapperMultipleReferences> observer) => m_observers.Add(observer);
-        public void RemoveObserver(IObserver<CameraRigRemapperMultipleReferences> observer) => m_observers.Remove(observer);
+        private HashSet<IObserver<T>> m_observers = new(64);
+        /// <inheritdoc/>
+        public void AddObserver(IObserver<T> observer) => m_observers.Add(observer);
+        /// <inheritdoc/>
+        public void RemoveObserver(IObserver<T> observer) => m_observers.Remove(observer);
+        /// <inheritdoc/>
         public void Notify()
         {
             foreach (var observer in m_observers)
             {
-                observer.OnNotified(this);
+                observer.OnNotified(this as T);
             }
         }
+        /// <summary>
+        /// Flag to check whether any parameter has been modified.
+        /// If true, <see cref="Notify"/> will be called in <see cref="LateUpdate"/> to synchronize all the parameters to clients.
+        /// </summary>
+        protected bool m_hasModified = false;
         #endregion
 
         #region public method
-        public virtual void AddReference(ICameraRig reference, bool withNotice=true)
+        /// <summary>
+        /// <see cref="References"/>に<see cref="ICameraRig"/>を追加します。
+        /// Add <see cref="ICameraRig"/> to <see cref="References"/>.
+        /// </summary>
+        /// <param name="reference"></param>
+        public virtual void AddReference(ICameraRig reference)
         {
             // return if the list already has the input
             if (m_references.Contains(reference as MonoBehaviour))
@@ -89,12 +114,13 @@ namespace CyberInterfaceLab.PoseSynth
 
             m_references.Add((MonoBehaviour)reference);
             m_references.RemoveAll(x => x == null);
-            if (withNotice)
-            {
-                Notify();
-            }
         }
-        public virtual void RemoveReference(ICameraRig reference, bool withNotice=true)
+        /// <summary>
+        /// <see cref="References"/>から<see cref="ICameraRig"/>を削除します。
+        /// Remove <see cref="ICameraRig"/> from <see cref="References"/>.
+        /// </summary>
+        /// <param name="reference"></param>
+        public virtual void RemoveReference(ICameraRig reference)
         {
             if (!m_references.Contains(reference as MonoBehaviour))
             {
@@ -102,14 +128,14 @@ namespace CyberInterfaceLab.PoseSynth
             }
             m_references.Remove((MonoBehaviour)reference);
             m_references.RemoveAll(x => x == null);
-            if (withNotice)
-            {
-                Notify();
-            }
         }
         #endregion
 
         #region protected method
+        /// <summary>
+        /// <see cref="IsValid"/>がtrueの場合に、毎ループ呼び出される変換用の関数です。
+        /// Called every loop when <see cref="IsValid"/> is true.
+        /// </summary>
         protected abstract void RemapOnUpdate();
         #endregion
 
@@ -117,15 +143,28 @@ namespace CyberInterfaceLab.PoseSynth
         protected virtual void OnValidate()
         {
             m_target = GetComponent<ICameraRig>();
-
             // remove contents of references who does not inherit ICameraRig
-            m_references.RemoveAll(x => x is not ICameraRig && x is not null);
+            //m_references.RemoveAll(x => x is not ICameraRig && x is not null);
         }
-        void FixedUpdate()
+        protected virtual void Awake()
         {
+            m_target = GetComponent<ICameraRig>();
+            // remove contents of references who does not inherit ICameraRig
+            //m_references.RemoveAll(x => x is not ICameraRig && x is not null);
+        }
+        protected virtual void Update()
+        {
+            m_hasModified = false;
             if (m_isValid && m_references.Count > 0)
             {
                 RemapOnUpdate();
+            }
+        }
+        void LateUpdate()
+        {
+            if (m_hasModified)
+            {
+                Notify();
             }
         }
         #endregion

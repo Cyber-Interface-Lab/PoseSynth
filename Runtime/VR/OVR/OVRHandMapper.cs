@@ -8,7 +8,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
     /// <summary>
     /// Map Hand Tracking to Hand Pose.
     /// </summary>
-    public class OVRHandMapper : HandMapper
+    public class OVRHandMapper : HandMapper, IObservable<OVRHandMapper>
     {
         [SerializeField] private Finger WristRoot;
         [SerializeField] private Finger ForearmStub;
@@ -31,11 +31,28 @@ namespace CyberInterfaceLab.PoseSynth.VR
         private HashSet<Finger> m_fingers;
         private HashSet<DoubleFinger> m_doubleFingers;
 
+        HashSet<IObserver<OVRHandMapper>> m_observers = new(8);
+
+        [Header("Humanoid Animator")]
+        [SerializeField] private Animator m_animator;
+
+        #region observable
+        public void AddObserver(IObserver<OVRHandMapper> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<OVRHandMapper> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         private void SetProperties(Finger f)
         {
             if (f.Target == null) { return; }
-            if (m_cameraRig == null) { return; }
-            if (m_cameraRig.TryGetTransform(f.Type, out var t) && t != null)
+            if (m_reference == null) { return; }
+            if (m_reference.TryGetTransform(f.Type, out var t) && t != null)
             {
                 f.Target.localRotation = Utilities.Multiply(t.localRotation, f.Offset);
             }
@@ -43,9 +60,9 @@ namespace CyberInterfaceLab.PoseSynth.VR
         private void SetProperties(DoubleFinger df)
         {
             if (df.Target == null) { return; }
-            if (m_cameraRig == null) { return; }
-            if (m_cameraRig.TryGetTransform(df.Type0, out var t0) && t0 != null
-                && m_cameraRig.TryGetTransform(df.Type1, out var t1) && t1 != null)
+            if (m_reference == null) { return; }
+            if (m_reference.TryGetTransform(df.Type0, out var t0) && t0 != null
+                && m_reference.TryGetTransform(df.Type1, out var t1) && t1 != null)
             {
                 var offset0 = Utilities.Multiply(t0.localRotation, df.Offset0);
                 var offset1 = Utilities.Multiply(t1.localRotation, df.Offset1);
@@ -76,26 +93,27 @@ namespace CyberInterfaceLab.PoseSynth.VR
             Pinky3.Type = Type == HandType.Left ? TrackerType.Pinky3Left : TrackerType.Pinky3Right;
 
             // set hand target
-            var animator = GetComponentInChildren<Animator>();
-            var avatar = animator.avatar;
+            //var animator = GetComponentInChildren<Animator>();
+            //var avatar = animator.avatar;
+            var avatar = m_animator.avatar;
             if (avatar.isHuman)
             {
-                WristRoot.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
-                Thumb1.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftThumbProximal : HumanBodyBones.RightThumbProximal);
-                Thumb2.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftThumbIntermediate : HumanBodyBones.RightThumbIntermediate);
-                Thumb3.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftThumbDistal : HumanBodyBones.RightThumbDistal);
-                Index1.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftIndexProximal : HumanBodyBones.RightIndexProximal);
-                Index2.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftIndexIntermediate : HumanBodyBones.RightIndexIntermediate);
-                Index3.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftIndexDistal : HumanBodyBones.RightIndexDistal);
-                Middle1.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftMiddleProximal : HumanBodyBones.RightMiddleProximal);
-                Middle2.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftMiddleIntermediate : HumanBodyBones.RightMiddleIntermediate);
-                Middle3.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftMiddleDistal : HumanBodyBones.RightMiddleDistal);
-                Ring1.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftRingProximal : HumanBodyBones.RightRingProximal);
-                Ring2.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftRingIntermediate : HumanBodyBones.RightRingIntermediate);
-                Ring3.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftRingDistal : HumanBodyBones.RightRingDistal);
-                Pinky1.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftLittleProximal : HumanBodyBones.RightLittleProximal);
-                Pinky2.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftLittleIntermediate : HumanBodyBones.RightLittleIntermediate);
-                Pinky3.Target = animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftLittleDistal : HumanBodyBones.RightLittleDistal);
+                WristRoot.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftHand : HumanBodyBones.RightHand);
+                Thumb1.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftThumbProximal : HumanBodyBones.RightThumbProximal);
+                Thumb2.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftThumbIntermediate : HumanBodyBones.RightThumbIntermediate);
+                Thumb3.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftThumbDistal : HumanBodyBones.RightThumbDistal);
+                Index1.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftIndexProximal : HumanBodyBones.RightIndexProximal);
+                Index2.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftIndexIntermediate : HumanBodyBones.RightIndexIntermediate);
+                Index3.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftIndexDistal : HumanBodyBones.RightIndexDistal);
+                Middle1.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftMiddleProximal : HumanBodyBones.RightMiddleProximal);
+                Middle2.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftMiddleIntermediate : HumanBodyBones.RightMiddleIntermediate);
+                Middle3.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftMiddleDistal : HumanBodyBones.RightMiddleDistal);
+                Ring1.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftRingProximal : HumanBodyBones.RightRingProximal);
+                Ring2.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftRingIntermediate : HumanBodyBones.RightRingIntermediate);
+                Ring3.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftRingDistal : HumanBodyBones.RightRingDistal);
+                Pinky1.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftLittleProximal : HumanBodyBones.RightLittleProximal);
+                Pinky2.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftLittleIntermediate : HumanBodyBones.RightLittleIntermediate);
+                Pinky3.Target = m_animator.GetBoneTransform(Type == HandType.Left ? HumanBodyBones.LeftLittleDistal : HumanBodyBones.RightLittleDistal);
             }
 
             // create hashset

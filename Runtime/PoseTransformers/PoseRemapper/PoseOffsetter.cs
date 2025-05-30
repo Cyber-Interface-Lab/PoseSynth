@@ -7,7 +7,7 @@ namespace CyberInterfaceLab.PoseSynth
     /// <summary>
     /// Add offset to the pose.
     /// </summary>
-    public class PoseOffsetter : PoseRemapper
+    public class PoseOffsetter : PoseRemapper, IObservable<PoseOffsetter>
     {
         #region enum
         public enum OffsetType
@@ -28,14 +28,27 @@ namespace CyberInterfaceLab.PoseSynth
         protected Pose m_offset;
         #endregion
 
+        #region observable
+        HashSet<IObserver<PoseOffsetter>> m_observers = new(8);
+        public void AddObserver(IObserver<PoseOffsetter> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseOffsetter> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         #region public method
         protected override void RemapOnUpdate()
         {
-            var Bones = m_pose.Bones;
+            var Bones = m_target.Contents;
             for (int i = 0; i < Bones.Count; i++)
             {
-                var refBone = m_refPose.Bones[i].transform;
-                var offsetBone = m_offset.Bones[i].transform;
+                var refBone = m_reference.Contents[i].transform;
+                var offsetBone = m_offset.Contents[i].transform;
                 var bone = Bones[i].transform;
 
                 switch (Position)

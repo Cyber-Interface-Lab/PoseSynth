@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,8 @@ namespace CyberInterfaceLab.PoseSynth
         #region GUI Window ID
         private static int s_windowId = 0;
         /// <summary>
-        /// Get non-duplicate ID of GUI window.
+        /// IMGUIのウィンドウIDを重複なく取得します。
+        /// Get non-duplicate ID for IMGUI.
         /// </summary>
         /// <returns></returns>
         public static int GetWindowId() => s_windowId++;
@@ -53,6 +54,7 @@ namespace CyberInterfaceLab.PoseSynth
             return result;
         }
         /// <summary>
+        /// 引数を(-180, 180]の範囲に収めます。
         /// Get a modified angle in the range (-180, 180].
         /// </summary>
         /// <param name="angle"></param>
@@ -63,6 +65,7 @@ namespace CyberInterfaceLab.PoseSynth
             return 180f < cyclicAngle ? cyclicAngle - 360f : cyclicAngle;
         }
         /// <summary>
+        /// 引数を(-180, 180]の範囲に収めます。
         /// Get a modified angle in the range (-180, 180].
         /// </summary>
         /// <param name="angles"></param>
@@ -76,6 +79,7 @@ namespace CyberInterfaceLab.PoseSynth
                 );
         }
         /// <summary>
+        /// 2つのQuaternionの積を求めます。
         /// Get product of two Quaternion.
         /// P' = Q P Q^-1
         /// </summary>
@@ -89,31 +93,32 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         /// <summary>
-        /// �����̏��������߂�
+        /// 引数の序数を求めます。
+        /// Get the ordinal number of the argument.
         /// </summary>
         /// <param name="num"></param>
         /// <returns></returns>
         public static string GetNumberWord(int num)
         {
-            // ���̐���th
+            // 負の数はth
             if (num <= 0)
             {
                 return $"{num}th";
             }
 
-            // 1,2,3�ŏI�����̈ȊO��th
+            // 1,2,3で終わるもの以外はth
             else if (3 < num % 10)
             {
                 return $"{num}th";
             }
 
-            // 1,2,3�ŏI�����̂̂����C�\�̈ʂ�1�Ȃ��th
+            // 1,2,3で終わるもののうち，十の位が1ならばth
             else if (num % 10 <= 3 && (num % 100) / 10 == 1)
             {
                 return $"{num}th";
             }
 
-            // ����ȊO��1,2,3�͂��ꂼ��st�Cnd�Crd
+            // それ以外の1,2,3はそれぞれst，nd，rd
             else
             {
                 return num % 10 == 1 ? "1st" : num % 10 == 2 ? "2nd" : num % 10 == 3 ? "3rd" : "ERROR";

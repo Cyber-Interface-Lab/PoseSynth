@@ -132,7 +132,15 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1680796691, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680796691, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
       propertyPath: _cameraRig
+      value: 
+      objectReference: {fileID: 287051972}
+    - target: {fileID: 1680796691, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}
+      propertyPath: m_referenceObject
       value: 
       objectReference: {fileID: 287051972}
     - target: {fileID: 311620284045683731, guid: 37d8f3ad00bc3e14bb33aaf699dad86d, type: 3}

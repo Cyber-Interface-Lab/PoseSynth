@@ -8,11 +8,17 @@ using Unity.VisualScripting;
 namespace CyberInterfaceLab.PoseSynth.Network
 {
     /// <summary>
-    /// Observer of CameraRigWrapper for each VR plugins.
-    /// Can be used as CameraRig in the server.
+    /// 他のクライアントのカメラリグを示すクラスです。
+    /// ネットワークを介して他のクライアントのカメラリグに含まれるトラッカの位置・姿勢を同期します。
+    /// This class represents the camera rig of other clients.
+    /// It synchronizes the position and rotation of the trackers included in the camera rig of other clients across the network.
     /// </summary>
     public class ServerCameraRig : PSNetworkBehaviour, ICameraRig
     {
+        /// <summary>
+        /// カメラリグの種類です。
+        /// Type of camera rig.
+        /// </summary>
         public virtual CameraRigType Type { get; }
         /// <summary>
         /// Transform of trackers in network.
@@ -20,7 +26,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
         [Header("Trackers")]
         [SerializeField, UDictionary.Split(30, 70)]
         protected TrackerDictionary m_trackerTransform;
-
+        
         public UnityEvent<ServerCameraRig> EventInitialize { get; set; } = new();
         public UnityEvent<ServerCameraRig> EventDespawn { get; set; } = new();
 

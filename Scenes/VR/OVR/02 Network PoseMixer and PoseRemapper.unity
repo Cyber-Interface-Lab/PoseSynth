@@ -334,7 +334,13 @@ PrefabInstance:
       addedObject: {fileID: 403009275}
     - targetCorrespondingSourceObject: {fileID: 7621412444250114156, guid: f5b3471d80027b2439118609f92ec701, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 403009277}
+    - targetCorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 403009276}
+    - targetCorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 403009274}
   m_SourcePrefab: {fileID: 100100000, guid: f5b3471d80027b2439118609f92ec701, type: 3}
 --- !u!114 &403009268 stripped
 MonoBehaviour:
@@ -369,6 +375,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &403009272 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 403009267}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &403009273 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 403009267}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &403009274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403009272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &403009275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,10 +423,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403009273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &403009277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403009270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &440857334
@@ -686,7 +726,13 @@ PrefabInstance:
       addedObject: {fileID: 462356880}
     - targetCorrespondingSourceObject: {fileID: 7621412444250114156, guid: f5b3471d80027b2439118609f92ec701, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 462356882}
+    - targetCorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 462356881}
+    - targetCorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 462356879}
   m_SourcePrefab: {fileID: 100100000, guid: f5b3471d80027b2439118609f92ec701, type: 3}
 --- !u!4 &462356873 stripped
 Transform:
@@ -721,6 +767,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &462356877 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 462356872}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &462356878 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 462356872}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &462356879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462356877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &462356880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,10 +815,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462356878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &462356882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462356874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &915809685
@@ -995,117 +1075,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64df2c45fdfd44340b0c7115dddbdd1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_poseMixed: {fileID: 1029239276}
-  Poses:
+  m_target: {fileID: 1029239276}
+  m_references:
   - {fileID: 1209213854}
   - {fileID: 462356875}
   - {fileID: 2044429439}
   - {fileID: 2052407915}
   - {fileID: 403009268}
-  MixedBoneGroups:
+  m_isValid: 1
+  MixedJointGroups:
   - Label: Spine
-    WeightsForPoses:
-    - PoseName: OVR Avatar (0)
-      Pose: {fileID: 1209213854}
-      Weight: 1
-    - PoseName: OVR Avatar (1)
-      Pose: {fileID: 462356875}
-      Weight: 1
-    - PoseName: OVR Avatar (2)
-      Pose: {fileID: 2044429439}
-      Weight: 1
-    - PoseName: OVR Avatar (3)
-      Pose: {fileID: 2052407915}
-      Weight: 1
-    - PoseName: OVR Avatar (4)
-      Pose: {fileID: 403009268}
-      Weight: 1
-  - Label: Left Leg
-    WeightsForPoses:
-    - PoseName: OVR Avatar (0)
-      Pose: {fileID: 1209213854}
-      Weight: 1
-    - PoseName: OVR Avatar (1)
-      Pose: {fileID: 462356875}
-      Weight: 1
-    - PoseName: OVR Avatar (2)
-      Pose: {fileID: 2044429439}
-      Weight: 1
-    - PoseName: OVR Avatar (3)
-      Pose: {fileID: 2052407915}
-      Weight: 1
-    - PoseName: OVR Avatar (4)
-      Pose: {fileID: 403009268}
-      Weight: 1
-  - Label: Right Leg
-    WeightsForPoses:
-    - PoseName: OVR Avatar (0)
-      Pose: {fileID: 1209213854}
-      Weight: 1
-    - PoseName: OVR Avatar (1)
-      Pose: {fileID: 462356875}
-      Weight: 1
-    - PoseName: OVR Avatar (2)
-      Pose: {fileID: 2044429439}
-      Weight: 1
-    - PoseName: OVR Avatar (3)
-      Pose: {fileID: 2052407915}
-      Weight: 1
-    - PoseName: OVR Avatar (4)
-      Pose: {fileID: 403009268}
-      Weight: 1
-  - Label: Left Arm
-    WeightsForPoses:
-    - PoseName: OVR Avatar (0)
-      Pose: {fileID: 1209213854}
-      Weight: 1
-    - PoseName: OVR Avatar (1)
-      Pose: {fileID: 462356875}
-      Weight: 1
-    - PoseName: OVR Avatar (2)
-      Pose: {fileID: 2044429439}
-      Weight: 1
-    - PoseName: OVR Avatar (3)
-      Pose: {fileID: 2052407915}
-      Weight: 1
-    - PoseName: OVR Avatar (4)
-      Pose: {fileID: 403009268}
-      Weight: 1
-  - Label: Left Finger
-    WeightsForPoses:
-    - PoseName: OVR Avatar (0)
-      Pose: {fileID: 1209213854}
-      Weight: 1
-    - PoseName: OVR Avatar (1)
-      Pose: {fileID: 462356875}
-      Weight: 1
-    - PoseName: OVR Avatar (2)
-      Pose: {fileID: 2044429439}
-      Weight: 1
-    - PoseName: OVR Avatar (3)
-      Pose: {fileID: 2052407915}
-      Weight: 1
-    - PoseName: OVR Avatar (4)
-      Pose: {fileID: 403009268}
-      Weight: 1
-  - Label: Right Arm
-    WeightsForPoses:
-    - PoseName: OVR Avatar (0)
-      Pose: {fileID: 1209213854}
-      Weight: 1
-    - PoseName: OVR Avatar (1)
-      Pose: {fileID: 462356875}
-      Weight: 1
-    - PoseName: OVR Avatar (2)
-      Pose: {fileID: 2044429439}
-      Weight: 1
-    - PoseName: OVR Avatar (3)
-      Pose: {fileID: 2052407915}
-      Weight: 1
-    - PoseName: OVR Avatar (4)
-      Pose: {fileID: 403009268}
-      Weight: 1
-  - Label: Right Finger
     WeightsForPoses:
     - PoseName: OVR Avatar (0)
       Pose: {fileID: 1209213854}
@@ -1139,7 +1118,108 @@ MonoBehaviour:
     - PoseName: OVR Avatar (4)
       Pose: {fileID: 403009268}
       Weight: 1
-  m_isValid: 1
+  - Label: Arm Left
+    WeightsForPoses:
+    - PoseName: OVR Avatar (0)
+      Pose: {fileID: 1209213854}
+      Weight: 1
+    - PoseName: OVR Avatar (1)
+      Pose: {fileID: 462356875}
+      Weight: 1
+    - PoseName: OVR Avatar (2)
+      Pose: {fileID: 2044429439}
+      Weight: 1
+    - PoseName: OVR Avatar (3)
+      Pose: {fileID: 2052407915}
+      Weight: 1
+    - PoseName: OVR Avatar (4)
+      Pose: {fileID: 403009268}
+      Weight: 1
+  - Label: Arm Right
+    WeightsForPoses:
+    - PoseName: OVR Avatar (0)
+      Pose: {fileID: 1209213854}
+      Weight: 1
+    - PoseName: OVR Avatar (1)
+      Pose: {fileID: 462356875}
+      Weight: 1
+    - PoseName: OVR Avatar (2)
+      Pose: {fileID: 2044429439}
+      Weight: 1
+    - PoseName: OVR Avatar (3)
+      Pose: {fileID: 2052407915}
+      Weight: 1
+    - PoseName: OVR Avatar (4)
+      Pose: {fileID: 403009268}
+      Weight: 1
+  - Label: Finger Left
+    WeightsForPoses:
+    - PoseName: OVR Avatar (0)
+      Pose: {fileID: 1209213854}
+      Weight: 1
+    - PoseName: OVR Avatar (1)
+      Pose: {fileID: 462356875}
+      Weight: 1
+    - PoseName: OVR Avatar (2)
+      Pose: {fileID: 2044429439}
+      Weight: 1
+    - PoseName: OVR Avatar (3)
+      Pose: {fileID: 2052407915}
+      Weight: 1
+    - PoseName: OVR Avatar (4)
+      Pose: {fileID: 403009268}
+      Weight: 1
+  - Label: Finger Right
+    WeightsForPoses:
+    - PoseName: OVR Avatar (0)
+      Pose: {fileID: 1209213854}
+      Weight: 1
+    - PoseName: OVR Avatar (1)
+      Pose: {fileID: 462356875}
+      Weight: 1
+    - PoseName: OVR Avatar (2)
+      Pose: {fileID: 2044429439}
+      Weight: 1
+    - PoseName: OVR Avatar (3)
+      Pose: {fileID: 2052407915}
+      Weight: 1
+    - PoseName: OVR Avatar (4)
+      Pose: {fileID: 403009268}
+      Weight: 1
+  - Label: Leg Left
+    WeightsForPoses:
+    - PoseName: OVR Avatar (0)
+      Pose: {fileID: 1209213854}
+      Weight: 1
+    - PoseName: OVR Avatar (1)
+      Pose: {fileID: 462356875}
+      Weight: 1
+    - PoseName: OVR Avatar (2)
+      Pose: {fileID: 2044429439}
+      Weight: 1
+    - PoseName: OVR Avatar (3)
+      Pose: {fileID: 2052407915}
+      Weight: 1
+    - PoseName: OVR Avatar (4)
+      Pose: {fileID: 403009268}
+      Weight: 1
+  - Label: Leg Right
+    WeightsForPoses:
+    - PoseName: OVR Avatar (0)
+      Pose: {fileID: 1209213854}
+      Weight: 1
+    - PoseName: OVR Avatar (1)
+      Pose: {fileID: 462356875}
+      Weight: 1
+    - PoseName: OVR Avatar (2)
+      Pose: {fileID: 2044429439}
+      Weight: 1
+    - PoseName: OVR Avatar (3)
+      Pose: {fileID: 2052407915}
+      Weight: 1
+    - PoseName: OVR Avatar (4)
+      Pose: {fileID: 403009268}
+      Weight: 1
   m_isDrawingGUI: 1
 --- !u!114 &1029239279
 MonoBehaviour:
@@ -1185,9 +1265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7254211191453bf49a8f0c25b67c6652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_refPose: {fileID: 0}
-  m_pose: {fileID: 1029239276}
   m_isValid: 1
+  m_target: {fileID: 1029239276}
+  m_reference: {fileID: 0}
   PositionType: 2
   RotationType: 2
   Label: Spine
@@ -1205,9 +1285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8644f3a5ee2027c4fbb39aaddb3ac2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_refPose: {fileID: 0}
-  m_pose: {fileID: 1029239276}
   m_isValid: 1
+  m_target: {fileID: 1029239276}
+  m_reference: {fileID: 0}
   PositionType: 2
   RotationType: 2
   m_delayFixedFrame: 0
@@ -1232,7 +1312,7 @@ MonoBehaviour:
   - {fileID: 2044429439}
   - {fileID: 2052407915}
   - {fileID: 403009268}
-  m_showGUI: 1
+  m_isDrawingGUI: 1
 --- !u!114 &1029239288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1355,7 +1435,13 @@ PrefabInstance:
       addedObject: {fileID: 1209213859}
     - targetCorrespondingSourceObject: {fileID: 7621412444250114156, guid: f5b3471d80027b2439118609f92ec701, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1209213861}
+    - targetCorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1209213860}
+    - targetCorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1209213858}
   m_SourcePrefab: {fileID: 100100000, guid: f5b3471d80027b2439118609f92ec701, type: 3}
 --- !u!4 &1209213852 stripped
 Transform:
@@ -1390,6 +1476,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1209213856 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 1209213851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1209213857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 1209213851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1209213858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209213856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1209213859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1416,10 +1524,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1209213857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1209213861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1209213853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1211801566
@@ -1702,7 +1822,13 @@ PrefabInstance:
       addedObject: {fileID: 2044429444}
     - targetCorrespondingSourceObject: {fileID: 7621412444250114156, guid: f5b3471d80027b2439118609f92ec701, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2044429446}
+    - targetCorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2044429445}
+    - targetCorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2044429443}
   m_SourcePrefab: {fileID: 100100000, guid: f5b3471d80027b2439118609f92ec701, type: 3}
 --- !u!4 &2044429437 stripped
 Transform:
@@ -1737,6 +1863,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2044429441 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 2044429436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2044429442 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 2044429436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2044429443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044429441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2044429444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1763,10 +1911,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044429442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2044429446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2044429438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2052407912
@@ -1837,7 +1997,13 @@ PrefabInstance:
       addedObject: {fileID: 2052407920}
     - targetCorrespondingSourceObject: {fileID: 7621412444250114156, guid: f5b3471d80027b2439118609f92ec701, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 2052407922}
+    - targetCorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2052407921}
+    - targetCorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2052407919}
   m_SourcePrefab: {fileID: 100100000, guid: f5b3471d80027b2439118609f92ec701, type: 3}
 --- !u!4 &2052407913 stripped
 Transform:
@@ -1872,6 +2038,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89eb14a5cef41504a96075b512454644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2052407917 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7732498626142234801, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 2052407912}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2052407918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 663862995222225057, guid: f5b3471d80027b2439118609f92ec701, type: 3}
+  m_PrefabInstance: {fileID: 2052407912}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2052407919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052407917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2052407920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1898,10 +2086,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052407918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 821d683b9995cf5488558d7789ce95ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2052407922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052407914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e614030dfe242004a8bf5b6c356a84c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fcf84787ddd19d24b99cec6a8f5445f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1182392454536412112

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
@@ -9,7 +9,8 @@ using System.Linq;
 namespace CyberInterfaceLab.PoseSynth.Network
 {
     /// <summary>
-    /// Network object that controls a scene after starting a server.
+    /// ネットワーク接続時にそれぞれのクライアントに対応する<see cref="ServerCameraRig"/>を生成します。
+    /// Spawn <see cref="ServerCameraRig"/> for each client when connected to the network.
     /// </summary>
     public class NetworkPlayerSpawner : PSNetworkBehaviour
     {

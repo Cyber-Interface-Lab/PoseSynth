@@ -7,60 +7,50 @@ using UnityEngine;
 namespace CyberInterfaceLab.PoseSynth.Network
 {
     /// <summary>
-    /// Orignal NetworkBehaviour for PoseSynth.
+    /// PoseSynth用に独自に拡張された<see cref="NetworkBehaviour"/>です。
+    /// NetworkBehaviourについては、NetCodeの公式ドキュメントを参照してください。
+    /// Orignal <see cref="NetworkBehaviour"/> for PoseSynth.
+    /// For more information about NetworkBehaviour, see the official documentation of NetCode.
     /// </summary>
-    [RequireComponent(typeof(NetworkObject))]
+    /// <remarks>
+    /// Serverと名の付くイベントは、サーバでのみ呼び出されます。
+    /// Clientと名の付くイベントは、クライアントでのみ呼び出されます。
+    /// Ownerと名の付くイベントは、この<see cref="NetworkObject"/>の所有者のクライアントでのみ呼び出されます。
+    /// ほぼ全てのNetworkObjectのOwnerはサーバ（ホスト）ですが、PlayerObjectのOwnerはクライアントになります。
+    /// Events with "Server" are called only on the server.
+    /// Events with "Client" are called only on the client.
+    /// Events with "Owner" are called only on the client that owns this <see cref="NetworkObject"/>.
+    /// Almost all NetworkObjects are owned by the server (host), but PlayerObjects are owned by the client.
+    /// </remarks>
     public abstract class PSNetworkBehaviour : NetworkBehaviour
     {
-        protected NetworkObject m_networkObject;
+        //protected NetworkObject m_networkObject;
         protected Transform m_transform;
 
         /// <summary>
-        /// Spawn a NetworkObject.
+        /// <see cref="NetworkObject"/>としてこのゲームオブジェクトをスポーンさせます。
+        /// 必ずサーバで呼び出してください。
+        /// Spawn this gameObject as a NetworkObject. Call this method on the server.
         /// </summary>
         public void Spawn()
         {
-            m_networkObject.Spawn();
+            //m_networkObject.Spawn();
+            NetworkObject.Spawn();
         }
+        /// <summary>
+        /// <see cref="NetworkObject"/>をデスポーンさせ、全てのクライアントからこのゲームオブジェクトを削除します。
+        /// 必ずサーバで呼び出してください。
+        /// Despawn the NetworkObject and remove this game object from all clients.
+        /// Call this method on the server.
+        /// </summary>
         public void Despawn()
         {
-            m_networkObject.Despawn();
+            //m_networkObject.Despawn();
+            NetworkObject.Despawn();
         }
 
         #region MonoBehaviour events
         // Do not use in the inherit class
-        private void Awake()
-        {
-            m_transform = transform;
-            m_networkObject = GetComponent<NetworkObject>();
-            if (IsOwner)
-            {
-                OwnerAwake();
-            }
-            if (IsServer)
-            {
-                ServerAwake();
-            }
-            if (IsClient)
-            {
-                ClientAwake();
-            }
-        }
-        private void Start()
-        {
-            if (IsOwner)
-            {
-                OwnerStart();
-            }
-            if (IsServer)
-            {
-                ServerStart();
-            }
-            if (IsClient)
-            {
-                ClientStart();
-            }
-        }
         private void Update()
         {
             if (IsOwner)
@@ -107,19 +97,8 @@ namespace CyberInterfaceLab.PoseSynth.Network
             }
         }
         #endregion
+
         #region original events
-        [Obsolete("Use OnNetworkSpawn() instead.")]
-        public virtual void OwnerAwake() { }
-        [Obsolete("Use OnNetworkSpawn() instead.")]
-        public virtual void ServerAwake() { }
-        [Obsolete("Use OnNetworkSpawn() instead.")]
-        public virtual void ClientAwake() { }
-        [Obsolete("Use OnNetworkSpawn() instead.")]
-        public virtual void OwnerStart() { }
-        [Obsolete("Use OnNetworkSpawn() instead.")]
-        public virtual void ServerStart() { }
-        [Obsolete("Use OnNetworkSpawn() instead.")]
-        public virtual void ClientStart() { }
         public virtual void OwnerUpdate() { }
         public virtual void ServerUpdate() { }
         public virtual void ClientUpdate() { }

@@ -3,11 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static CyberInterfaceLab.PoseSynth.CameraRigMixer;
 
 namespace CyberInterfaceLab.PoseSynth
 {
-    public class CameraRigMixer : CameraRigRemapperMultipleReferences, IGUIDrawer
+    /// <summary>
+    /// 複数の<see cref="ICameraRig"/>に含まれるトラッカの位置・姿勢を融合し、1つの<see cref="ICameraRig"/>に変換します。
+    /// This class mixes the position and rotation of trackers contained in multiple <see cref="ICameraRig"/>s and transforms them into a single <see cref="ICameraRig"/>.
+    /// </summary>
+    /// <remarks>
+    /// 処理の方法は<see cref="PoseMixer"/>も参照してください。
+    /// The processing method is similar to <see cref="PoseMixer"/>.
+    /// </remarks>
+    public class CameraRigMixer : CameraRigRemapperMultipleReferences<CameraRigMixer>, IGUIDrawer
     {
         public enum TransformType
         {
@@ -70,13 +77,15 @@ namespace CyberInterfaceLab.PoseSynth
                 return result;
             }
             public MixedTrackerGroup Merge(MixedTrackerGroup newGroup) => Merge(this, newGroup);
-            public void SetWeightOf(ICameraRig cameraRig, float weight)
+            public void SetWeight(ICameraRig cameraRig, float weight, out bool hasModified)
             {
+                hasModified = false;
                 for (int i=0; i<WeightsForCameraRigs.Count; i++)
                 {
                     if (WeightsForCameraRigs[i].CameraRig == cameraRig)
                     {
                         var w = WeightsForCameraRigs[i];
+                        if (w.Weight != weight) hasModified = true;
                         w.Weight = weight;
                         WeightsForCameraRigs[i] = w;
                     }
@@ -147,6 +156,7 @@ namespace CyberInterfaceLab.PoseSynth
         }
 
         #region public variable
+        public List<TrackerType> Trackers => m_trackers;
         public List<MixedTrackerGroup> MixedTrackerGroups => m_mixedTrackerGroups;
         public TransformType PositionTransformType
         {
@@ -175,18 +185,24 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region public method
-        public override void AddReference(ICameraRig reference, bool withNotice = true)
+        public override void AddReference(ICameraRig reference)
         {
-            base.AddReference(reference, withNotice);
+            base.AddReference(reference);
             InitializeMixedTrackerGroups();
         }
-        public override void RemoveReference(ICameraRig reference, bool withNotice = true)
+        public override void RemoveReference(ICameraRig reference)
         {
-            base.RemoveReference(reference, withNotice);
+            base.RemoveReference(reference);
             InitializeMixedTrackerGroups();
         }
-        public void InitializeMixedTrackerGroups(bool mergeCurrentValue = true)
+        public void InitializeMixedTrackerGroups(bool removeNull = true, bool mergeCurrentValue = true)
         {
+            if (removeNull)
+            {
+                // 無効な参照を消す
+                m_references.RemoveAll(x => x == null);
+            }
+
             var result = new List<MixedTrackerGroup>();
             var oldGroup = new List<MixedTrackerGroup>(m_mixedTrackerGroups);
 
@@ -199,7 +215,7 @@ namespace CyberInterfaceLab.PoseSynth
                 var group = new MixedTrackerGroup(m_trackers[i], references);
 
                 // If the old MixedTrackerGroup has the same TrackerType, merge them.
-                for (int j=0; j<m_mixedTrackerGroups.Count; j++)
+                for (int j = 0; j < m_mixedTrackerGroups.Count; j++)
                 {
                     if (group.TrackerType == m_mixedTrackerGroups[j].TrackerType && mergeCurrentValue)
                     {
@@ -234,7 +250,8 @@ namespace CyberInterfaceLab.PoseSynth
                 if (MixedTrackerGroups[i].TrackerType == type)
                 {
                     weight = Mathf.Clamp(weight, minWeight, maxWeight);
-                    MixedTrackerGroups[i].SetWeightOf(cameraRig, weight);
+                    MixedTrackerGroups[i].SetWeight(cameraRig, weight, out bool hasModified);
+                    m_hasModified |= hasModified;
                 }
             }
         }
@@ -249,6 +266,7 @@ namespace CyberInterfaceLab.PoseSynth
         #endregion
 
         #region protected method
+        /// <inheritdoc/>
         protected override void RemapOnUpdate()
         {
             // normalize the weights and mix them.
@@ -291,57 +309,12 @@ namespace CyberInterfaceLab.PoseSynth
         protected override void OnValidate()
         {
             base.OnValidate();
-
-            // Check if the previous references are the same as the current one.
-            // If not the same, initialize MixedTrackerGrouops.
-            bool hasChanged = false;
-            if (m_references.Count == m_previousReferences.Count)
-            {
-                for (int i = 0; i<m_references.Count; i++)
-                {
-                    var cameraRig = m_references[i]?.GetComponent<ICameraRig>() ?? null; // ICameraRig or null
-                    var prevCameraRig = m_previousReferences[i]?.GetComponent<ICameraRig>() ?? null; // ICameraRig or null
-
-                    // cr1 -> cr2
-                    // or cr -> null
-                    // or null -> cr
-                    if (cameraRig != prevCameraRig)
-                    {
-                        hasChanged = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                hasChanged = true;
-            }
-
-            // also check the tracker list to mix.
-            if (m_trackers.Count == m_previousTrackers.Count)
-            {
-                for (int i = 0; i<m_trackers.Count; i++)
-                {
-                    if (m_trackers[i] != m_previousTrackers[i])
-                    {
-                        hasChanged = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                hasChanged = true;
-            }
-
-            if (hasChanged)
-            {
-                InitializeMixedTrackerGroups();
-            }
-
-            // update the previous list.
-            m_previousReferences = new List<MonoBehaviour>(m_references);
-            m_previousTrackers = new List<TrackerType>(m_trackers);
+            InitializeMixedTrackerGroups(removeNull: false);
+        }
+        protected override void Awake()
+        {
+            base.Awake();
+            InitializeMixedTrackerGroups();
         }
         #endregion
 
@@ -394,10 +367,6 @@ namespace CyberInterfaceLab.PoseSynth
                             width: m_windowSlideBarWidth,
                             height: m_windowSpaceHeight
                             ), weight, 0f, 1f);
-                        if (nextWeight != weight)
-                        {
-                            Notify();
-                        }
                         SetWeight(references[j], MixedTrackerGroups[i].TrackerType, nextWeight);
                     }
                 }
@@ -443,7 +412,7 @@ namespace CyberInterfaceLab.PoseSynth
             m_windowRect = GUI.Window(m_windowId, m_windowRect, (id) =>
             {
                 DrawGUI(id);
-            }, $"{name} CameraRigMixer");
+            }, $"[CameraRigMixer] {name}");
         }
         #endregion
     }

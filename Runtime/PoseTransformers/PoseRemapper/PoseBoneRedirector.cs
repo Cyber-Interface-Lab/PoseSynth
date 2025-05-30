@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace CyberInterfaceLab.PoseSynth
 {
-    public class PoseBoneRedirector : PoseRemapper, IDelayableSynthesizer
+    public class PoseBoneRedirector : PoseRemapper, IObservable<PoseBoneRedirector>
     {
         internal class ApplyCommand : ICommand
         {
@@ -87,46 +87,60 @@ namespace CyberInterfaceLab.PoseSynth
                 Initialize();
             }
         }
-        protected Queue<ICommand> m_commands;
+        protected Queue<ICommand> m_commands = new(64);
 
-        protected Pose.BoneGroup Group
+        protected Pose.JointGroup Group
         {
             get
             {
-                if (Pose.BoneGroup.SearchFromLabel(m_pose.BoneGroups, Label, out var group))
+                if (Pose.JointGroup.TrySearchFromLabel(m_target.JointGroups, Label, out var group))
                 {
                     return group;
                 }
 
-                Debug.LogError($"BoneRedirector.get_Group: Pose {m_pose} does not have BoneGroup {Label}!");
+                Debug.LogError($"BoneRedirector.get_Group: Pose {m_target} does not have BoneGroup {Label}!");
                 return new();
             }
         }
-        protected Pose.BoneGroup RefGroup
+        protected Pose.JointGroup RefGroup
         {
             get
             {
-                if (Pose.BoneGroup.SearchFromLabel(m_refPose.BoneGroups, Label, out var group))
+                if (Pose.JointGroup.TrySearchFromLabel(m_reference.JointGroups, Label, out var group))
                 {
                     return group;
                 }
 
-                Debug.LogError($"BoneRedirector.get_Group: RefPose {m_refPose} does not have BoneGroup {Label}!");
+                Debug.LogError($"BoneRedirector.get_Group: RefPose {m_reference} does not have BoneGroup {Label}!");
                 return new();
             }
         }
-        protected Pose.Bone Bone => Group.Bones[Index];
-        protected Pose.Bone RefBone => RefGroup.Bones[Index];
-        protected Transform BoneTransform => Bone.transform;
-        protected Transform RefBoneTransform => RefBone.transform;
+        protected Pose.Joint Joint => Group.Contents[Index];
+        protected Pose.Joint RefJoint => RefGroup.Contents[Index];
+        protected Transform JointTransform => Joint.transform;
+        protected Transform RefJointTransform => RefJoint.transform;
+
+
+        #region observable
+        HashSet<IObserver<PoseBoneRedirector>> m_observers = new(8);
+        public void AddObserver(IObserver<PoseBoneRedirector> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseBoneRedirector> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
 
         public virtual void Initialize()
         {
-            m_commands = new Queue<ICommand>(m_delayFixedFrame);
+            m_commands = new Queue<ICommand>(m_delayFixedFrame + 1);
         }
         protected Vector3 GetRefPosition()
         {
-            if (m_refPose == null) { return Vector3.zero; }
+            if (m_reference == null) { return Vector3.zero; }
             var type = PositionType;
             switch (type)
             {
@@ -134,14 +148,14 @@ namespace CyberInterfaceLab.PoseSynth
                 default:
                     return Vector3.zero;
                 case TransformType.Local:
-                    return RefBoneTransform.localPosition;
+                    return RefJointTransform.localPosition;
                 case TransformType.Global:
-                    return RefBoneTransform.position;
+                    return RefJointTransform.position;
             }
         }
         protected Quaternion GetRefRotation()
         {
-            if (m_refPose == null) { return Quaternion.identity; }
+            if (m_reference == null) { return Quaternion.identity; }
             var type = RotationType;
             switch (type)
             {
@@ -149,15 +163,15 @@ namespace CyberInterfaceLab.PoseSynth
                 default:
                     return Quaternion.identity;
                 case TransformType.Local:
-                    return RefBoneTransform.localRotation;
+                    return RefJointTransform.localRotation;
                 case TransformType.Global:
-                    return RefBoneTransform.rotation;
+                    return RefJointTransform.rotation;
             }
         }
         protected override void RemapOnUpdate()
         {
             // Enqueue a new command.
-            m_commands.Enqueue(new ApplyCommand(BoneTransform, GetRefPosition(), GetRefRotation(), PositionType, RotationType));
+            m_commands.Enqueue(new ApplyCommand(JointTransform, GetRefPosition(), GetRefRotation(), PositionType, RotationType));
 
             // if # of commands is not enough, do nothing.
             if (m_commands.Count <= m_delayFixedFrame) { return; }
@@ -172,8 +186,9 @@ namespace CyberInterfaceLab.PoseSynth
 
             Initialize();
         }
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Initialize();
         }
     }

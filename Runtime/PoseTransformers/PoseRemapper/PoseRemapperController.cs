@@ -29,7 +29,7 @@ namespace CyberInterfaceLab.PoseSynth
             // set ref pose
             foreach (var remapper in m_remappers)
             {
-                remapper.RefPose = refPose;
+                remapper.Reference = refPose;
             }
         }
         public void ResetRemapperRefPoses()
@@ -37,7 +37,7 @@ namespace CyberInterfaceLab.PoseSynth
             // reset ref pose
             foreach (var remapper in m_remappers)
             {
-                remapper.RefPose = null;
+                remapper.Reference = null;
             }
         }
         #endregion

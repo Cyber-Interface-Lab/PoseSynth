@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 namespace CyberInterfaceLab.PoseSynth
 {
 
-    public class PoseRootBoneRedirector : PoseRemapper, IDelayableSynthesizer
+    public class PoseRootBoneRedirector : PoseRemapper, IObservable<PoseRootBoneRedirector>
     {
         internal class ApplyCommand : ICommand
         {
@@ -85,17 +85,31 @@ namespace CyberInterfaceLab.PoseSynth
                 Initialize();
             }
         }
-        protected Queue<ICommand> m_commands;
+        protected Queue<ICommand> m_commands = new(64);
 
-        protected Transform RootBone => m_pose.RootBone.transform;
-        protected Transform RefRootBone => m_refPose.RootBone.transform;
+
+        #region observable
+        HashSet<IObserver<PoseRootBoneRedirector>> m_observers = new(64);
+        public void AddObserver(IObserver<PoseRootBoneRedirector> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseRootBoneRedirector> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
+        protected Transform RootBone => m_target.Root.transform;
+        protected Transform RefRootBone => m_reference.Root.transform;
         public virtual void Initialize()
         {
-            m_commands = new Queue<ICommand>(m_delayFixedFrame);
+            m_commands = new Queue<ICommand>(m_delayFixedFrame + 1);
         }
         protected Vector3 GetRefPosition()
         {
-            if (m_refPose == null) { return Vector3.zero; }
+            if (m_reference == null) { return Vector3.zero; }
             var type = PositionType;
             switch (type)
             {
@@ -110,7 +124,7 @@ namespace CyberInterfaceLab.PoseSynth
         }
         protected Quaternion GetRefRotation()
         {
-            if (m_refPose == null) { return Quaternion.identity; }
+            if (m_reference == null) { return Quaternion.identity; }
             var type = RotationType;
             switch (type)
             {
@@ -125,6 +139,12 @@ namespace CyberInterfaceLab.PoseSynth
         }
         protected override void RemapOnUpdate()
         {
+            // if no reference, do nothing.
+            if (m_reference == null)
+            {
+                return;
+            }
+
             // Enqueue a new command.
             m_commands.Enqueue(new ApplyCommand(RootBone, GetRefPosition(), GetRefRotation(), PositionType, RotationType));
 
@@ -141,8 +161,9 @@ namespace CyberInterfaceLab.PoseSynth
 
             Initialize();
         }
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Initialize();
         }
     }
