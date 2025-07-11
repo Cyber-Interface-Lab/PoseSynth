@@ -29,5 +29,14 @@ namespace CyberInterfaceLab.PoseSynth
         {
             base.SetRefPoseToNullClientRpc();
         }
+
+        protected override void Observe(PoseRootBoneRedirector observable)
+        {
+            observable.AddObserver(this);
+        }
+        protected override void Unobserve(PoseRootBoneRedirector observable)
+        {
+            observable.RemoveObserver(this);
+        }
     }
 }

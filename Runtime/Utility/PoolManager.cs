@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -6,8 +6,9 @@ using UnityEngine.Pool;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// PoolManager
+    /// ObjectPoolパターンを実装するためのPoolManager抽象クラスです。
     /// https://qiita.com/KeichiMizutani/items/ca46a40de02e87b3d8a8
+    /// PoolManager abstract class to implement the ObjectPool pattern.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class PoolManager<T> : MonoBehaviour where T : MonoBehaviour, IPooledObject<T>
@@ -21,6 +22,10 @@ namespace CyberInterfaceLab.PoseSynth
         [SerializeField] private int _defaultCapacity = 32;
         [SerializeField] private int _maxSize = 100;
 
+        /// <summary>
+        /// Poolを初期化します。
+        /// Initialize the pool.
+        /// </summary>
         public virtual void Initialize()
         {
             _objectPool = new ObjectPool<T>(Create, OnGetFromPool, OnReleaseToPool, OnDestroyPooledObject,
@@ -28,10 +33,11 @@ namespace CyberInterfaceLab.PoseSynth
             m_isInitialized = true;
         }
         /// <summary>
+        /// 新しいPooledObjectを生成します。
         /// Try get new pooled object.
         /// </summary>
         /// <param name="pooledObject"></param>
-        /// <returns></returns>
+        /// <returns>Successfully get the new object.</returns>
         public bool TryGet(out T pooledObject)
         {
             if (!m_isInitialized)

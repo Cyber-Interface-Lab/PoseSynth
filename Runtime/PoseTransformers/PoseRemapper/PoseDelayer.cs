@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CyberInterfaceLab.PoseSynth
 {
-    public class PoseDelayer : PoseRemapper, IDelayableSynthesizer
+    public class PoseDelayer : PoseRemapper, IObservable<PoseDelayer>
     {
         internal class ApplyPoseCommand : ICommand
         {
@@ -22,7 +22,7 @@ namespace CyberInterfaceLab.PoseSynth
             }
             public void Execute()
             {
-                m_pose.BoneLocalRotations = m_localRotations;
+                m_pose.LocalRotations = m_localRotations;
             }
         }
 
@@ -39,6 +39,19 @@ namespace CyberInterfaceLab.PoseSynth
         }
         protected Queue<ICommand> m_commands;
 
+        #region observable
+        HashSet<IObserver<PoseDelayer>> m_observers = new(8);
+        public void AddObserver(IObserver<PoseDelayer> observer) => m_observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseDelayer> observer) => m_observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in m_observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         public virtual void Initialize()
         {
             m_commands = new Queue<ICommand>(m_delayFixedFrame);
@@ -46,7 +59,7 @@ namespace CyberInterfaceLab.PoseSynth
         protected override void RemapOnUpdate()
         {
             // Enqueue a new command.
-            m_commands.Enqueue(new ApplyPoseCommand(m_pose, m_refPose.BoneLocalRotations));
+            m_commands.Enqueue(new ApplyPoseCommand(m_target, m_reference.LocalRotations));
             
             // If # of commands is not enough, do nothing.
             if (m_commands.Count <= m_delayFixedFrame)
@@ -65,8 +78,9 @@ namespace CyberInterfaceLab.PoseSynth
             // Initialize the command queue
             Initialize();
         }
-        protected void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             Initialize();
         }
     }

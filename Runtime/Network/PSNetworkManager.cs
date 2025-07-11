@@ -8,20 +8,36 @@ using UnityEngine.Events;
 namespace CyberInterfaceLab.PoseSynth.Network
 {
     /// <summary>
-    /// Network manager for PoseSynth
+    /// PoseSynth用のネットワークマネージャです。
+    /// Network manager for PoseSynth.
     /// </summary>
+    /// <remarks>
+    /// IMGUIを描画してネットワーク接続の管理を行うとともに、このクライアントの<see cref="LocalCameraRig"/>を保持します。
+    /// Manage network connections and draw IMGUI, and hold the <see cref="LocalCameraRig"/> of this client.
+    /// </remarks>
     public class PSNetworkManager : Singleton<PSNetworkManager>
     {
         private NetworkManager m_networkManager;
         [SerializeField]
+        [Tooltip("The LocalCameraRig of this client.")]
         private LocalCameraRig m_localCameraRig;
+        /// <summary>
+        /// このクライアントの<see cref="LocalCameraRig"/>を取得します（読込専用）。
+        /// Get the <see cref="LocalCameraRig"/> of this client (read-only).
+        /// </summary>
         public LocalCameraRig LocalCameraRig => m_localCameraRig;
         [SerializeField]
+        [Tooltip("NetworkTransport is used to draw the address and port in IMGUI.")]
         private UnityTransport m_networkTransport;
-        public UnityTransport NetworkTransport => m_networkTransport;
+        //public UnityTransport NetworkTransport => m_networkTransport;
 
         [SerializeField]
+        [Tooltip("The NetworkPlayerSpawner of this scene.")]
         private NetworkPlayerSpawner m_networkPlayerSpawner;
+        /// <summary>
+        /// このシーンの<see cref="NetworkPlayerSpawner"/>を取得します（読込専用）。
+        /// Get the <see cref="NetworkPlayerSpawner"/> of this scene (read-only).
+        /// </summary>
         public NetworkPlayerSpawner NetworkPlayerSpawner => m_networkPlayerSpawner;
 
         public void StartServer()

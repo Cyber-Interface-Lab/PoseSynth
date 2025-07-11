@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +6,15 @@ namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
     /// Type of tracker.
-    /// 
-    /// e.g. Head, HandLeft, HandRight, ...
     /// </summary>
+    /// <remarks>
+    /// トラッカを取り付ける身体部位の名前を付けてください。
+    /// Name the body part where the tracker is attached.
+    /// e.g. Head, HandLeft, HandRight, ...
+    /// 
+    /// ユーザが後から追加できるよう、番号には空きを設けています。
+    /// For future extensibility, we leave some gaps in the numbers.
+    /// </remarks>
     public enum TrackerType
     {
         None = 0,

@@ -8,7 +8,7 @@ namespace CyberInterfaceLab.PoseSynth.VR
     /// <summary>
     /// Map Hand Tracking to Hand Pose.
     /// </summary>
-    public class XRIHandMapper : HandMapper
+    public class XRIHandMapper : HandMapper, IObservable<XRIHandMapper>
     {
         #region private variable
         [SerializeField] private Finger WristRoot;
@@ -29,14 +29,26 @@ namespace CyberInterfaceLab.PoseSynth.VR
         [SerializeField] private Finger Pinky3;
 
         private HashSet<Finger> m_fingers;
+        HashSet<IObserver<XRIHandMapper>> observers = new(16);
         #endregion
 
+        #region observable
+        public void AddObserver(IObserver<XRIHandMapper> observer) => observers.Add(observer);
+        public void RemoveObserver(IObserver<XRIHandMapper> observer) => observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
 
         #region private method
         private void SetProperties(Finger f)
         {
             if (f.Target == null) { return; }
-            if (m_cameraRig.TryGetTransform(f.Type, out var t))
+            if (m_reference.TryGetTransform(f.Type, out var t))
             {
                 f.Target.localRotation = Utilities.Multiply(t.localRotation, f.Offset);
             }

@@ -1,17 +1,19 @@
-namespace CyberInterfaceLab.PoseSynth
+﻿namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
-    /// Interface who can transform a <see cref="Pose"/>.
-    /// See <see cref="PoseMapper"/>, <see cref="PoseRemapper"/>, and <see cref="PoseMixer"/>.
+    /// <see cref="Pose"/>を変換するインターフェースです。
+    /// Interface to transform a <see cref="Pose"/>.
     public interface IPoseTransformer
     {
         /// <summary>
-        /// Can update <see cref="Pose"/> if true.
+        /// 有効な場合、<see cref="Target"/>を更新できます。
+        /// Can update <see cref="Target"/> if true.
         /// </summary>
         bool IsValid { get; set; }
         /// <summary>
-        /// Target Pose to be transformed.
+        /// 変換先の<see cref="Pose"/>です。
+        /// Target <see cref="Pose"/> to be transformed.
         /// </summary>
-        Pose Pose { get; set; }
+        Pose Target { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace CyberInterfaceLab.PoseSynth
     /// Take a mirrored pose of the reference pose (left <-> right).
     /// Create pairs of Bones semi-automatically and mirror them with X, Y, or Z plane.
     /// </summary>
-    public class PoseMirror : PoseRemapper
+    public class PoseMirror : PoseRemapper, IObservable<PoseMirror>
     {
         /// <summary>
         /// The pair of the reference bone and the result bone.
@@ -69,6 +69,19 @@ namespace CyberInterfaceLab.PoseSynth
         [SerializeField]
         private string m_rightLabel = "Right";
 
+        #region observable
+        HashSet<IObserver<PoseMirror>> observers = new(16);
+        public void AddObserver(IObserver<PoseMirror> observer) => observers.Add(observer);
+        public void RemoveObserver(IObserver<PoseMirror> observer) => observers.Remove(observer);
+        public override void Notify()
+        {
+            foreach (var observer in observers)
+            {
+                observer.OnNotified(this);
+            }
+        }
+        #endregion
+
         protected override void RemapOnUpdate()
         {
             for (int i = 0; i < Pairs.Count; i++)
@@ -94,7 +107,7 @@ namespace CyberInterfaceLab.PoseSynth
         /// <param name="z"></param>
         public void InitializePairs(bool x = false, bool y = true, bool z = true)
         {
-            var BoneGroups = m_pose.BoneGroups;
+            var BoneGroups = m_target.JointGroups;
             var result = new List<MirroringPair>();
             string[][] pairLabels = GetPairLabels();
             for (int i = 0; i < pairLabels.Length; i++)
@@ -111,25 +124,25 @@ namespace CyberInterfaceLab.PoseSynth
                 // 要素が1つなら中身をx，y，zにしたがって反転する
                 else if (pair.Length == 1)
                 {
-                    var refGroup = m_refPose.BoneGroups.Find(x => x.Label == pair[0]);
+                    var refGroup = m_reference.JointGroups.Find(x => x.Label == pair[0]);
                     var group = BoneGroups.Find(x => x.Label == pair[0]);
-                    for (int j = 0; j < group.Bones.Count; j++)
+                    for (int j = 0; j < group.Contents.Count; j++)
                     {
-                        result.Add(new MirroringPair(refGroup.Bones[j].transform, group.Bones[j].transform, x, y, z));
+                        result.Add(new MirroringPair(refGroup.Contents[j].transform, group.Contents[j].transform, x, y, z));
                     }
                 }
 
                 // 要素が2つならそれぞれをx，y，zにしたがって反転した後，互いの値を交換する
                 else if (pair.Length == 2)
                 {
-                    var refLeftGroup = m_refPose.BoneGroups.Find(x => x.Label == pair[0]);
-                    var refRightGroup = m_refPose.BoneGroups.Find(x => x.Label == pair[1]);
+                    var refLeftGroup = m_reference.JointGroups.Find(x => x.Label == pair[0]);
+                    var refRightGroup = m_reference.JointGroups.Find(x => x.Label == pair[1]);
                     var leftGroup = BoneGroups.Find(x => x.Label == pair[0]);
                     var rightGroup = BoneGroups.Find(x => x.Label == pair[1]);
-                    for (int j = 0; j < refLeftGroup.Bones.Count; j++)
+                    for (int j = 0; j < refLeftGroup.Contents.Count; j++)
                     {
-                        result.Add(new MirroringPair(refLeftGroup.Bones[j].transform, rightGroup.Bones[j].transform, x, y, z));
-                        result.Add(new MirroringPair(refRightGroup.Bones[j].transform, leftGroup.Bones[j].transform, x, y, z));
+                        result.Add(new MirroringPair(refLeftGroup.Contents[j].transform, rightGroup.Contents[j].transform, x, y, z));
+                        result.Add(new MirroringPair(refRightGroup.Contents[j].transform, leftGroup.Contents[j].transform, x, y, z));
                     }
                 }
 
@@ -154,7 +167,7 @@ namespace CyberInterfaceLab.PoseSynth
         /// e.g. [["Spine"], ["Arm Left", "Arm Right"]]</returns>
         public string[][] GetPairLabels()
         {
-            var BoneGroups = m_pose.BoneGroups;
+            var BoneGroups = m_target.JointGroups;
             var result = new List<string[]>();
             string resultLog = "";
 

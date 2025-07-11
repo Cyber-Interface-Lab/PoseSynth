@@ -8,11 +8,11 @@ namespace CyberInterfaceLab.PoseSynth.Network
     [CustomEditor(typeof(PSNetworkBehaviour), editorForChildClasses: true)]
     public class PSNetworkBehaviourEditor : Editor
     {
-        PSNetworkBehaviour m_target;
+        //PSNetworkBehaviour m_target;
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
-
+            /*
             if (m_target == null)
             {
                 m_target = target as PSNetworkBehaviour;
@@ -32,6 +32,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
                     m_target.Spawn();
                 }
             }
+            */
         }
     }
 }

@@ -7,6 +7,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
 {
     public class NetworkPoseBoneRedirector : NetworkPoseRemapper<PoseBoneRedirector>
     {
+        
 
         [ServerRpc(RequireOwnership = false)]
         protected override void SetRefPoseServerRpc(ulong networkObjectId)
@@ -27,6 +28,16 @@ namespace CyberInterfaceLab.PoseSynth.Network
         protected override void SetRefPoseToNullClientRpc()
         {
             base.SetRefPoseToNullClientRpc();
+        }
+
+
+        protected override void Observe(PoseBoneRedirector observable)
+        {
+            observable.AddObserver(this);
+        }
+        protected override void Unobserve(PoseBoneRedirector observable)
+        {
+            observable.RemoveObserver(this);
         }
     }
 }

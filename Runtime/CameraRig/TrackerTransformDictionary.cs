@@ -4,10 +4,8 @@ using UnityEngine;
 namespace CyberInterfaceLab.PoseSynth
 {
     /// <summary>
+    /// トラッカの種類とTransformをインスペクタで対応付けできる辞書です。
     /// Special dictionary class that you can edit in the inspector.
-    /// 
-    /// Key: TrackerType
-    /// Value: Transform
     /// </summary>
     [Serializable]
     public class TrackerDictionary : UDictionary<TrackerType, Transform> { }

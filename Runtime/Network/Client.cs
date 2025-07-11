@@ -65,7 +65,7 @@ namespace CyberInterfaceLab.PoseSynth.Network
             m_mappers = m_poseServer.GetComponents<PoseMapper>().ToHashSet();
             foreach (var mapper in m_mappers)
             {
-                mapper.CameraRig = m_cameraRig;
+                mapper.Reference = m_cameraRig;
             }
             mappedInstance.transform.parent = transform;
 
@@ -76,12 +76,12 @@ namespace CyberInterfaceLab.PoseSynth.Network
             if (m_pose.TryGetComponent<PoseMixer>(out var mixer))
             {
                 m_mixer = mixer;
-                m_mixer.Poses.Add(m_poseServer);
+                m_mixer.AddPose(m_poseServer);
             }
             m_boneRedirectors = m_pose.GetComponents<PoseRemapper>().ToHashSet();
             foreach (var r in m_boneRedirectors)
             {
-                r.RefPose = m_poseServer;
+                r.Target = m_poseServer;
             }
 
             // spawn instance
