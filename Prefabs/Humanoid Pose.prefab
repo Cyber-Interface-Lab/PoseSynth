@@ -53,6 +53,7 @@ MonoBehaviour:
     Contents:
     - transform: {fileID: 2165068400846321727}
     - transform: {fileID: 1901407354920127404}
+    - transform: {fileID: 5007610921305628484}
     - transform: {fileID: 5820304300739489583}
   - Label: Head
     MasterWeight: 1
@@ -341,6 +342,11 @@ Transform:
 --- !u!4 &4995400826637236008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1189529853000058984, guid: e93e1fbb5bc3caf4e960c8ac1b821421, type: 3}
+  m_PrefabInstance: {fileID: 6183782641312808768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5007610921305628484 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8021001004253913084, guid: e93e1fbb5bc3caf4e960c8ac1b821421, type: 3}
   m_PrefabInstance: {fileID: 6183782641312808768}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5033240466798350860 stripped
